@@ -1,7 +1,7 @@
-// Package mdb provides a auto-generated package which contains a mongo CRUD API for the specific User struct in package users.
+// Package usermgo provides a auto-generated package which contains a sql CRUD API for the specific User struct in package users.
 //
 //
-package userdb
+package usermgo
 
 import (
 	"fmt"

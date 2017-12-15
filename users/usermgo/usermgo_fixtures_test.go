@@ -1,4 +1,4 @@
-package userdb_test
+package usermgo_test
 
 import (
      "encoding/json"
@@ -30,27 +30,6 @@ var userJSON = `{
 var userCreateJSON = `{
 
 
-    "created_at":	nil,
-
-    "updated_at":	nil,
-
-    "username":	"",
-
-    "public_id":	"",
-
-    "private_id":	"",
-
-    "hash":	"",
-
-    "two_factor_auth":	false
-
-}`
-
-var userUpdateJSON = `{
-
-
-    "hash":	"",
-
     "two_factor_auth":	false,
 
     "created_at":	nil,
@@ -61,7 +40,28 @@ var userUpdateJSON = `{
 
     "public_id":	"",
 
-    "private_id":	""
+    "private_id":	"",
+
+    "hash":	""
+
+}`
+
+var userUpdateJSON = `{
+
+
+    "username":	"",
+
+    "public_id":	"",
+
+    "private_id":	"",
+
+    "hash":	"",
+
+    "two_factor_auth":	false,
+
+    "created_at":	nil,
+
+    "updated_at":	nil
 
 }`
 

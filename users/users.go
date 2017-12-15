@@ -1,5 +1,9 @@
 package users
 
+//go:generate mgokit generate
+//go:generate sqlkit generate
+//go:generate httpkit generate
+
 import (
 	"reflect"
 	"time"
@@ -42,6 +46,9 @@ type NewUser struct {
 // User is a type defining the given user related fields for a given.
 // @mongoapi
 // @sqlapi
+// @httpapi
+// @associates(@httpai, New, NewUser)
+// @associates(@httpai, Update, UpdateUserPassword)
 type User struct {
 	Username      string    `json:"username"`
 	PublicID      string    `json:"public_id"`

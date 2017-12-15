@@ -1,4 +1,4 @@
-package userdb_test
+package usermgo_test
 
 import (
 	"os"
@@ -18,7 +18,7 @@ import (
 
 	"github.com/influx6/faux/metrics/custom"
 
-	mdb "github.com/gokit/tenancykit/users/userdb"
+	mdb "github.com/gokit/tenancykit/users/usermgo"
 )
 
 var (
