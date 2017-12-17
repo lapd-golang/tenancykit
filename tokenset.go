@@ -1,7 +1,7 @@
 package tenancykit
 
 import (
-	"github.com/gokit/tenancykit/tokenset"
+	"github.com/gokit/tenancykit/tokenset/tokens"
 	"github.com/influx6/faux/context"
 )
 
@@ -10,5 +10,5 @@ import (
 // if a giving target has a giving token value.
 type TokenSet interface {
 	Has(ctx context.Context, target string, token string) (bool, error)
-	Add(ctx context.Context, target string, token string) (tokenset.Token, error)
+	Add(ctx context.Context, target string, token string) (tokens.Token, error)
 }

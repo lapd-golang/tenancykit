@@ -1,8 +1,6 @@
 package tenancykit
 
 import (
-	"crypto/rand"
-	"math/big"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -22,7 +20,6 @@ type NewTenant struct {
 type Tenant struct {
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
-	Serial   *big.Int  `json:"serial"`
 	PublicID string    `json:"public_id"`
 	Created  time.Time `json:"created_at"`
 	Updated  time.Time `json:"updated_at"`
@@ -32,18 +29,21 @@ type Tenant struct {
 func New(nt NewTenant) (Tenant, error) {
 	var t Tenant
 
-	serialNumber := new(big.Int).Lsh(big.NewInt(1), 128)
-	serial, err := rand.Int(rand.Reader, serialNumber)
-	if err != nil {
-		return t, err
-	}
-
 	t.Name = nt.Name
 	t.Email = nt.Email
-	t.Serial = serial
 	t.PublicID = uuid.NewV4().String()
 	t.Created = time.Now()
 	t.Updated = t.Created
 
 	return t, nil
+}
+
+// Consume consumes data from map into instance fields.
+func (t *Tenant) Consume(data map[string]interface{}) error {
+	return mapper.MapTo("json", t, data)
+}
+
+// Fields returns a map containing the instance fields as key-value pairs.
+func (t Tenant) Fields() (map[string]interface{}, error) {
+	return mapper.MapFrom("json", &t)
 }
