@@ -156,7 +156,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 		}
 	}
 
-	if err := us.TwoFactorSessionBackend.Delete(currentUser.TFSession.PublicID); err != nil {
+	if err = us.TFSessionsBackend.Delete(ctx, currentUser.TFSession.PublicID); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
