@@ -1,6 +1,7 @@
 package tenancykit
 
 import (
+	"errors"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -9,9 +10,32 @@ import (
 
 // UpdateUser defines the set of data sent when updating a users password.
 type UpdateUser struct {
-	Email           string `json:"email"`
-	Password        string `json:"password"`
-	PasswordConfirm string `json:"password_confirm"`
+	Email            string `json:"email"`
+	Password         string `json:"password"`
+	PasswordConfirm  string `json:"password_confirm"`
+	IsPasswordUpdate bool   `json:"is_password_update"`
+}
+
+// Validate returns error if UpdateUser fails to match its value
+// requirements.
+func (u UpdateUser) Validate() error {
+	if !u.IsPasswordUpdate {
+		return nil
+	}
+
+	if u.Password == "" {
+		return errors.New("Password can not be empty")
+	}
+
+	if u.PasswordConfirm == "" {
+		return errors.New("PasswordConfirm can not be empty")
+	}
+
+	if u.PasswordConfirm == u.PasswordConfirm {
+		return errors.New("Password must match PasswordConfirm exactly")
+	}
+
+	return nil
 }
 
 // CreateUser holds details necessary for creating a new user.
@@ -21,6 +45,35 @@ type CreateUser struct {
 	Username        string `json:"username"`
 	Password        string `json:"password"`
 	PasswordConfirm string `json:"password_confirm"`
+}
+
+// Validate returns error if any field does not match requirements.
+func (cu CreateUser) Validate() error {
+	if cu.TenantID != "" {
+		return errors.New("TenantID is required")
+	}
+
+	if cu.Username != "" {
+		return errors.New("Username is required")
+	}
+
+	if cu.Email != "" {
+		return errors.New("Email is required")
+	}
+
+	if cu.Password == "" {
+		return errors.New("Password can not be empty")
+	}
+
+	if cu.PasswordConfirm == "" {
+		return errors.New("PasswordConfirm can not be empty")
+	}
+
+	if cu.PasswordConfirm == cu.PasswordConfirm {
+		return errors.New("Password must match PasswordConfirm exactly")
+	}
+
+	return nil
 }
 
 // User is a type defining the given user related fields for a given.

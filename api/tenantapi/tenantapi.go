@@ -28,7 +28,15 @@ type Backend interface {
 	Get(context.Context, string) (tenancykit.Tenant, error)
 	Update(context.Context, string, tenancykit.Tenant) error
 	GetAll(context.Context, string, string, int, int) ([]tenancykit.Tenant, int, error)
-	Create(context.Context, tenancykit.NewTenant) (tenancykit.Tenant, error)
+	Create(context.Context, tenancykit.CreateTenant) (tenancykit.Tenant, error)
+}
+
+// TenantHTTP defines an interface which expose the methods provided by the http backend.
+type TenantHTTP interface {
+	Create(*httputil.Context) error
+	Update(*httputil.Context) error
+	Delete(*httputil.Context) error
+	GetAll(*httputil.Context) error
 }
 
 // TenantRecords defines a type to represent the response given to a request for
@@ -72,7 +80,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"url": ctx.Request().URL.String(),
 	}))
 
-	var incoming tenancykit.NewTenant
+	var incoming tenancykit.CreateTenant
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{

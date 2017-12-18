@@ -42,13 +42,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
+    "domain":	"",
+
     "max_length":	0,
 
     "tenant":	nil,
 
-    "user":	nil,
-
-    "domain":	""
+    "user":	nil
 
 }
 ```
@@ -66,23 +66,23 @@ Success: 201
 {
 
 
-    "user_id":	"",
+    "key":	"",
 
-    "public_id":	"",
+    "domain":	"",
 
     "code_length":	0,
 
-    "updated_at":	"2017-12-17 19:11:07.184008 +0000 UTC",
+    "created_at":	"2017-12-18 16:19:13.37545 +0000 UTC",
 
-    "key":	"",
+    "user_id":	"",
 
     "totp":	"",
 
+    "public_id":	"",
+
     "tenant_id":	"",
 
-    "created_at":	"2017-12-17 19:11:07.183989 +0000 UTC",
-
-    "domain":	""
+    "updated_at":	"2017-12-18 16:19:13.37546 +0000 UTC"
 
 }
 ```
@@ -123,13 +123,13 @@ Success: 200
 {
 
 
+    "domain":	"",
+
     "max_length":	0,
 
     "tenant":	nil,
 
-    "user":	nil,
-
-    "domain":	""
+    "user":	nil
 
 }
 ```
@@ -168,13 +168,13 @@ Success: 200
 [{
 
 
-    "domain":	"",
-
     "max_length":	0,
 
     "tenant":	nil,
 
-    "user":	nil
+    "user":	nil,
+
+    "domain":	""
 
 }]
 ```
@@ -203,23 +203,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "key":	"",
-
-    "public_id":	"",
-
-    "code_length":	0,
-
-    "created_at":	"2017-12-17 19:11:07.192333 +0000 UTC",
-
-    "updated_at":	"2017-12-17 19:11:07.192342 +0000 UTC",
-
-    "domain":	"",
-
     "user_id":	"",
 
     "totp":	"",
 
-    "tenant_id":	""
+    "public_id":	"",
+
+    "created_at":	"2017-12-18 16:19:13.376879 +0000 UTC",
+
+    "updated_at":	"2017-12-18 16:19:13.376894 +0000 UTC",
+
+    "key":	"",
+
+    "domain":	"",
+
+    "tenant_id":	"",
+
+    "code_length":	0
 
 }
 ```

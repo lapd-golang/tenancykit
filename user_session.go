@@ -2,6 +2,7 @@ package tenancykit
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"time"
 
@@ -10,8 +11,20 @@ import (
 
 // CreateUserSession defines the set of data received to create a new user's session.
 type CreateUserSession struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email      string        `json:"email"`
+	Password   string        `json:"password"`
+	Expiration time.Duration `json:"expiration"`
+}
+
+// Validate attempts to validate struct has appropriate data.
+func (cus CreateUserSession) Validate() error {
+	if cus.Email == "" {
+		return errors.New("Email is required")
+	}
+	if cus.Password == "" {
+		return errors.New("Password is required")
+	}
+	return nil
 }
 
 // EndUserSession defines the set of data received to end a user's session.
@@ -20,10 +33,21 @@ type EndUserSession struct {
 	Token  string `json:"token"`
 }
 
+// Validate attempts to validate struct has appropriate data.
+func (eus EndUserSession) Validate() error {
+	if eus.UserID == "" {
+		return errors.New("UserID is required")
+	}
+	if eus.Token == "" {
+		return errors.New("User Token is required")
+	}
+	return nil
+}
+
 // UserSession embodies the data which is used to identify a logged in user's session.
 // @mongoapi
 // @sqlapi
-// @httpapi
+// @httpapi(New => CreateUserSession)
 type UserSession struct {
 	UserID   string    `json:"user_id"`
 	PublicID string    `json:"public_id"`

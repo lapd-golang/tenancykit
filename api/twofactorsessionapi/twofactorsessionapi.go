@@ -31,6 +31,14 @@ type Backend interface {
 	Create(context.Context, tenancykit.TwoFactorSession) (tenancykit.TwoFactorSession, error)
 }
 
+// TwoFactorSessionHTTP defines an interface which expose the methods provided by the http backend.
+type TwoFactorSessionHTTP interface {
+	Create(*httputil.Context) error
+	Update(*httputil.Context) error
+	Delete(*httputil.Context) error
+	GetAll(*httputil.Context) error
+}
+
 // TwoFactorSessionRecords defines a type to represent the response given to a request for
 // all records of the type tenancykit.TwoFactorSession.
 type TwoFactorSessionRecords struct {

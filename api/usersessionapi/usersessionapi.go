@@ -28,7 +28,15 @@ type Backend interface {
 	Get(context.Context, string) (tenancykit.UserSession, error)
 	Update(context.Context, string, tenancykit.UserSession) error
 	GetAll(context.Context, string, string, int, int) ([]tenancykit.UserSession, int, error)
-	Create(context.Context, tenancykit.UserSession) (tenancykit.UserSession, error)
+	Create(context.Context, tenancykit.CreateUserSession) (tenancykit.UserSession, error)
+}
+
+// UserSessionHTTP defines an interface which expose the methods provided by the http backend.
+type UserSessionHTTP interface {
+	Create(*httputil.Context) error
+	Update(*httputil.Context) error
+	Delete(*httputil.Context) error
+	GetAll(*httputil.Context) error
 }
 
 // UserSessionRecords defines a type to represent the response given to a request for
@@ -72,7 +80,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"url": ctx.Request().URL.String(),
 	}))
 
-	var incoming tenancykit.UserSession
+	var incoming tenancykit.CreateUserSession
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{

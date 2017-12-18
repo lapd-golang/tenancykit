@@ -42,11 +42,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
+    "user_id":	"",
+
     "public_id":	"",
 
-    "bool":	false,
-
-    "user_id":	""
+    "bool":	false
 
 }
 ```
@@ -185,11 +185,11 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
+    "bool":	false,
+
     "user_id":	"",
 
-    "public_id":	"",
-
-    "bool":	false
+    "public_id":	""
 
 }
 ```

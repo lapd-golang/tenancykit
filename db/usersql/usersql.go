@@ -6,6 +6,10 @@ package usersql
 import (
 	"fmt"
 
+	"errors"
+
+	dsql "database/sql"
+
 	"github.com/influx6/faux/db"
 
 	"github.com/influx6/faux/context"
@@ -17,6 +21,11 @@ import (
 	"github.com/influx6/faux/db/sql/tables"
 
 	"github.com/gokit/tenancykit"
+)
+
+// errors ...
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 // mapFields defines a type for a map that exposes a Fields() method.
@@ -77,6 +86,9 @@ func (mdb *UserDB) Delete(ctx context.Context, publicID string) error {
 
 	if err := mdb.dx.Delete(mdb.table, "public_id", publicID); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("table", mdb.col), metrics.With("publicID", publicID), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -143,6 +155,9 @@ func (mdb *UserDB) GetAll(ctx context.Context, order string, orderby string, pag
 	items, total, err := mdb.dx.GetAllPerPage(mdb.table, order, orderby, page, responsePerPage)
 	if err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of User type from db"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return nil, total, ErrNotFound
+		}
 		return nil, total, err
 	}
 
@@ -180,6 +195,10 @@ func (mdb *UserDB) GetByField(ctx context.Context, key string, value string) (te
 			metrics.With("table", mdb.col),
 			metrics.With("error", err.Error()))
 
+		if err == dsql.ErrNoRows {
+			return tenancykit.User{}, ErrNotFound
+		}
+
 		return tenancykit.User{}, err
 	}
 
@@ -206,6 +225,9 @@ func (mdb *UserDB) Get(ctx context.Context, publicID string) (tenancykit.User, e
 			metrics.With("table", mdb.col),
 			metrics.With("error", err.Error()))
 
+		if err == dsql.ErrNoRows {
+			return tenancykit.User{}, ErrNotFound
+		}
 		return tenancykit.User{}, err
 	}
 
@@ -227,6 +249,9 @@ func (mdb *UserDB) Update(ctx context.Context, publicID string, elem tenancykit.
 
 	if err := mdb.dx.Update(mdb.table, elem, "public_id", publicID); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to update User record"), metrics.With("query", elem), metrics.With("table", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -248,6 +273,9 @@ func (mdb *UserDB) Exec(ctx context.Context, fx func(*sql.SQL, sql.DB) error) er
 
 	if err := fx(mdb.dx, mdb.sx); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 

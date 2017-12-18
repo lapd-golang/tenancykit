@@ -4,6 +4,7 @@
 package twofactorsessionmgo
 
 import (
+	"errors"
 	"fmt"
 
 	"strings"
@@ -17,6 +18,11 @@ import (
 	"github.com/influx6/faux/metrics"
 
 	"github.com/gokit/tenancykit"
+)
+
+// errors ...
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 // TwoFactorSessionFields defines an interface which exposes method to return a map of all
@@ -132,7 +138,6 @@ func (mdb *TwoFactorSessionDB) Count(ctx context.Context) (int, error) {
 	defer session.Close()
 
 	query := bson.M{}
-
 	total, err := database.C(mdb.col).Find(query).Count()
 	if err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to get record count"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
@@ -177,6 +182,9 @@ func (mdb *TwoFactorSessionDB) Delete(ctx context.Context, publicID string) erro
 
 	if err := database.C(mdb.col).Remove(query); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("publicID", publicID), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -308,6 +316,9 @@ func (mdb *TwoFactorSessionDB) GetAll(ctx context.Context, order string, orderBy
 	var ditems []map[string]interface{}
 	if err := database.C(mdb.col).Find(query).Skip(indexToStart).Limit(totalWanted).Sort(orderBy).All(&ditems); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TwoFactorSession type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return nil, -1, ErrNotFound
+		}
 		return nil, -1, err
 	}
 
@@ -364,6 +375,9 @@ func (mdb *TwoFactorSessionDB) GetAllByOrder(ctx context.Context, order, orderBy
 			metrics.With("query", query),
 			metrics.With("error", err.Error()),
 		)
+		if err == mgo.ErrNotFound {
+			return nil, ErrNotFound
+		}
 		return nil, err
 	}
 
@@ -416,7 +430,9 @@ func (mdb *TwoFactorSessionDB) GetByField(ctx context.Context, key string, value
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TwoFactorSession type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
-
+		if err == mgo.ErrNotFound {
+			return tenancykit.TwoFactorSession{}, ErrNotFound
+		}
 		return tenancykit.TwoFactorSession{}, err
 	}
 
@@ -462,6 +478,9 @@ func (mdb *TwoFactorSessionDB) Get(ctx context.Context, publicID string) (tenanc
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TwoFactorSession type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return tenancykit.TwoFactorSession{}, ErrNotFound
+		}
 		return tenancykit.TwoFactorSession{}, err
 	}
 
@@ -503,47 +522,32 @@ func (mdb *TwoFactorSessionDB) Update(ctx context.Context, publicID string, elem
 
 	query := bson.M{"public_id": publicID}
 
-	if fielder, ok := interface{}(elem).(TwoFactorSessionFields); ok {
-		fields, err := fielder.Fields()
-		if err != nil {
-			mdb.metrics.Emit(
-				metrics.Errorf("Failed to get Fields() for TwoFactorSession record"),
-				metrics.With("collection", mdb.col),
-				metrics.With("elem", elem),
-				metrics.With("error", err.Error()),
-			)
-			return err
-		}
-
-		if err := database.C(mdb.col).Update(query, fields); err != nil {
-			mdb.metrics.Emit(metrics.Errorf("Failed to update TwoFactorSession record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
-			return err
-		}
-
+	fields, err := elem.Fields()
+	if err != nil {
 		mdb.metrics.Emit(
-			metrics.Info("Create record"),
+			metrics.Errorf("Failed to get Fields() for TwoFactorSession record"),
 			metrics.With("collection", mdb.col),
-			metrics.With("query", query),
-			metrics.With("data", fields),
-			metrics.With("public_id", publicID),
+			metrics.With("elem", elem),
+			metrics.With("error", err.Error()),
 		)
-
-		return nil
-	}
-
-	queryData := bson.M(map[string]interface{}{
-
-		"bool": elem.Done,
-
-		"public_id": elem.PublicID,
-
-		"user_id": elem.UserID,
-	})
-
-	if err := database.C(mdb.col).Update(query, queryData); err != nil {
-		mdb.metrics.Emit(metrics.Errorf("Failed to update TwoFactorSession record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("data", queryData), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
 	}
+
+	if err := database.C(mdb.col).Update(query, fields); err != nil {
+		mdb.metrics.Emit(metrics.Errorf("Failed to update TwoFactorSession record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
+		return err
+	}
+
+	mdb.metrics.Emit(
+		metrics.Info("Create record"),
+		metrics.With("collection", mdb.col),
+		metrics.With("query", query),
+		metrics.With("data", fields),
+		metrics.With("public_id", publicID),
+	)
 
 	mdb.metrics.Emit(metrics.Info("Update record"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("query", query))
 
@@ -576,6 +580,9 @@ func (mdb *TwoFactorSessionDB) Exec(ctx context.Context, fx func(col *mgo.Collec
 
 	if err := fx(database.C(mdb.col)); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 

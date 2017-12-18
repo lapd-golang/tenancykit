@@ -13,7 +13,7 @@ type Backend interface{
     Get(context.Context, string) (tenancykit.Tenant, error)
     Update(context.Context, string, tenancykit.Tenant) error
     GetAll(context.Context, string, string, int, int) ([]tenancykit.Tenant, int, error)
-    Create(context.Context, tenancykit.NewTenant) (tenancykit.Tenant, error)
+    Create(context.Context, tenancykit.CreateTenant) (tenancykit.Tenant, error)
 }
 ```
 
@@ -22,7 +22,7 @@ It exposes the following methods for each endpoint:
 ## Create { POST /Tenant/ }
 ### Method: `func (api *HTTPAPI) Create(ctx *httputil.Context) error`
 
-Create receives the provided record of the NewTenant type which is delieved the 
+Create receives the provided record of the CreateTenant type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
 - Expected Content Type: 
@@ -68,9 +68,9 @@ Success: 201
 
     "public_id":	"",
 
-    "created_at":	"2017-12-17 19:11:27.098843 +0000 UTC",
+    "created_at":	"2017-12-18 16:19:10.958161 +0000 UTC",
 
-    "updated_at":	"2017-12-17 19:11:27.098852 +0000 UTC"
+    "updated_at":	"2017-12-18 16:19:10.958172 +0000 UTC"
 
 }
 ```
@@ -111,9 +111,9 @@ Success: 200
 {
 
 
-    "email":	"",
+    "name":	"",
 
-    "name":	""
+    "email":	""
 
 }
 ```
@@ -183,15 +183,15 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
+    "created_at":	"2017-12-18 16:19:10.959896 +0000 UTC",
+
+    "updated_at":	"2017-12-18 16:19:10.959905 +0000 UTC",
+
     "name":	"",
 
     "email":	"",
 
-    "public_id":	"",
-
-    "created_at":	"2017-12-17 19:11:27.101441 +0000 UTC",
-
-    "updated_at":	"2017-12-17 19:11:27.101451 +0000 UTC"
+    "public_id":	""
 
 }
 ```

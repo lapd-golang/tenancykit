@@ -42,15 +42,15 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
+    "email":	"",
+
+    "username":	"",
+
     "password":	"",
 
     "password_confirm":	"",
 
-    "tenant_id":	"",
-
-    "email":	"",
-
-    "username":	""
+    "tenant_id":	""
 
 }
 ```
@@ -68,23 +68,23 @@ Success: 201
 {
 
 
+    "private_id":	"",
+
+    "hash":	"",
+
+    "username":	"",
+
     "email":	"",
+
+    "public_id":	"",
 
     "tenant_id":	"",
 
     "two_factor_auth":	false,
 
-    "created_at":	"2017-12-17 19:11:25.423986 +0000 UTC",
+    "created_at":	"2017-12-18 16:19:17.146304 +0000 UTC",
 
-    "updated_at":	"2017-12-17 19:11:25.423995 +0000 UTC",
-
-    "username":	"",
-
-    "public_id":	"",
-
-    "private_id":	"",
-
-    "hash":	""
+    "updated_at":	"2017-12-18 16:19:17.146315 +0000 UTC"
 
 }
 ```
@@ -125,15 +125,15 @@ Success: 200
 {
 
 
-    "tenant_id":	"",
-
-    "email":	"",
-
     "username":	"",
 
     "password":	"",
 
-    "password_confirm":	""
+    "password_confirm":	"",
+
+    "tenant_id":	"",
+
+    "email":	""
 
 }
 ```
@@ -209,11 +209,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "email":	"",
-
     "password":	"",
 
-    "password_confirm":	""
+    "password_confirm":	"",
+
+    "is_password_update":	false,
+
+    "email":	""
 
 }
 ```

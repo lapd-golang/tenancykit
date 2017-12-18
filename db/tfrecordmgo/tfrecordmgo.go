@@ -4,6 +4,7 @@
 package tfrecordmgo
 
 import (
+	"errors"
 	"fmt"
 
 	"strings"
@@ -17,6 +18,11 @@ import (
 	"github.com/influx6/faux/metrics"
 
 	"github.com/gokit/tenancykit"
+)
+
+// errors ...
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 // TFRecordFields defines an interface which exposes method to return a map of all
@@ -132,7 +138,6 @@ func (mdb *TFRecordDB) Count(ctx context.Context) (int, error) {
 	defer session.Close()
 
 	query := bson.M{}
-
 	total, err := database.C(mdb.col).Find(query).Count()
 	if err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to get record count"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
@@ -177,6 +182,9 @@ func (mdb *TFRecordDB) Delete(ctx context.Context, publicID string) error {
 
 	if err := database.C(mdb.col).Remove(query); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("publicID", publicID), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -308,6 +316,9 @@ func (mdb *TFRecordDB) GetAll(ctx context.Context, order string, orderBy string,
 	var ditems []map[string]interface{}
 	if err := database.C(mdb.col).Find(query).Skip(indexToStart).Limit(totalWanted).Sort(orderBy).All(&ditems); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TFRecord type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return nil, -1, ErrNotFound
+		}
 		return nil, -1, err
 	}
 
@@ -364,6 +375,9 @@ func (mdb *TFRecordDB) GetAllByOrder(ctx context.Context, order, orderBy string)
 			metrics.With("query", query),
 			metrics.With("error", err.Error()),
 		)
+		if err == mgo.ErrNotFound {
+			return nil, ErrNotFound
+		}
 		return nil, err
 	}
 
@@ -416,7 +430,9 @@ func (mdb *TFRecordDB) GetByField(ctx context.Context, key string, value interfa
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TFRecord type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
-
+		if err == mgo.ErrNotFound {
+			return tenancykit.TFRecord{}, ErrNotFound
+		}
 		return tenancykit.TFRecord{}, err
 	}
 
@@ -462,6 +478,9 @@ func (mdb *TFRecordDB) Get(ctx context.Context, publicID string) (tenancykit.TFR
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TFRecord type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return tenancykit.TFRecord{}, ErrNotFound
+		}
 		return tenancykit.TFRecord{}, err
 	}
 
@@ -503,59 +522,32 @@ func (mdb *TFRecordDB) Update(ctx context.Context, publicID string, elem tenancy
 
 	query := bson.M{"public_id": publicID}
 
-	if fielder, ok := interface{}(elem).(TFRecordFields); ok {
-		fields, err := fielder.Fields()
-		if err != nil {
-			mdb.metrics.Emit(
-				metrics.Errorf("Failed to get Fields() for TFRecord record"),
-				metrics.With("collection", mdb.col),
-				metrics.With("elem", elem),
-				metrics.With("error", err.Error()),
-			)
-			return err
-		}
-
-		if err := database.C(mdb.col).Update(query, fields); err != nil {
-			mdb.metrics.Emit(metrics.Errorf("Failed to update TFRecord record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
-			return err
-		}
-
+	fields, err := elem.Fields()
+	if err != nil {
 		mdb.metrics.Emit(
-			metrics.Info("Create record"),
+			metrics.Errorf("Failed to get Fields() for TFRecord record"),
 			metrics.With("collection", mdb.col),
-			metrics.With("query", query),
-			metrics.With("data", fields),
-			metrics.With("public_id", publicID),
+			metrics.With("elem", elem),
+			metrics.With("error", err.Error()),
 		)
-
-		return nil
-	}
-
-	queryData := bson.M(map[string]interface{}{
-
-		"code_length": elem.CodeLength,
-
-		"created_at": elem.Created,
-
-		"domain": elem.Domain,
-
-		"key": elem.Key,
-
-		"public_id": elem.PublicID,
-
-		"tenant_id": elem.TenantID,
-
-		"totp": elem.TOTP,
-
-		"updated_at": elem.Updated,
-
-		"user_id": elem.UserID,
-	})
-
-	if err := database.C(mdb.col).Update(query, queryData); err != nil {
-		mdb.metrics.Emit(metrics.Errorf("Failed to update TFRecord record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("data", queryData), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
 	}
+
+	if err := database.C(mdb.col).Update(query, fields); err != nil {
+		mdb.metrics.Emit(metrics.Errorf("Failed to update TFRecord record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
+		return err
+	}
+
+	mdb.metrics.Emit(
+		metrics.Info("Create record"),
+		metrics.With("collection", mdb.col),
+		metrics.With("query", query),
+		metrics.With("data", fields),
+		metrics.With("public_id", publicID),
+	)
 
 	mdb.metrics.Emit(metrics.Info("Update record"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("query", query))
 
@@ -588,6 +580,9 @@ func (mdb *TFRecordDB) Exec(ctx context.Context, fx func(col *mgo.Collection) er
 
 	if err := fx(database.C(mdb.col)); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 

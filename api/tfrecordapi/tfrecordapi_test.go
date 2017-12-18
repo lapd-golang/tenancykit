@@ -209,7 +209,7 @@ func TestTFRecordUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.Key = "Mr. Dr. Daniel Morrison"
+	elem.Key = "Carl Garza"
 
 	var bu bytes.Buffer
 

@@ -209,7 +209,7 @@ func TestUserUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.Username = "Adam Frazier"
+	elem.Username = "Judith Dean I II III IV V MD DDS PhD DVM"
 
 	var bu bytes.Buffer
 

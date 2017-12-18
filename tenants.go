@@ -6,9 +6,19 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// NewTenant embodies the expected data used to create
+// CurrentUser embodies a struct with 3 distinct fields representing
+// the current user, it's tenant and twofactor record if enabled.
+type CurrentUser struct {
+	User      User
+	Tenant    Tenant
+	TwoFactor *TFRecord
+	TFSession *TwoFactorSession
+	Session   *UserSession
+}
+
+// CreateTenant embodies the expected data used to create
 // a Tenant.
-type NewTenant struct {
+type CreateTenant struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
@@ -16,7 +26,7 @@ type NewTenant struct {
 // Tenant defines a structure to represent a giving tenant.
 // @mongoapi
 // @sqlapi
-// @httpapi(New => NewTenant)
+// @httpapi(New => CreateTenant)
 type Tenant struct {
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
@@ -25,17 +35,16 @@ type Tenant struct {
 	Updated  time.Time `json:"updated_at"`
 }
 
-// New returns a new Tenant from provided NewTenant.
-func New(nt NewTenant) (Tenant, error) {
+// NewTenant returns a new Tenant from provided NewTenant.
+func NewTenant(nt CreateTenant) Tenant {
 	var t Tenant
-
 	t.Name = nt.Name
 	t.Email = nt.Email
 	t.PublicID = uuid.NewV4().String()
 	t.Created = time.Now()
 	t.Updated = t.Created
 
-	return t, nil
+	return t
 }
 
 // Consume consumes data from map into instance fields.

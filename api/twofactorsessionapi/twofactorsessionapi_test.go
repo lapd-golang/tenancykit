@@ -209,7 +209,7 @@ func TestTwoFactorSessionUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.UserID = "Wanda Tucker"
+	elem.UserID = "Mr. Dr. Ralph Carpenter"
 
 	var bu bytes.Buffer
 

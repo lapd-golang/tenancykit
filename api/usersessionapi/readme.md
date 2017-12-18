@@ -13,7 +13,7 @@ type Backend interface{
     Get(context.Context, string) (tenancykit.UserSession, error)
     Update(context.Context, string, tenancykit.UserSession) error
     GetAll(context.Context, string, string, int, int) ([]tenancykit.UserSession, int, error)
-    Create(context.Context, tenancykit.UserSession) (tenancykit.UserSession, error)
+    Create(context.Context, tenancykit.CreateUserSession) (tenancykit.UserSession, error)
 }
 ```
 
@@ -22,7 +22,7 @@ It exposes the following methods for each endpoint:
 ## Create { POST /UserSession/ }
 ### Method: `func (api *HTTPAPI) Create(ctx *httputil.Context) error`
 
-Create receives the provided record of the UserSession type which is delieved the 
+Create receives the provided record of the CreateUserSession type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
 - Expected Content Type: 
@@ -42,13 +42,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "user_id":	"",
+    "email":	"",
 
-    "public_id":	"",
+    "password":	"",
 
-    "token":	"",
-
-    "expires":	"2017-12-17 19:11:23.750172 +0000 UTC"
+    "expiration":	nil
 
 }
 ```
@@ -66,13 +64,13 @@ Success: 201
 {
 
 
-    "expires":	"2017-12-17 19:11:23.750692 +0000 UTC",
-
     "user_id":	"",
 
     "public_id":	"",
 
-    "token":	""
+    "token":	"",
+
+    "expires":	"2017-12-18 16:19:06.353165 +0000 UTC"
 
 }
 ```
@@ -113,13 +111,11 @@ Success: 200
 {
 
 
-    "user_id":	"",
+    "email":	"",
 
-    "public_id":	"",
+    "password":	"",
 
-    "token":	"",
-
-    "expires":	"2017-12-17 19:11:23.751121 +0000 UTC"
+    "expiration":	nil
 
 }
 ```
@@ -158,13 +154,11 @@ Success: 200
 [{
 
 
-    "user_id":	"",
+    "email":	"",
 
-    "public_id":	"",
+    "password":	"",
 
-    "token":	"",
-
-    "expires":	"2017-12-17 19:11:23.751472 +0000 UTC"
+    "expiration":	nil
 
 }]
 ```
@@ -193,13 +187,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "expires":	"2017-12-17 19:11:23.751837 +0000 UTC",
-
     "user_id":	"",
 
     "public_id":	"",
 
-    "token":	""
+    "token":	"",
+
+    "expires":	"2017-12-18 16:19:06.354825 +0000 UTC"
 
 }
 ```

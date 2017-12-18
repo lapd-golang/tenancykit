@@ -209,7 +209,7 @@ func TestUserSessionUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.UserID = "Tammy Elliott"
+	elem.UserID = "Patricia Simpson"
 
 	var bu bytes.Buffer
 

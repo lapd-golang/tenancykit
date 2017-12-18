@@ -209,7 +209,7 @@ func TestTenantUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.Name = "Martin Anderson"
+	elem.Name = "John Young"
 
 	var bu bytes.Buffer
 
