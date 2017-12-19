@@ -42,11 +42,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"fugit_amet@Ooba.edu",
+    "password":	"8",
 
-    "password":	"7",
+    "expiration":	nil,
 
-    "expiration":	nil
+    "email":	"PaulHarper@Bubbletube.info"
 
 }
 ```
@@ -64,13 +64,13 @@ Success: 201
 {
 
 
-    "expires":	2017-12-19 13:42:59.072197 +0000 UTC,
+    "expires":	"2017-12-19 14:01:02.882231 +0000 UTC",
 
-    "user_id":	"h",
+    "user_id":	"5",
 
-    "public_id":	"1c2j96oyswfvyq3",
+    "public_id":	"b887r12gk1ej5gn",
 
-    "token":	"e"
+    "token":	"2"
 
 }
 ```
@@ -111,13 +111,13 @@ Success: 200
 {
 
 
-    "user_id":	"s",
+    "public_id":	"69evj8mreomu8q3",
 
-    "public_id":	"qhgzk2dnvshksoz",
+    "token":	"9",
 
-    "token":	"a",
+    "expires":	"2017-12-19 14:01:02.882585 +0000 UTC",
 
-    "expires":	2017-12-19 13:42:59.073342 +0000 UTC
+    "user_id":	"j"
 
 }
 ```
@@ -156,13 +156,13 @@ Success: 200
 [{
 
 
-    "user_id":	"7",
+    "user_id":	"j",
 
-    "public_id":	"pdajg8d7kmyaluj",
+    "public_id":	"61ww4btjgseok5b",
 
-    "token":	"z",
+    "token":	"g",
 
-    "expires":	2017-12-19 13:42:59.074438 +0000 UTC
+    "expires":	"2017-12-19 14:01:02.882869 +0000 UTC"
 
 }]
 ```
@@ -191,13 +191,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"u",
+    "user_id":	"p",
 
-    "public_id":	"rt5lcrheyd4jmqt",
+    "public_id":	"t8ppm9xp18sm7qx",
 
-    "token":	"6",
+    "token":	"u",
 
-    "expires":	2017-12-19 13:42:59.075131 +0000 UTC
+    "expires":	"2017-12-19 14:01:02.883143 +0000 UTC"
 
 }
 ```

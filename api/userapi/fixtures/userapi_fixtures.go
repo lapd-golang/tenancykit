@@ -11,51 +11,51 @@ var (
 	UserJSON = `{
 
 
-    "email":	"magni_neque_ullam@Dynava.mil",
+    "email":	"sStephens@Trunyx.biz",
 
-    "private_id":	"338ud2dhfiycc77",
+    "tenant_id":	"x",
+
+    "private_id":	"qul4fd2dn6mucx2",
+
+    "created_at":	"2017-12-19 14:01:02.742844 +0000 UTC",
+
+    "username":	"y",
+
+    "hash":	"i",
 
     "two_factor_auth":	true,
 
-    "created_at":	2017-12-19 13:42:58.85745 +0000 UTC,
+    "updated_at":	"2017-12-19 14:01:02.742851 +0000 UTC",
 
-    "username":	"a",
-
-    "public_id":	"4m5fym0vkznw6zo",
-
-    "tenant_id":	"s",
-
-    "hash":	"d",
-
-    "updated_at":	2017-12-19 13:42:58.857457 +0000 UTC
+    "public_id":	"nxoq9fp12v15twf"
 
 }`
 
 	UserCreateJSON = `{
 
 
-    "tenant_id":	"a",
+    "password":	"z",
 
-    "email":	"EvelynPorter@Skilith.biz",
+    "password_confirm":	"m",
 
-    "username":	"r",
+    "tenant_id":	"d",
 
-    "password":	"6",
+    "email":	"LillianBradley@Ainyx.name",
 
-    "password_confirm":	"h"
+    "username":	"w"
 
 }`
 
 	UserUpdateJSON = `{
 
 
-    "password":	"n",
+    "password":	"f",
 
-    "password_confirm":	"6",
+    "password_confirm":	"v",
 
     "is_password_update":	true,
 
-    "email":	"BonnieOwens@Yotz.com"
+    "email":	"LindaLawson@Vinte.net"
 
 }`
 )

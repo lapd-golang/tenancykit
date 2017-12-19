@@ -1,25 +1,28 @@
 package fixtures
 
 import (
-	"encoding/json"
+     "encoding/json"
 
-	"github.com/gokit/tenancykit"
+
+     "github.com/gokit/tenancykit"
+
 )
+
 
 // json fixtures ...
 var (
-	TenantJSON = `{
+ TenantJSON = `{
 
 
-    "name":	"Christine Barnes",
+    "name":	"Roy Ramos",
 
-    "email":	"JessicaWelch@Podcat.biz",
+    "email":	"wMurphy@Edgetag.name",
 
-    "public_id":	"t7oacha8t3eg70k",
+    "public_id":	"6ven4ple62wdeej",
 
-    "created_at":	2017-12-19 13:33:46.418556 +0000 UTC,
+    "created_at":	"2017-12-19 14:01:01.959706 +0000 UTC",
 
-    "updated_at":	2017-12-19 13:33:46.418563 +0000 UTC
+    "updated_at":	"2017-12-19 14:01:01.959726 +0000 UTC"
 
 }`
 )
@@ -34,3 +37,4 @@ func LoadTenantJSON(content string) (tenancykit.Tenant, error) {
 
 	return elem, nil
 }
+

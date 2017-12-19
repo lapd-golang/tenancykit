@@ -11,59 +11,59 @@ var (
 	TFRecordJSON = `{
 
 
-    "totp":	"q",
+    "domain":	"a",
 
-    "public_id":	"ask9w3l0imldnic",
+    "user_id":	"d",
 
-    "updated_at":	2017-12-19 13:42:58.600691 +0000 UTC,
+    "totp":	"3",
 
-    "created_at":	2017-12-19 13:42:58.600683 +0000 UTC,
+    "created_at":	"2017-12-19 14:01:02.816138 +0000 UTC",
 
-    "key":	"y",
+    "key":	"f",
 
-    "domain":	"t",
+    "public_id":	"h6fi44vd4gmbb0r",
 
-    "user_id":	"i",
+    "tenant_id":	"7",
 
-    "tenant_id":	"j",
+    "code_length":	2015796113853353331,
 
-    "code_length":	6334824724549167320
+    "updated_at":	"2017-12-19 14:01:02.816145 +0000 UTC"
 
 }`
 
 	TFRecordCreateJSON = `{
 
 
+    "max_length":	1874068156324778273,
+
+    "tenant":	nil,
+
     "user":	nil,
 
-    "domain":	"6",
-
-    "max_length":	605394647632969758,
-
-    "tenant":	nil
+    "domain":	"a"
 
 }`
 
 	TFRecordUpdateJSON = `{
 
 
-    "key":	"j",
+    "updated_at":	"2017-12-19 14:01:02.816664 +0000 UTC",
 
-    "public_id":	"gjikw7xo55o5sw9",
+    "user_id":	"u",
 
-    "tenant_id":	"h",
+    "totp":	"n",
 
-    "domain":	"x",
+    "tenant_id":	"9",
 
-    "user_id":	"3",
+    "code_length":	3328451335138149956,
 
-    "totp":	"4",
+    "key":	"f",
 
-    "code_length":	1443635317331776148,
+    "domain":	"4",
 
-    "created_at":	2017-12-19 13:42:58.601343 +0000 UTC,
+    "public_id":	"8dnqoukfl31812n",
 
-    "updated_at":	2017-12-19 13:42:58.601347 +0000 UTC
+    "created_at":	"2017-12-19 14:01:02.816659 +0000 UTC"
 
 }`
 )

@@ -1,23 +1,26 @@
 package fixtures
 
 import (
-	"encoding/json"
+     "encoding/json"
 
-	"github.com/gokit/tenancykit"
+
+     "github.com/gokit/tenancykit"
+
 )
+
 
 // json fixtures ...
 var (
-	UserSessionJSON = `{
+ UserSessionJSON = `{
 
 
-    "user_id":	"3",
+    "user_id":	"d",
 
-    "public_id":	"y329apz04ts0awn",
+    "public_id":	"1vxmkl52k4ejbl1",
 
-    "token":	"s",
+    "token":	"l",
 
-    "expires":	2017-12-19 13:33:45.732992 +0000 UTC
+    "expires":	"2017-12-19 14:01:01.569226 +0000 UTC"
 
 }`
 )
@@ -32,3 +35,4 @@ func LoadUserSessionJSON(content string) (tenancykit.UserSession, error) {
 
 	return elem, nil
 }
+

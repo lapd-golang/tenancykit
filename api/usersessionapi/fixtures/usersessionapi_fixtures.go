@@ -11,37 +11,37 @@ var (
 	UserSessionJSON = `{
 
 
-    "user_id":	"9",
+    "user_id":	"i",
 
-    "public_id":	"r296d7pajtwrsjz",
+    "public_id":	"fejeae9cn7a86hz",
 
-    "token":	"i",
+    "token":	"q",
 
-    "expires":	2017-12-19 13:42:59.076742 +0000 UTC
+    "expires":	"2017-12-19 14:01:02.884914 +0000 UTC"
 
 }`
 
 	UserSessionCreateJSON = `{
 
 
-    "email":	"lBrown@Agivu.gov",
+    "expiration":	nil,
 
-    "password":	"o",
+    "email":	"fuga_eum_atque@Yakidoo.info",
 
-    "expiration":	nil
+    "password":	"z"
 
 }`
 
 	UserSessionUpdateJSON = `{
 
 
-    "user_id":	"g",
+    "user_id":	"q",
 
-    "public_id":	"u9rp1fz0rv9vvbe",
+    "public_id":	"acer551q4gpjb4x",
 
-    "token":	"u",
+    "token":	"o",
 
-    "expires":	2017-12-19 13:42:59.07727 +0000 UTC
+    "expires":	"2017-12-19 14:01:02.885442 +0000 UTC"
 
 }`
 )

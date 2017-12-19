@@ -11,20 +11,20 @@ var (
 	TwoFactorSessionJSON = `{
 
 
-    "public_id":	"3jy0ee7zak74tou",
+    "user_id":	"s",
 
-    "bool":	true,
+    "public_id":	"arrryjeppnn3byg",
 
-    "user_id":	"p"
+    "bool":	true
 
 }`
 
 	TwoFactorSessionCreateJSON = `{
 
 
-    "user_id":	"k",
+    "user_id":	"q",
 
-    "public_id":	"autlk2aq9zn3iye",
+    "public_id":	"obsio8rliizs8fr",
 
     "bool":	true
 
@@ -35,9 +35,9 @@ var (
 
     "bool":	true,
 
-    "user_id":	"x",
+    "user_id":	"d",
 
-    "public_id":	"qmddh41z6n20j0d"
+    "public_id":	"20r5hxbx7lf8hw0"
 
 }`
 )

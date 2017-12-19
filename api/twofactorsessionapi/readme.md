@@ -42,9 +42,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "user_id":	"r",
+    "user_id":	"6",
 
-    "public_id":	"0hl5x8moxnvm5xm",
+    "public_id":	"rumvpxpbbvmvee5",
 
     "bool":	true
 
@@ -64,9 +64,9 @@ Success: 201
 {
 
 
-    "user_id":	"x",
+    "user_id":	"p",
 
-    "public_id":	"7zujc22erf9uli8",
+    "public_id":	"4crvqqc4r40wxs8",
 
     "bool":	true
 
@@ -109,9 +109,9 @@ Success: 200
 {
 
 
-    "user_id":	"e",
+    "user_id":	"7",
 
-    "public_id":	"dnykytvffiwd356",
+    "public_id":	"af59kt91hiwyn92",
 
     "bool":	true
 
@@ -152,9 +152,9 @@ Success: 200
 [{
 
 
-    "user_id":	"c",
+    "user_id":	"r",
 
-    "public_id":	"9ti1auxbhr67p62",
+    "public_id":	"5h2x28pt71td8eu",
 
     "bool":	true
 
@@ -185,11 +185,11 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"z",
+    "bool":	true,
 
-    "public_id":	"sriedqw2m1qvsfv",
+    "user_id":	"i",
 
-    "bool":	true
+    "public_id":	"2nd33iiik3aja4s"
 
 }
 ```
