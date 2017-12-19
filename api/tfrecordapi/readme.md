@@ -25,30 +25,23 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the NewTF type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "max_length":	2933568871211445515,
+    "domain":	"Mybuzz.name",
+
+    "max_length":	10,
 
     "tenant":	nil,
 
-    "user":	nil,
-
-    "domain":	"9"
+    "user":	nil
 
 }
 ```
@@ -62,27 +55,31 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "tenant_id":	"f",
+    "key":	"7lkwet7uo0r3quztro9c",
 
-    "created_at":	"2017-12-19 14:01:02.812613 +0000 UTC",
+    "code_length":	11,
 
-    "updated_at":	"2017-12-19 14:01:02.812623 +0000 UTC",
+    "created_at":	"2017-12-19 18:15:32.336901 +0000 UTC",
 
-    "domain":	"h",
+    "updated_at":	"2017-12-19 18:15:32.336913 +0000 UTC",
 
-    "totp":	"e",
+    "domain":	"Realfire.gov",
 
-    "public_id":	"u3y2h3eihfxaqqf",
+    "user_id":	"9f68xnhepo63f2sl9hmr",
 
-    "code_length":	4324745483838182873,
+    "totp":	"v4u1yf07s7kbb68abons",
 
-    "key":	"r",
+    "public_id":	"z1ussbkxh8blz5oth37rp5d6fowtfr",
 
-    "user_id":	"a"
+    "tenant_id":	"hhq2xlohxdv6lhssiqso"
 
 }
 ```
@@ -93,21 +90,10 @@ Success: 201
 Get retrives a giving record of the TFRecord type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -119,27 +105,31 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "key":	"w",
+    "domain":	"Oyope.name",
 
-    "domain":	"v",
+    "code_length":	1,
 
-    "public_id":	"9ao7po9ttthrs7f",
+    "created_at":	"2017-12-19 18:15:32.337905 +0000 UTC",
 
-    "code_length":	2610529275472644968,
+    "updated_at":	"2017-12-19 18:15:32.337917 +0000 UTC",
 
-    "created_at":	"2017-12-19 14:01:02.813168 +0000 UTC",
+    "key":	"hvl3uqxnehwt2cvhitec",
 
-    "updated_at":	"2017-12-19 14:01:02.813174 +0000 UTC",
+    "user_id":	"ttkb6wlv6fajujpyubq4",
 
-    "user_id":	"h",
+    "totp":	"5t97jceyqterdulvsysf",
 
-    "totp":	"g",
+    "public_id":	"927wacpo9jmca7hskq8njcdnpgeh2q",
 
-    "tenant_id":	"d"
+    "tenant_id":	"mvqva8d6ny6ick4s2akl"
 
 }
 ```
@@ -149,22 +139,6 @@ Success: 200
 
 Get retrives all records of the TFRecord type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -174,27 +148,52 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "tenant_id":	"a",
+    "key":	"xo3tybeieubbvgz0uezb",
 
-    "created_at":	"2017-12-19 14:01:02.813742 +0000 UTC",
+    "user_id":	"rq2mlml53ifsamz5692i",
 
-    "updated_at":	"2017-12-19 14:01:02.813747 +0000 UTC",
+    "public_id":	"l8s964xy3wvvw6cxi90vdgwecfyww2",
 
-    "key":	"9",
+    "tenant_id":	"nxy1x9r9vbihqnxr0u6r",
 
-    "domain":	"f",
+    "updated_at":	"2017-12-19 18:15:32.33881 +0000 UTC",
 
-    "user_id":	"c",
+    "domain":	"Fliptune.name",
 
-    "totp":	"x",
+    "totp":	"lgzshbz47m85o3ymj9qa",
 
-    "public_id":	"k8hf2s14bibawi6",
+    "code_length":	11,
 
-    "code_length":	2703387474910584091
+    "created_at":	"2017-12-19 18:15:32.338799 +0000 UTC"
+
+},{
+
+
+    "key":	"79eqnsemy6la6g6zqjiq",
+
+    "user_id":	"7r245ui97nalqzp2kw6r",
+
+    "totp":	"0evffzoq52dm5mouz1iy",
+
+    "tenant_id":	"snxe5v2rrtbtw14z5mnp",
+
+    "code_length":	17,
+
+    "created_at":	"2017-12-19 18:15:32.339375 +0000 UTC",
+
+    "updated_at":	"2017-12-19 18:15:32.339385 +0000 UTC",
+
+    "domain":	"Browsezoom.name",
+
+    "public_id":	"3rob5ti2a55e66il6xm9b0ztcxmhy5"
 
 }]
 ```
@@ -205,12 +204,6 @@ Success: 200
 Update attempts to update a giving record of the TFRecord type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -219,27 +212,31 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "totp":	"f",
+    "user_id":	"t93r4fw8ihsjimjg9l12",
 
-    "public_id":	"d6kbntcat50kccr",
+    "public_id":	"8l29pqy6et3gz3b976cube108if82v",
 
-    "tenant_id":	"4",
+    "code_length":	0,
 
-    "key":	"g",
+    "created_at":	"2017-12-19 18:15:32.340096 +0000 UTC",
 
-    "domain":	"e",
+    "domain":	"Zoomdog.com",
 
-    "created_at":	"2017-12-19 14:01:02.814167 +0000 UTC",
+    "totp":	"pgxyooa9qeos5j9uuzg5",
 
-    "updated_at":	"2017-12-19 14:01:02.814172 +0000 UTC",
+    "tenant_id":	"dr6wnfk4h44mvyu463gn",
 
-    "user_id":	"7",
+    "updated_at":	"2017-12-19 18:15:32.340105 +0000 UTC",
 
-    "code_length":	6263450610539110790
+    "key":	"henj49awpvjk1dgottgc"
 
 }
 ```
@@ -251,33 +248,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /TFRecord/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the TFRecord type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -287,7 +267,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```

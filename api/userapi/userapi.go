@@ -34,6 +34,7 @@ type UserBackend interface {
 
 // UserHTTP defines an interface which expose the methods provided by the http backend.
 type UserHTTP interface {
+	Get(*httputil.Context) error
 	Create(*httputil.Context) error
 	Update(*httputil.Context) error
 	Delete(*httputil.Context) error

@@ -34,6 +34,7 @@ type TenantBackend interface {
 
 // TenantHTTP defines an interface which expose the methods provided by the http backend.
 type TenantHTTP interface {
+	Get(*httputil.Context) error
 	Create(*httputil.Context) error
 	Update(*httputil.Context) error
 	Delete(*httputil.Context) error

@@ -25,26 +25,19 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the TwoFactorSession type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "user_id":	"6",
+    "user_id":	"sfdv06uwe9b80peej465",
 
-    "public_id":	"rumvpxpbbvmvee5",
+    "public_id":	"yyw5o8lt3ww45qmvtx76g68hr0okiy",
 
     "bool":	true
 
@@ -60,13 +53,17 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "user_id":	"p",
+    "user_id":	"byqlt9tfz1awf3d5mqcr",
 
-    "public_id":	"4crvqqc4r40wxs8",
+    "public_id":	"8kpphtfd3jhvtpaopxt8mlmz1mw7nv",
 
     "bool":	true
 
@@ -79,21 +76,10 @@ Success: 201
 Get retrives a giving record of the TwoFactorSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -105,15 +91,19 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "user_id":	"7",
+    "public_id":	"xaqlp5vkuhluwkozxsy5t8wkp02pas",
 
-    "public_id":	"af59kt91hiwyn92",
+    "bool":	true,
 
-    "bool":	true
+    "user_id":	"kvjk36otko63amcwxq0s"
 
 }
 ```
@@ -123,22 +113,6 @@ Success: 200
 
 Get retrives all records of the TwoFactorSession type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -148,13 +122,26 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "user_id":	"r",
+    "user_id":	"5nhvjtwo1urt88f8mf3s",
 
-    "public_id":	"5h2x28pt71td8eu",
+    "public_id":	"eb32lpnxczmu2jazdwg8tirs9ybjh6",
+
+    "bool":	true
+
+},{
+
+
+    "user_id":	"fdlpt7gsc78bb7sw5rzd",
+
+    "public_id":	"4fylo2cklxfrvkum125ljmdf8h7t57",
 
     "bool":	true
 
@@ -167,12 +154,6 @@ Success: 200
 Update attempts to update a giving record of the TwoFactorSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -181,15 +162,19 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "bool":	true,
+    "user_id":	"ouguc7vrsxstd7xqgmkx",
 
-    "user_id":	"i",
+    "public_id":	"ej2my2d4fyxfbwfpvfip63rvuoif0d",
 
-    "public_id":	"2nd33iiik3aja4s"
+    "bool":	true
 
 }
 ```
@@ -201,33 +186,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /TwoFactorSession/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the TwoFactorSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -237,7 +205,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```

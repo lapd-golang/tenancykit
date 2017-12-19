@@ -6,9 +6,10 @@ import (
 	"github.com/gokit/tenancykit/tokenset/tokens"
 )
 
-// TokenBackend defines a backend which represents the giving
+// TokenDBBackend defines a backend which represents the giving
 // methods exposed by the DB implementation for the giving type Token.
-type TokenBackend interface {
+// @implement
+type TokenDBBackend interface {
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem tokens.Token) error
 	Get(ctx context.Context, publicID string) (tokens.Token, error)

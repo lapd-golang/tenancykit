@@ -6,10 +6,13 @@ import (
 	"net/http"
 
 	"github.com/gokit/tenancykit"
+	"github.com/gokit/tenancykit/api/tfrecordapi"
 	"github.com/gokit/tenancykit/api/userapi"
-	"github.com/gokit/tenancykit/db/backends"
+	"github.com/gokit/tenancykit/backends"
+	"github.com/gokit/tenancykit/db"
 	"github.com/gokit/tenancykit/db/types"
 	"github.com/influx6/faux/httputil"
+	"github.com/influx6/faux/metrics"
 )
 
 // UserAPI implements the http api for the user request-response api.
@@ -18,8 +21,20 @@ type UserAPI struct {
 	TwoFactorCodeLength int
 	Backend             types.UserDBBackend
 	TenantBackend       types.TenantDBBackend
-	TFBackend           backends.TFBackend
+	TFBackend           tfrecordapi.TFRecordBackend
 	IsNotFoundErrorFunc func(error) bool
+}
+
+// NewUserAPI returns a new instance of UserAPI.
+func NewUserAPI(tfCodeLen int, m metrics.Metrics, users types.UserDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserAPI {
+	var api UserAPI
+	api.Backend = users
+	api.TenantBackend = tenants
+	api.TwoFactorCodeLength = tfCodeLen
+	api.IsNotFoundErrorFunc = db.IsNotFoundError
+	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
+	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users})
+	return api
 }
 
 // isNotFoundError returns true/false if the giving error matches
@@ -45,7 +60,7 @@ func (u UserAPI) isNotFoundError(err error) bool {
 func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	id, ok := ctx.Bag().GetString("public_id")
 	if !ok {
-		err := errors.New("Expected public_id param")
+		err := errors.New("expected public_id param")
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusBadRequest,

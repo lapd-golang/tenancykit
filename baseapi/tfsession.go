@@ -6,8 +6,10 @@ import (
 
 	"github.com/gokit/tenancykit"
 	"github.com/influx6/faux/httputil"
+	"github.com/influx6/faux/metrics"
 
 	"github.com/gokit/tenancykit/api/twofactorsessionapi"
+	"github.com/gokit/tenancykit/backends"
 	"github.com/gokit/tenancykit/db/types"
 )
 
@@ -15,7 +17,20 @@ import (
 // methods that expose more functionality.
 type TwoFactorSessionAPI struct {
 	twofactorsessionapi.TwoFactorSessionHTTP
-	Backend types.TwoFactorSessionBackend
+	Backend  types.TwoFactorSessionDBBackend
+	TokenSet tenancykit.TokenSet
+}
+
+// NewTwoFactorSessionAPI returns a new instance of TwoFactorSessionAPI.
+func NewTwoFactorSessionAPI(m metrics.Metrics, tokenset tenancykit.TokenSet, tfsession types.TwoFactorSessionDBBackend) TwoFactorSessionAPI {
+	var api TwoFactorSessionAPI
+	api.Backend = tfsession
+	api.TokenSet = tokenset
+	api.TwoFactorSessionHTTP = twofactorsessionapi.New(m, backends.TwoFactorSessionBackend{
+		TwoFactorSessionDBBackend: tfsession,
+	})
+
+	return api
 }
 
 // ValidateUserToken processing incoming one-time request to validate users
@@ -55,10 +70,32 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 		}
 	}
 
+	used, err := tfs.TokenSet.Has(ctx, currentUser.TwoFactor.PublicID, userCode)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	if used {
+		return httputil.HTTPError{
+			Err:  errors.New("twofactor user code already used"),
+			Code: http.StatusBadRequest,
+		}
+	}
+
 	if err := currentUser.TwoFactor.ValidateOTP(userCode); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusBadRequest,
+		}
+	}
+
+	if _, err := tfs.TokenSet.Add(ctx, currentUser.TwoFactor.PublicID, userCode); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
 		}
 	}
 
@@ -111,6 +148,21 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		}
 	}
 
+	used, err := tfs.TokenSet.Has(ctx, currentUser.TwoFactor.PublicID, userCode)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	if used {
+		return httputil.HTTPError{
+			Err:  errors.New("twofactor user code already used"),
+			Code: http.StatusBadRequest,
+		}
+	}
+
 	// If we have an existing two-factor session, then validate code sent is correct,
 	// then update current tfrecord and pass on the session record to context.
 	if tfSession, err := tfs.Backend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
@@ -131,6 +183,13 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusBadRequest,
+		}
+	}
+
+	if _, err := tfs.TokenSet.Add(ctx, currentUser.TwoFactor.PublicID, userCode); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
 		}
 	}
 

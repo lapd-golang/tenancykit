@@ -25,28 +25,21 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the Token type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "public_id":	"",
+    "value":	"vhvs4j5o4pbs4wb3da7d",
 
-    "target_id":	"",
+    "public_id":	"fg2wvoro8n5lsjd6lak06a26jrdivi",
 
-    "value":	""
+    "target_id":	"5gmz3i3uy67vym60bq2g"
 
 }
 ```
@@ -60,15 +53,19 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "value":	"",
+    "public_id":	"kdpvgnan4qbryrbhmudseeoxo0oybi",
 
-    "public_id":	"",
+    "target_id":	"j82vru21043rov29v0qr",
 
-    "target_id":	""
+    "value":	"jz9spkki1bdrxsay87bp"
 
 }
 ```
@@ -79,21 +76,10 @@ Success: 201
 Get retrives a giving record of the Token type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -105,15 +91,19 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "target_id":	"",
+    "public_id":	"6gdpoduxburyxp9odz59o2wvdqk0iw",
 
-    "value":	"",
+    "target_id":	"evddqkxo9jwao4mj9i05",
 
-    "public_id":	""
+    "value":	"p1ur7squz9gqv4bygmwf"
 
 }
 ```
@@ -123,22 +113,6 @@ Success: 200
 
 Get retrives all records of the Token type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -148,15 +122,28 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "target_id":	"",
+    "value":	"guxwxhr578ggufulzap2",
 
-    "value":	"",
+    "public_id":	"8isgpsezu4pksqwg9kza042yz7ccyx",
 
-    "public_id":	""
+    "target_id":	"jtml2ey5blvf278umawv"
+
+},{
+
+
+    "value":	"li19pyzeqnqi186y7eeb",
+
+    "public_id":	"89arusq3o3mem8iki6ysxgoqn952ur",
+
+    "target_id":	"hnkic1lt92x8uj77n7zy"
 
 }]
 ```
@@ -167,12 +154,6 @@ Success: 200
 Update attempts to update a giving record of the Token type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -181,15 +162,19 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "value":	"",
+    "target_id":	"jcou5wyenv0s7j4brqxq",
 
-    "public_id":	"",
+    "value":	"4ka4ny3mtwuv6zejjgbw",
 
-    "target_id":	""
+    "public_id":	"431sq7ng5shwpwtdzwiw2en196nh4h"
 
 }
 ```
@@ -201,33 +186,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /Token/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the Token type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -237,7 +205,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```

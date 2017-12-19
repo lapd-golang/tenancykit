@@ -25,32 +25,25 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the CreateUser type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "tenant_id":	"w",
+    "tenant_id":	"lxchsy6egtyvh5weoegd",
 
-    "email":	"ShirleyBarnes@Aimbo.gov",
+    "email":	"bRoberts@Gigabox.org",
 
-    "username":	"d",
+    "username":	"CatherineGutierrez",
 
-    "password":	"w",
+    "password":	"trltdttqhcq089mlhh2u",
 
-    "password_confirm":	"6"
+    "password_confirm":	"eky7d8owe9tlobj9tif8"
 
 }
 ```
@@ -64,27 +57,31 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "two_factor_auth":	true,
+    "public_id":	"mfhez29dxtl5hw1w7t9d5nd14bsnvh",
 
-    "updated_at":	"2017-12-19 14:01:02.739282 +0000 UTC",
+    "hash":	"90yfz1a8djzlp4hwppw8",
 
-    "email":	"1Lane@Jaxnation.gov",
+    "created_at":	"2017-12-19 18:15:32.547067 +0000 UTC",
 
-    "public_id":	"8eg3tie365jgg8s",
+    "updated_at":	"2017-12-19 18:15:32.54708 +0000 UTC",
 
-    "tenant_id":	"e",
+    "username":	"7Perry",
 
-    "private_id":	"548i28n9f76wwz3",
+    "email":	"PaulaTucker@Jaxbean.net",
 
-    "hash":	"4",
+    "tenant_id":	"xwgc6u3z5ctzsw8kqr47",
 
-    "username":	"b",
+    "private_id":	"478whexu9y0oribpw72vkc4bwwoxyl",
 
-    "created_at":	"2017-12-19 14:01:02.739273 +0000 UTC"
+    "two_factor_auth":	true
 
 }
 ```
@@ -95,21 +92,10 @@ Success: 201
 Get retrives a giving record of the User type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -121,27 +107,31 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
+    "username":	"recusandae_ullam",
+
+    "email":	"libero_ut@Quire.org",
+
+    "private_id":	"mu02ast718l2vm3saweokpiladhlcn",
+
     "two_factor_auth":	true,
 
-    "username":	"2",
+    "created_at":	"2017-12-19 18:15:32.563277 +0000 UTC",
 
-    "email":	"dArmstrong@Zoonoodle.info",
+    "public_id":	"15g9ynvbyp5ofv073w3a9snl6hy1bd",
 
-    "private_id":	"n5b6xzrwrxnxmw9",
+    "tenant_id":	"rl9sujfqyuiueefd1v07",
 
-    "hash":	"2",
+    "hash":	"4ww47ytpecj6igowiegn",
 
-    "public_id":	"5hf49c35rx6f7l2",
-
-    "tenant_id":	"b",
-
-    "created_at":	"2017-12-19 14:01:02.740153 +0000 UTC",
-
-    "updated_at":	"2017-12-19 14:01:02.74016 +0000 UTC"
+    "updated_at":	"2017-12-19 18:15:32.563289 +0000 UTC"
 
 }
 ```
@@ -151,22 +141,6 @@ Success: 200
 
 Get retrives all records of the User type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -176,27 +150,52 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "public_id":	"d2vk05ja0z9cp8c",
+    "email":	"gAustin@Zoomzone.edu",
 
-    "private_id":	"lhw6q57vz5ccyji",
+    "tenant_id":	"mqmwyj8cv65a99juvlx9",
 
-    "hash":	"n",
+    "hash":	"qu0bpo2g379ixh0bo2co",
 
-    "created_at":	"2017-12-19 14:01:02.74071 +0000 UTC",
+    "username":	"EricHarper",
 
-    "updated_at":	"2017-12-19 14:01:02.740715 +0000 UTC",
+    "private_id":	"dxso54qszulenoxs4s9f6bqnn00wes",
 
-    "username":	"w",
+    "two_factor_auth":	true,
 
-    "email":	"sint_praesentium@Chatterbridge.biz",
+    "created_at":	"2017-12-19 18:15:32.565097 +0000 UTC",
 
-    "tenant_id":	"y",
+    "updated_at":	"2017-12-19 18:15:32.565108 +0000 UTC",
 
-    "two_factor_auth":	true
+    "public_id":	"s1c9pnedtt7zki68t6cx9vxx0uq8q2"
+
+},{
+
+
+    "username":	"EdwardHunt",
+
+    "email":	"cGonzales@Yodo.biz",
+
+    "public_id":	"a08p46biseilolkeqy9omsaz6vfi3p",
+
+    "hash":	"2hfcgamtrxixoqoafo9l",
+
+    "updated_at":	"2017-12-19 18:15:32.565707 +0000 UTC",
+
+    "tenant_id":	"ftpj1k2qweorb4xwgmo3",
+
+    "private_id":	"otfn5yjwsxdnei8lakbskuf7cufrka",
+
+    "two_factor_auth":	true,
+
+    "created_at":	"2017-12-19 18:15:32.565698 +0000 UTC"
 
 }]
 ```
@@ -207,12 +206,6 @@ Success: 200
 Update attempts to update a giving record of the User type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -221,17 +214,21 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "email":	"yFernandez@Camido.gov",
+    "password":	"4lei2ywwwktg4tuu3697",
 
-    "password":	"a",
+    "password_confirm":	"ys997bb49t2wqryp05ht",
 
-    "password_confirm":	"e",
+    "is_password_update":	true,
 
-    "is_password_update":	true
+    "email":	"lStevens@Eayo.info"
 
 }
 ```
@@ -243,33 +240,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /User/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the User type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -279,7 +259,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```

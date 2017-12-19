@@ -25,28 +25,21 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the CreateUserSession type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "password":	"8",
+    "email":	"molestiae_consequatur_maiores@Youbridge.info",
 
-    "expiration":	nil,
+    "password":	"rpczvrcxzy1uegaat5fy",
 
-    "email":	"PaulHarper@Bubbletube.info"
+    "expiration":	nil
 
 }
 ```
@@ -60,17 +53,21 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "expires":	"2017-12-19 14:01:02.882231 +0000 UTC",
+    "user_id":	"l2vw2muejq0pv6tt5slj",
 
-    "user_id":	"5",
+    "public_id":	"gosu5khg9stejv0g8r75lumpc9ifyq",
 
-    "public_id":	"b887r12gk1ej5gn",
+    "token":	"3uewl4jujqf2ip59qn82",
 
-    "token":	"2"
+    "expires":	"2017-12-19 18:15:32.454413 +0000 UTC"
 
 }
 ```
@@ -81,21 +78,10 @@ Success: 201
 Get retrives a giving record of the UserSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -107,17 +93,21 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "public_id":	"69evj8mreomu8q3",
+    "user_id":	"aru3yn7ahwt9tnkqmxbm",
 
-    "token":	"9",
+    "public_id":	"piyleiknglyhtvqm2s1a0hf9z3gwjg",
 
-    "expires":	"2017-12-19 14:01:02.882585 +0000 UTC",
+    "token":	"6zxkr36d47c27dw6y8ie",
 
-    "user_id":	"j"
+    "expires":	"2017-12-19 18:15:32.454934 +0000 UTC"
 
 }
 ```
@@ -127,22 +117,6 @@ Success: 200
 
 Get retrives all records of the UserSession type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -152,17 +126,32 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "user_id":	"j",
+    "user_id":	"xemudko3jhbsel46ut7f",
 
-    "public_id":	"61ww4btjgseok5b",
+    "public_id":	"oggu6xblq2rnklzbs4ulp8ho5q4xn7",
 
-    "token":	"g",
+    "token":	"w0agsqs5hax33138lkft",
 
-    "expires":	"2017-12-19 14:01:02.882869 +0000 UTC"
+    "expires":	"2017-12-19 18:15:32.45544 +0000 UTC"
+
+},{
+
+
+    "expires":	"2017-12-19 18:15:32.455919 +0000 UTC",
+
+    "user_id":	"ckrybvzz7t0peeiiky8t",
+
+    "public_id":	"hnedmuzbeovn92c2tn246ui6dieodw",
+
+    "token":	"ewlvz5rx4oi0m6c8qogt"
 
 }]
 ```
@@ -173,12 +162,6 @@ Success: 200
 Update attempts to update a giving record of the UserSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -187,17 +170,21 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "user_id":	"p",
+    "token":	"i0heh2abgrpdwunm0045",
 
-    "public_id":	"t8ppm9xp18sm7qx",
+    "expires":	"2017-12-19 18:15:32.456521 +0000 UTC",
 
-    "token":	"u",
+    "user_id":	"jns61f8x9m7sz18i4ig5",
 
-    "expires":	"2017-12-19 14:01:02.883143 +0000 UTC"
+    "public_id":	"kv48cbvajal2lxf5salorxxll8musl"
 
 }
 ```
@@ -209,33 +196,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /UserSession/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the UserSession type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -245,7 +215,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```

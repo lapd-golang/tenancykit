@@ -16,7 +16,7 @@ import (
 
 	"github.com/influx6/faux/metrics"
 
-	httputil "github.com/influx6/faux/httputil"
+	"github.com/influx6/faux/httputil"
 
 	"github.com/gokit/tenancykit/tokenset/tokens"
 )
@@ -34,6 +34,7 @@ type TokenBackend interface {
 
 // TokenHTTP defines an interface which expose the methods provided by the http backend.
 type TokenHTTP interface {
+	Get(*httputil.Context) error
 	Create(*httputil.Context) error
 	Update(*httputil.Context) error
 	Delete(*httputil.Context) error

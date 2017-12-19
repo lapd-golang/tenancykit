@@ -8,22 +8,45 @@ import (
 	"strings"
 
 	"github.com/gokit/tenancykit"
+	"github.com/gokit/tenancykit/api/tfrecordapi"
+	"github.com/gokit/tenancykit/api/twofactorsessionapi"
+	"github.com/gokit/tenancykit/api/userapi"
 	"github.com/gokit/tenancykit/api/usersessionapi"
-	"github.com/gokit/tenancykit/db/backends"
+	"github.com/gokit/tenancykit/backends"
+	"github.com/gokit/tenancykit/db"
 	"github.com/gokit/tenancykit/db/types"
 	"github.com/influx6/faux/httputil"
+	"github.com/influx6/faux/metrics"
 )
 
 // UserSessionAPI augments the existing usersessionapi.TFRecordHTTP with other
 // methods that expose more functionality.
 type UserSessionAPI struct {
 	usersessionapi.UserSessionHTTP
-	UserBackend         types.UserDBBackend
+	Backend             userapi.UserBackend
 	TenantBackend       types.TenantDBBackend
-	TFBackend           backends.TFBackend
-	TFSessionsBackend   backends.TwoFactorSessionBackend
-	Backend             backends.UserSessionBackend
+	TFBackend           tfrecordapi.TFRecordBackend
+	TFSessionsBackend   twofactorsessionapi.TwoFactorSessionBackend
 	IsNotFoundErrorFunc func(error) bool
+}
+
+// NewUserSessionAPI returns a new instance of UserSessionAPI.
+func NewUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions types.UserSessionDBBackend, tfsessions types.TwoFactorSessionDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserSessionAPI {
+	var api UserSessionAPI
+	api.TenantBackend = tenants
+	api.IsNotFoundErrorFunc = db.IsNotFoundError
+	api.Backend = backends.UserBackend{UserDBBackend: users}
+	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
+	api.TFSessionsBackend = backends.TwoFactorSessionBackend{
+		TwoFactorSessionDBBackend: tfsessions,
+	}
+
+	api.UserSessionHTTP = usersessionapi.New(m, backends.UserSessionBackend{
+		UserBackend:          users,
+		UserSessionDBBackend: sessions,
+	})
+
+	return api
 }
 
 // isNotFoundError returns true/false if the giving error matches
@@ -231,7 +254,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	user, err := us.UserBackend.Get(ctx, userID)
+	user, err := us.Backend.Get(ctx, userID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{

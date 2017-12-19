@@ -14,11 +14,11 @@ import (
 	mgo "gopkg.in/mgo.v2"
 )
 
-// TokenSet implements the tokenset.Set interface on top of
+// TokenSet implements the tokenset.TokenSet interface on top of
 // mongodb.
 type TokenSet struct {
 	m  metrics.Metrics
-	db types.TokenBackend
+	db types.TokenDBBackend
 }
 
 // MGOTokenSet returns a new instance of TokenSet using Mongodb as underline database,
@@ -66,7 +66,7 @@ func SQLTokenSet(domain string, m metrics.Metrics, db sql.DB) TokenSet {
 }
 
 // NewTokenSet returns a new instance of the TokenSet
-func NewTokenSet(m metrics.Metrics, db types.TokenBackend) TokenSet {
+func NewTokenSet(m metrics.Metrics, db types.TokenDBBackend) TokenSet {
 	return TokenSet{
 		m:  m,
 		db: db,

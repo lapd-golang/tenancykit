@@ -25,26 +25,19 @@ It exposes the following methods for each endpoint:
 Create receives the provided record of the CreateTenant type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
-- Expected Content Type: 
+- Expected Request Body
 
 ```http
     Content-Type: application/json
 ```
 
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
 ```json
 {
 
 
-    "name":	"Mr. Dr. Earl Owens",
+    "name":	"Eric Larson",
 
-    "email":	"gGordon@Fivebridge.gov"
+    "email":	"qMiller@Twimbo.name"
 
 }
 ```
@@ -58,19 +51,23 @@ Success: 201
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "email":	"JesseGreene@Dynazzy.name",
+    "name":	"Anthony Rogers Jr. Sr. I II III IV V MD DDS PhD DVM",
 
-    "public_id":	"f5jvs6syregc46y",
+    "email":	"VictorWells@Brainbox.mil",
 
-    "created_at":	"2017-12-19 14:01:02.519624 +0000 UTC",
+    "public_id":	"5k191z9e8xlkotsojo3axb78eqcaig",
 
-    "updated_at":	"2017-12-19 14:01:02.519646 +0000 UTC",
+    "created_at":	"2017-12-19 18:15:32.282065 +0000 UTC",
 
-    "name":	"Arthur Richards"
+    "updated_at":	"2017-12-19 18:15:32.282093 +0000 UTC"
 
 }
 ```
@@ -81,21 +78,10 @@ Success: 201
 Get retrives a giving record of the Tenant type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -107,19 +93,23 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "name":	"Benjamin Reed",
+    "email":	"ChrisReed@Reallinks.name",
 
-    "email":	"eKim@Vimbo.biz",
+    "public_id":	"whgi03nqydwfm2czfug6hnggx07i33",
 
-    "public_id":	"lhd59fffeyh4h87",
+    "created_at":	"2017-12-19 18:15:32.282606 +0000 UTC",
 
-    "created_at":	"2017-12-19 14:01:02.519986 +0000 UTC",
+    "updated_at":	"2017-12-19 18:15:32.282613 +0000 UTC",
 
-    "updated_at":	"2017-12-19 14:01:02.519991 +0000 UTC"
+    "name":	"Anna Stephens"
 
 }
 ```
@@ -129,22 +119,6 @@ Success: 200
 
 Get retrives all records of the Tenant type from the HTTP API.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
-- Expected Request Parameters
-
-```
-```
-
-- Expected Request Body
-
-```json
-```
-
 - Expected Status Code
 
 ```
@@ -154,19 +128,36 @@ Success: 200
 
 - Expected Response Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 [{
 
 
-    "name":	"Jessica Bailey",
+    "name":	"Susan Mitchell",
 
-    "email":	"xEdwards@Feedfish.edu",
+    "email":	"fCrawford@Browsezoom.org",
 
-    "public_id":	"hjoig9e9mqnbzn0",
+    "public_id":	"7xz5cl534fkquhek1ww84lw9tv6omb",
 
-    "created_at":	"2017-12-19 14:01:02.520309 +0000 UTC",
+    "created_at":	"2017-12-19 18:15:32.28304 +0000 UTC",
 
-    "updated_at":	"2017-12-19 14:01:02.520314 +0000 UTC"
+    "updated_at":	"2017-12-19 18:15:32.283045 +0000 UTC"
+
+},{
+
+
+    "name":	"Jacqueline Morrison I II III IV V MD DDS PhD DVM",
+
+    "email":	"TinaWeaver@Voonix.info",
+
+    "public_id":	"mfztk7l8omqq6p6981tiu66fwuhxz5",
+
+    "created_at":	"2017-12-19 18:15:32.283312 +0000 UTC",
+
+    "updated_at":	"2017-12-19 18:15:32.283317 +0000 UTC"
 
 }]
 ```
@@ -177,12 +168,6 @@ Success: 200
 Update attempts to update a giving record of the Tenant type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record with the provided JSON request body.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
@@ -191,19 +176,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 
 - Expected Request Body
 
+```http
+    Content-Type: application/json
+```
+
 ```json
 {
 
 
-    "name":	"Nancy Adams",
+    "created_at":	"2017-12-19 18:15:32.284082 +0000 UTC",
 
-    "email":	"fugiat@Buzzshare.info",
+    "updated_at":	"2017-12-19 18:15:32.284091 +0000 UTC",
 
-    "public_id":	"zdy8ha5u088icyc",
+    "name":	"Stephen Nelson",
 
-    "created_at":	"2017-12-19 14:01:02.521488 +0000 UTC",
+    "email":	"5Hayes@Yakidoo.mil",
 
-    "updated_at":	"2017-12-19 14:01:02.521496 +0000 UTC"
+    "public_id":	"p4ykmcbcn2jz7aj9zxm7xtbpytaveu"
 
 }
 ```
@@ -215,33 +204,16 @@ Failure: 500
 Success: 204
 ```
 
-
-- Expected Response Body
-
-```json
-```
-
 ## DELETE /Tenant/:public_id
 ### Method: `func (api *HTTPAPI) Delete(ctx *httputil.Context) error`
 
 Get deletes a giving record of the Tenant type from the HTTP API returning received result as a JSON
 response. It uses the provided `:public_id` parameter as the paramter to identify the record.
 
-- Expected Content Type: 
-
-```http
-    Content-Type: application/json
-```
-
 - Expected Request Parameters
 
 ```
     :public_id
-```
-
-- Expected Request Body
-
-```json
 ```
 
 - Expected Status Code
@@ -251,7 +223,3 @@ Failure: 500
 Success: 204
 ```
 
-- Expected Response Body
-
-```json
-```
