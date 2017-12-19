@@ -6,9 +6,10 @@ import (
 	"github.com/gokit/tenancykit"
 )
 
-// TFRecordBackend defines a backend which represents the giving
+// TFRecordDBBackend defines a backend which represents the giving
 // methods exposed by the DB implementation for the giving type TFRecord.
-type TFRecordBackend interface {
+// @implement
+type TFRecordDBBackend interface {
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem tenancykit.TFRecord) error
 	Get(ctx context.Context, publicID string) (tenancykit.TFRecord, error)

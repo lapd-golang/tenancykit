@@ -209,7 +209,7 @@ func TestTokenUpdate(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded JSON.")
 
-	elem.Value = "Mrs. Ms. Miss Marie Warren"
+	elem.Value = "Kelly Warren"
 
 	var bu bytes.Buffer
 

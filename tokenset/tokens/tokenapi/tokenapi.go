@@ -21,14 +21,23 @@ import (
 	"github.com/gokit/tenancykit/tokenset/tokens"
 )
 
-// Backend defines an interface which allows the HTTPAPI to divert the final operation of
-// the given CRUD request for the Unconvertible Type type. This is provided by the user.
-type Backend interface {
+// TokenBackend defines an interface which allows the HTTPAPI to divert the final operation of
+// the given CRUD request for the "Token" type. This is provided by the user.
+// @implement
+type TokenBackend interface {
 	Delete(context.Context, string) error
 	Get(context.Context, string) (tokens.Token, error)
 	Update(context.Context, string, tokens.Token) error
 	GetAll(context.Context, string, string, int, int) ([]tokens.Token, int, error)
 	Create(context.Context, tokens.Token) (tokens.Token, error)
+}
+
+// TokenHTTP defines an interface which expose the methods provided by the http backend.
+type TokenHTTP interface {
+	Create(*httputil.Context) error
+	Update(*httputil.Context) error
+	Delete(*httputil.Context) error
+	GetAll(*httputil.Context) error
 }
 
 // TokenRecords defines a type to represent the response given to a request for
@@ -41,22 +50,22 @@ type TokenRecords struct {
 }
 
 // HTTPAPI defines a struct which holds the http api handlers for providing CRUD
-// operations for the provided Unconvertible Type type.
+// operations for the provided "Token" type.
 type HTTPAPI struct {
-	operator Backend
 	metrics  metrics.Metrics
+	operator TokenBackend
 }
 
 // New returns a new HTTPAPI instance using the provided operator and
 // metric.
-func New(m metrics.Metrics, operator Backend) *HTTPAPI {
+func New(m metrics.Metrics, backend TokenBackend) *HTTPAPI {
 	return &HTTPAPI{
-		operator: operator,
 		metrics:  m,
+		operator: backend,
 	}
 }
 
-// Create receives an http request to create a new Unconvertible Type.
+// Create receives an http request to create a new "Token".
 //
 // Route: /{Route}/:public_id
 // Method: POST
@@ -114,7 +123,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 	return nil
 }
 
-// Update receives an http request to create a new Unconvertible Type.
+// Update receives an http request to create a new "Token".
 //
 // Route: /{Route}/:public_id
 // Method: PUT
@@ -176,7 +185,7 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 	return ctx.NoContent(http.StatusNoContent)
 }
 
-// Delete receives an http request to create a new Unconvertible Type.
+// Delete receives an http request to create a new "Token".
 //
 // Route: /{Route}/:public_id
 // Method: DELETE
@@ -222,7 +231,7 @@ func (api *HTTPAPI) Delete(ctx *httputil.Context) error {
 	return ctx.NoContent(http.StatusNoContent)
 }
 
-// Get receives an http request to create a new Unconvertible Type.
+// Get receives an http request to create a new "Token".
 //
 // Route: /{Route}/:public_id
 // Method: GET
@@ -276,7 +285,7 @@ func (api *HTTPAPI) Get(ctx *httputil.Context) error {
 	return nil
 }
 
-// GetAll receives an http request to return all Unconvertible Type records.
+// GetAll receives an http request to return all "Token" records.
 //
 // Route: /{Route}/
 // Method: GET

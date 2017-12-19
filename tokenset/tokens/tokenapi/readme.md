@@ -1,6 +1,8 @@
 Token HTTP API 
 ===============================
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/gokit/tenancykit/tokenset/tokens/tokenapi)](https://goreportcard.com/report/github.com/gokit/tenancykit/tokenset/tokens/tokenapi)
+
 Token HTTP API is a auto generated http api for the struct `Token`.
 
 The API expects the user to implement and provide the backend interface to provided underline db interaction:
@@ -40,11 +42,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "value":	"",
-
     "public_id":	"",
 
-    "target_id":	""
+    "target_id":	"",
+
+    "value":	""
 
 }
 ```
@@ -150,11 +152,11 @@ Success: 200
 [{
 
 
-    "public_id":	"",
-
     "target_id":	"",
 
-    "value":	""
+    "value":	"",
+
+    "public_id":	""
 
 }]
 ```

@@ -1,21 +1,19 @@
 package tokenmgo_test
 
 import (
-     "encoding/json"
+	"encoding/json"
 
-
-     "github.com/gokit/tenancykit/tokenset/tokens"
-
+	"github.com/gokit/tenancykit/tokenset/tokens"
 )
 
 var tokenJSON = `{
 
 
-    "value":	"",
-
     "public_id":	"",
 
-    "target_id":	""
+    "target_id":	"",
+
+    "value":	""
 
 }`
 

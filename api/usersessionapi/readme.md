@@ -42,9 +42,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"",
+    "email":	"fugit_amet@Ooba.edu",
 
-    "password":	"",
+    "password":	"7",
 
     "expiration":	nil
 
@@ -64,13 +64,13 @@ Success: 201
 {
 
 
-    "user_id":	"",
+    "expires":	2017-12-19 13:42:59.072197 +0000 UTC,
 
-    "public_id":	"",
+    "user_id":	"h",
 
-    "token":	"",
+    "public_id":	"1c2j96oyswfvyq3",
 
-    "expires":	"2017-12-18 16:19:06.353165 +0000 UTC"
+    "token":	"e"
 
 }
 ```
@@ -111,11 +111,13 @@ Success: 200
 {
 
 
-    "email":	"",
+    "user_id":	"s",
 
-    "password":	"",
+    "public_id":	"qhgzk2dnvshksoz",
 
-    "expiration":	nil
+    "token":	"a",
+
+    "expires":	2017-12-19 13:42:59.073342 +0000 UTC
 
 }
 ```
@@ -154,11 +156,13 @@ Success: 200
 [{
 
 
-    "email":	"",
+    "user_id":	"7",
 
-    "password":	"",
+    "public_id":	"pdajg8d7kmyaluj",
 
-    "expiration":	nil
+    "token":	"z",
+
+    "expires":	2017-12-19 13:42:59.074438 +0000 UTC
 
 }]
 ```
@@ -187,13 +191,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"",
+    "user_id":	"u",
 
-    "public_id":	"",
+    "public_id":	"rt5lcrheyd4jmqt",
 
-    "token":	"",
+    "token":	"6",
 
-    "expires":	"2017-12-18 16:19:06.354825 +0000 UTC"
+    "expires":	2017-12-19 13:42:59.075131 +0000 UTC
 
 }
 ```

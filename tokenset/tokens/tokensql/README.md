@@ -1,6 +1,8 @@
 Token SQLDB API
 ===================================
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/gokit/tenancykit/tokenset/tokens/tokensql)](https://goreportcard.com/report/github.com/gokit/tenancykit/tokenset/tokens/tokensql)
+
 Token SQLDB API is a auto-generated CRUD implementation for the `Token` in package `github.com/gokit/tenancykit/tokenset/tokens`.
 
 The following method exists for custom operations:

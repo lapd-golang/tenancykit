@@ -30,12 +30,12 @@ var (
 	events = metrics.New(custom.StackDisplay(os.Stdout))
 
 	config = sql.Config{
-		DBName:       os.Getenv("tokens_SQL_DB"),
-		User:         os.Getenv("tokens_SQL_USER"),
-		DBIP:         os.Getenv("tokens_SQL_ADDR"),
-		DBPort:       os.Getenv("tokens_SQL_PORT"),
-		DBDriver:     os.Getenv("tokens_SQL_Driver"),
-		UserPassword: os.Getenv("tokens_SQL_PASSWORD"),
+		DBName:       os.Getenv("tokens_SQL_TEST_DB"),
+		User:         os.Getenv("tokens_SQL_TEST_USER"),
+		DBIP:         os.Getenv("tokens_SQL_TEST_ADDR"),
+		DBPort:       os.Getenv("tokens_SQL_TEST_PORT"),
+		DBDriver:     os.Getenv("tokens_SQL_TEST_Driver"),
+		UserPassword: os.Getenv("tokens_SQL_TEST_PASSWORD"),
 	}
 
 	testCol = "token_test"

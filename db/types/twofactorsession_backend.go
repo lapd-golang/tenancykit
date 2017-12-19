@@ -6,9 +6,10 @@ import (
 	"github.com/gokit/tenancykit"
 )
 
-// TwoFactorSessionBackend defines a backend which represents the giving
+// TwoFactorSessionDBBackend defines a backend which represents the giving
 // methods exposed by the DB implementation for the giving type TwoFactorSession.
-type TwoFactorSessionBackend interface {
+// @implement
+type TwoFactorSessionDBBackend interface {
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem tenancykit.TwoFactorSession) error
 	Get(ctx context.Context, publicID string) (tenancykit.TwoFactorSession, error)

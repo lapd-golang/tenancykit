@@ -131,8 +131,9 @@ func (mdb *TwoFactorSessionDB) Create(ctx context.Context, elem tenancykit.TwoFa
 
 // GetAllByOrder attempts to retrieve all elements from db using provided order and orderby
 // values.
-func (mdb *TwoFactorSessionDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.TwoFactorSession, int, error) {
-	return mdb.GetAll(ctx, order, orderby, -1, -1)
+func (mdb *TwoFactorSessionDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.TwoFactorSession, error) {
+	res, _, err := mdb.GetAll(ctx, order, orderby, -1, -1)
+	return res, err
 }
 
 // GetAll retrieves all records from the db and returns a slice of tenancykit.TwoFactorSession type.
@@ -177,7 +178,7 @@ func (mdb *TwoFactorSessionDB) GetAll(ctx context.Context, order string, orderby
 // returns the tenancykit.TwoFactorSession type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
-func (mdb *TwoFactorSessionDB) GetByField(ctx context.Context, key string, value string) (tenancykit.TwoFactorSession, error) {
+func (mdb *TwoFactorSessionDB) GetByField(ctx context.Context, key string, value interface{}) (tenancykit.TwoFactorSession, error) {
 	m := metrics.NewTrace("TwoFactorSessionDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Get"), metrics.With(key, value), metrics.WithTrace(m.End()))
 

@@ -6,9 +6,10 @@ import (
 	"github.com/gokit/tenancykit"
 )
 
-// TenantBackend defines a backend which represents the giving
+// TenantDBBackend defines a backend which represents the giving
 // methods exposed by the DB implementation for the giving type Tenant.
-type TenantBackend interface {
+// @implement
+type TenantDBBackend interface {
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem tenancykit.Tenant) error
 	Get(ctx context.Context, publicID string) (tenancykit.Tenant, error)

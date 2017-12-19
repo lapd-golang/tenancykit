@@ -42,13 +42,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "domain":	"",
-
-    "max_length":	0,
+    "max_length":	5577006791947779410,
 
     "tenant":	nil,
 
-    "user":	nil
+    "user":	nil,
+
+    "domain":	"2"
 
 }
 ```
@@ -66,23 +66,23 @@ Success: 201
 {
 
 
-    "key":	"",
+    "updated_at":	2017-12-19 13:42:58.59581 +0000 UTC,
 
-    "domain":	"",
+    "user_id":	"y",
 
-    "code_length":	0,
+    "totp":	"q",
 
-    "created_at":	"2017-12-18 16:19:13.37545 +0000 UTC",
+    "public_id":	"78ayn01ctf4o9zk",
 
-    "user_id":	"",
+    "tenant_id":	"k",
 
-    "totp":	"",
+    "code_length":	8674665223082153551,
 
-    "public_id":	"",
+    "created_at":	2017-12-19 13:42:58.595786 +0000 UTC,
 
-    "tenant_id":	"",
+    "key":	"z",
 
-    "updated_at":	"2017-12-18 16:19:13.37546 +0000 UTC"
+    "domain":	"5"
 
 }
 ```
@@ -123,13 +123,23 @@ Success: 200
 {
 
 
-    "domain":	"",
+    "key":	"5",
 
-    "max_length":	0,
+    "code_length":	6129484611666145821,
 
-    "tenant":	nil,
+    "created_at":	2017-12-19 13:42:58.596198 +0000 UTC,
 
-    "user":	nil
+    "domain":	"z",
+
+    "user_id":	"k",
+
+    "totp":	"f",
+
+    "public_id":	"9t3n0wpqwy5xctc",
+
+    "tenant_id":	"2",
+
+    "updated_at":	2017-12-19 13:42:58.596202 +0000 UTC
 
 }
 ```
@@ -168,13 +178,23 @@ Success: 200
 [{
 
 
-    "max_length":	0,
+    "created_at":	2017-12-19 13:42:58.596563 +0000 UTC,
 
-    "tenant":	nil,
+    "updated_at":	2017-12-19 13:42:58.596567 +0000 UTC,
 
-    "user":	nil,
+    "user_id":	"c",
 
-    "domain":	""
+    "domain":	"4",
+
+    "totp":	"h",
+
+    "public_id":	"zgpgt77aois1qsy",
+
+    "tenant_id":	"0",
+
+    "code_length":	4037200794235010051,
+
+    "key":	"v"
 
 }]
 ```
@@ -203,23 +223,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"",
+    "user_id":	"h",
 
-    "totp":	"",
+    "code_length":	3916589616287113937,
 
-    "public_id":	"",
+    "key":	"k",
 
-    "created_at":	"2017-12-18 16:19:13.376879 +0000 UTC",
+    "domain":	"8",
 
-    "updated_at":	"2017-12-18 16:19:13.376894 +0000 UTC",
+    "totp":	"p",
 
-    "key":	"",
+    "public_id":	"zg8uivlyfj7wcu5",
 
-    "domain":	"",
+    "tenant_id":	"4",
 
-    "tenant_id":	"",
+    "created_at":	2017-12-19 13:42:58.596946 +0000 UTC,
 
-    "code_length":	0
+    "updated_at":	2017-12-19 13:42:58.59695 +0000 UTC
 
 }
 ```

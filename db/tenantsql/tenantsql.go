@@ -131,8 +131,9 @@ func (mdb *TenantDB) Create(ctx context.Context, elem tenancykit.Tenant) error {
 
 // GetAllByOrder attempts to retrieve all elements from db using provided order and orderby
 // values.
-func (mdb *TenantDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.Tenant, int, error) {
-	return mdb.GetAll(ctx, order, orderby, -1, -1)
+func (mdb *TenantDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.Tenant, error) {
+	res, _, err := mdb.GetAll(ctx, order, orderby, -1, -1)
+	return res, err
 }
 
 // GetAll retrieves all records from the db and returns a slice of tenancykit.Tenant type.
@@ -177,7 +178,7 @@ func (mdb *TenantDB) GetAll(ctx context.Context, order string, orderby string, p
 // returns the tenancykit.Tenant type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
-func (mdb *TenantDB) GetByField(ctx context.Context, key string, value string) (tenancykit.Tenant, error) {
+func (mdb *TenantDB) GetByField(ctx context.Context, key string, value interface{}) (tenancykit.Tenant, error) {
 	m := metrics.NewTrace("TenantDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Get"), metrics.With(key, value), metrics.WithTrace(m.End()))
 

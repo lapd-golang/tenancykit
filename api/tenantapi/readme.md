@@ -42,9 +42,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "name":	"",
+    "name":	"Gerald Mendoza",
 
-    "email":	""
+    "email":	"JosephMyers@Katz.info"
 
 }
 ```
@@ -62,15 +62,15 @@ Success: 201
 {
 
 
-    "name":	"",
+    "public_id":	"lqj8asxuwyt2ovg",
 
-    "email":	"",
+    "created_at":	2017-12-19 13:42:58.92252 +0000 UTC,
 
-    "public_id":	"",
+    "updated_at":	2017-12-19 13:42:58.922529 +0000 UTC,
 
-    "created_at":	"2017-12-18 16:19:10.958161 +0000 UTC",
+    "name":	"Shirley Johnston",
 
-    "updated_at":	"2017-12-18 16:19:10.958172 +0000 UTC"
+    "email":	"sunt_repellendus@Minyx.net"
 
 }
 ```
@@ -111,9 +111,15 @@ Success: 200
 {
 
 
-    "name":	"",
+    "public_id":	"wgt7n30fahw5gxx",
 
-    "email":	""
+    "created_at":	2017-12-19 13:42:58.923616 +0000 UTC,
+
+    "updated_at":	2017-12-19 13:42:58.923622 +0000 UTC,
+
+    "name":	"Paul Wood",
+
+    "email":	"PatrickWilliamson@Fivebridge.com"
 
 }
 ```
@@ -152,9 +158,15 @@ Success: 200
 [{
 
 
-    "name":	"",
+    "name":	"Lawrence Reynolds",
 
-    "email":	""
+    "email":	"rAdams@Lazz.biz",
+
+    "public_id":	"g9f5cqa6bffzaw8",
+
+    "created_at":	2017-12-19 13:42:58.924681 +0000 UTC,
+
+    "updated_at":	2017-12-19 13:42:58.924688 +0000 UTC
 
 }]
 ```
@@ -183,15 +195,15 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "created_at":	"2017-12-18 16:19:10.959896 +0000 UTC",
+    "created_at":	2017-12-19 13:42:58.92539 +0000 UTC,
 
-    "updated_at":	"2017-12-18 16:19:10.959905 +0000 UTC",
+    "updated_at":	2017-12-19 13:42:58.925397 +0000 UTC,
 
-    "name":	"",
+    "name":	"Mrs. Ms. Miss Pamela Kelly",
 
-    "email":	"",
+    "email":	"earum_nam_aut@Jaxspan.name",
 
-    "public_id":	""
+    "public_id":	"oi3zd3zgc0d2ov2"
 
 }
 ```

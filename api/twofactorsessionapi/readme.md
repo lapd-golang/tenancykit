@@ -42,11 +42,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "user_id":	"",
+    "user_id":	"r",
 
-    "public_id":	"",
+    "public_id":	"0hl5x8moxnvm5xm",
 
-    "bool":	false
+    "bool":	true
 
 }
 ```
@@ -64,11 +64,11 @@ Success: 201
 {
 
 
-    "user_id":	"",
+    "user_id":	"x",
 
-    "public_id":	"",
+    "public_id":	"7zujc22erf9uli8",
 
-    "bool":	false
+    "bool":	true
 
 }
 ```
@@ -109,11 +109,11 @@ Success: 200
 {
 
 
-    "user_id":	"",
+    "user_id":	"e",
 
-    "public_id":	"",
+    "public_id":	"dnykytvffiwd356",
 
-    "bool":	false
+    "bool":	true
 
 }
 ```
@@ -152,11 +152,11 @@ Success: 200
 [{
 
 
-    "user_id":	"",
+    "user_id":	"c",
 
-    "public_id":	"",
+    "public_id":	"9ti1auxbhr67p62",
 
-    "bool":	false
+    "bool":	true
 
 }]
 ```
@@ -185,11 +185,11 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "bool":	false,
+    "user_id":	"z",
 
-    "user_id":	"",
+    "public_id":	"sriedqw2m1qvsfv",
 
-    "public_id":	""
+    "bool":	true
 
 }
 ```

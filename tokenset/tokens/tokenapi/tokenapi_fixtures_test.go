@@ -9,33 +9,33 @@ import (
 var tokenJSON = `{
 
 
-    "value":	"",
-
     "public_id":	"",
 
-    "target_id":	""
+    "target_id":	"",
+
+    "value":	""
 
 }`
 
 var tokenCreateJSON = `{
 
 
-    "value":	"",
-
     "public_id":	"",
 
-    "target_id":	""
+    "target_id":	"",
+
+    "value":	""
 
 }`
 
 var tokenUpdateJSON = `{
 
 
-    "value":	"",
-
     "public_id":	"",
 
-    "target_id":	""
+    "target_id":	"",
+
+    "value":	""
 
 }`
 

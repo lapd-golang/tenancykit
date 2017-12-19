@@ -1,11 +1,9 @@
 package tokensql_test
 
 import (
-     "encoding/json"
+	"encoding/json"
 
-
-     "github.com/gokit/tenancykit/tokenset/tokens"
-
+	"github.com/gokit/tenancykit/tokenset/tokens"
 )
 
 var tokenJSON = `{
@@ -22,11 +20,11 @@ var tokenJSON = `{
 var tokenCreateJSON = `{
 
 
-    "target_id":	"",
-
     "value":	"",
 
-    "public_id":	""
+    "public_id":	"",
+
+    "target_id":	""
 
 }`
 
@@ -51,4 +49,3 @@ func loadJSONFor(content string) (tokens.Token, error) {
 
 	return elem, nil
 }
-

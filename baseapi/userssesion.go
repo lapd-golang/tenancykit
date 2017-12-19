@@ -18,8 +18,8 @@ import (
 // methods that expose more functionality.
 type UserSessionAPI struct {
 	usersessionapi.UserSessionHTTP
-	UserBackend         types.UserBackend
-	TenantBackend       types.TenantBackend
+	UserBackend         types.UserDBBackend
+	TenantBackend       types.TenantDBBackend
 	TFBackend           backends.TFBackend
 	TFSessionsBackend   backends.TwoFactorSessionBackend
 	Backend             backends.UserSessionBackend

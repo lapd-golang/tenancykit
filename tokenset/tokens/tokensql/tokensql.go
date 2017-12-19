@@ -6,6 +6,10 @@ package tokensql
 import (
 	"fmt"
 
+	"errors"
+
+	dsql "database/sql"
+
 	"github.com/influx6/faux/db"
 
 	"github.com/influx6/faux/context"
@@ -17,6 +21,11 @@ import (
 	"github.com/influx6/faux/db/sql/tables"
 
 	"github.com/gokit/tenancykit/tokenset/tokens"
+)
+
+// errors ...
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 // mapFields defines a type for a map that exposes a Fields() method.
@@ -77,6 +86,9 @@ func (mdb *TokenDB) Delete(ctx context.Context, publicID string) error {
 
 	if err := mdb.dx.Delete(mdb.table, "public_id", publicID); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("table", mdb.col), metrics.With("publicID", publicID), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -117,6 +129,13 @@ func (mdb *TokenDB) Create(ctx context.Context, elem tokens.Token) error {
 	return nil
 }
 
+// GetAllByOrder attempts to retrieve all elements from db using provided order and orderby
+// values.
+func (mdb *TokenDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tokens.Token, error) {
+	res, _, err := mdb.GetAll(ctx, order, orderby, -1, -1)
+	return res, err
+}
+
 // GetAll retrieves all records from the db and returns a slice of tokens.Token type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Token struct.
@@ -137,6 +156,9 @@ func (mdb *TokenDB) GetAll(ctx context.Context, order string, orderby string, pa
 	items, total, err := mdb.dx.GetAllPerPage(mdb.table, order, orderby, page, responsePerPage)
 	if err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of Token type from db"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return nil, total, ErrNotFound
+		}
 		return nil, total, err
 	}
 
@@ -156,7 +178,7 @@ func (mdb *TokenDB) GetAll(ctx context.Context, order string, orderby string, pa
 // returns the tokens.Token type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Token struct.
-func (mdb *TokenDB) GetByField(ctx context.Context, key string, value string) (tokens.Token, error) {
+func (mdb *TokenDB) GetByField(ctx context.Context, key string, value interface{}) (tokens.Token, error) {
 	m := metrics.NewTrace("TokenDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Get"), metrics.With(key, value), metrics.WithTrace(m.End()))
 
@@ -173,6 +195,10 @@ func (mdb *TokenDB) GetByField(ctx context.Context, key string, value string) (t
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of Token type from db"),
 			metrics.With("table", mdb.col),
 			metrics.With("error", err.Error()))
+
+		if err == dsql.ErrNoRows {
+			return tokens.Token{}, ErrNotFound
+		}
 
 		return tokens.Token{}, err
 	}
@@ -200,6 +226,9 @@ func (mdb *TokenDB) Get(ctx context.Context, publicID string) (tokens.Token, err
 			metrics.With("table", mdb.col),
 			metrics.With("error", err.Error()))
 
+		if err == dsql.ErrNoRows {
+			return tokens.Token{}, ErrNotFound
+		}
 		return tokens.Token{}, err
 	}
 
@@ -221,6 +250,9 @@ func (mdb *TokenDB) Update(ctx context.Context, publicID string, elem tokens.Tok
 
 	if err := mdb.dx.Update(mdb.table, elem, "public_id", publicID); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to update Token record"), metrics.With("query", elem), metrics.With("table", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -242,6 +274,9 @@ func (mdb *TokenDB) Exec(ctx context.Context, fx func(*sql.SQL, sql.DB) error) e
 
 	if err := fx(mdb.dx, mdb.sx); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
+		if err == dsql.ErrNoRows {
+			return ErrNotFound
+		}
 		return err
 	}
 

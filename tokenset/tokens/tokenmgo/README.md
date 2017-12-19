@@ -1,5 +1,6 @@
 Token MongoDB API
 ===================================
+[![Go Report Card](https://goreportcard.com/badge/github.com/gokit/tenancykit/tokenset/tokens/tokenmgo)](https://goreportcard.com/report/github.com/gokit/tenancykit/tokenset/tokens/tokenmgo)
 
 Token MongoDB API is a auto-generated CRUD implementation for the `Token` in package `github.com/gokit/tenancykit/tokenset/tokens`.
 

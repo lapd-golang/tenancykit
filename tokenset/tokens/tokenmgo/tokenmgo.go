@@ -4,6 +4,7 @@
 package tokenmgo
 
 import (
+	"errors"
 	"fmt"
 
 	"strings"
@@ -17,6 +18,11 @@ import (
 	"github.com/influx6/faux/metrics"
 
 	"github.com/gokit/tenancykit/tokenset/tokens"
+)
+
+// errors ...
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 // TokenFields defines an interface which exposes method to return a map of all
@@ -132,7 +138,6 @@ func (mdb *TokenDB) Count(ctx context.Context) (int, error) {
 	defer session.Close()
 
 	query := bson.M{}
-
 	total, err := database.C(mdb.col).Find(query).Count()
 	if err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to get record count"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
@@ -177,6 +182,9 @@ func (mdb *TokenDB) Delete(ctx context.Context, publicID string) error {
 
 	if err := database.C(mdb.col).Remove(query); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("publicID", publicID), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -233,10 +241,10 @@ func (mdb *TokenDB) Create(ctx context.Context, elem tokens.Token) error {
 	return nil
 }
 
-// GetAllPerPage retrieves all records from the db and returns a slice of tokens.Token type.
+// GetAll retrieves all records from the db and returns a slice of tokens.Token type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Token struct.
-func (mdb *TokenDB) GetAllPerPage(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]tokens.Token, int, error) {
+func (mdb *TokenDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]tokens.Token, int, error) {
 	m := metrics.NewTrace("TokenDB.GetAll")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.GetAll"), metrics.WithTrace(m.End()))
 
@@ -308,6 +316,9 @@ func (mdb *TokenDB) GetAllPerPage(ctx context.Context, order string, orderBy str
 	var ditems []map[string]interface{}
 	if err := database.C(mdb.col).Find(query).Skip(indexToStart).Limit(totalWanted).Sort(orderBy).All(&ditems); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of Token type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return nil, -1, ErrNotFound
+		}
 		return nil, -1, err
 	}
 
@@ -364,6 +375,9 @@ func (mdb *TokenDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([
 			metrics.With("query", query),
 			metrics.With("error", err.Error()),
 		)
+		if err == mgo.ErrNotFound {
+			return nil, ErrNotFound
+		}
 		return nil, err
 	}
 
@@ -416,7 +430,9 @@ func (mdb *TokenDB) GetByField(ctx context.Context, key string, value interface{
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of Token type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
-
+		if err == mgo.ErrNotFound {
+			return tokens.Token{}, ErrNotFound
+		}
 		return tokens.Token{}, err
 	}
 
@@ -462,6 +478,9 @@ func (mdb *TokenDB) Get(ctx context.Context, publicID string) (tokens.Token, err
 
 	if err := database.C(mdb.col).Find(query).One(&item); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of Token type from db"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return tokens.Token{}, ErrNotFound
+		}
 		return tokens.Token{}, err
 	}
 
@@ -503,47 +522,32 @@ func (mdb *TokenDB) Update(ctx context.Context, publicID string, elem tokens.Tok
 
 	query := bson.M{"public_id": publicID}
 
-	if fielder, ok := interface{}(elem).(TokenFields); ok {
-		fields, err := fielder.Fields()
-		if err != nil {
-			mdb.metrics.Emit(
-				metrics.Errorf("Failed to get Fields() for Token record"),
-				metrics.With("collection", mdb.col),
-				metrics.With("elem", elem),
-				metrics.With("error", err.Error()),
-			)
-			return err
-		}
-
-		if err := database.C(mdb.col).Update(query, fields); err != nil {
-			mdb.metrics.Emit(metrics.Errorf("Failed to update Token record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
-			return err
-		}
-
+	fields, err := elem.Fields()
+	if err != nil {
 		mdb.metrics.Emit(
-			metrics.Info("Create record"),
+			metrics.Errorf("Failed to get Fields() for Token record"),
 			metrics.With("collection", mdb.col),
-			metrics.With("query", query),
-			metrics.With("data", fields),
-			metrics.With("public_id", publicID),
+			metrics.With("elem", elem),
+			metrics.With("error", err.Error()),
 		)
-
-		return nil
-	}
-
-	queryData := bson.M(map[string]interface{}{
-
-		"public_id": elem.PublicID,
-
-		"target_id": elem.TargetID,
-
-		"value": elem.Value,
-	})
-
-	if err := database.C(mdb.col).Update(query, queryData); err != nil {
-		mdb.metrics.Emit(metrics.Errorf("Failed to update Token record"), metrics.With("collection", mdb.col), metrics.With("query", query), metrics.With("data", queryData), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
 	}
+
+	if err := database.C(mdb.col).Update(query, fields); err != nil {
+		mdb.metrics.Emit(metrics.Errorf("Failed to update Token record"), metrics.With("query", query), metrics.With("public_id", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
+		return err
+	}
+
+	mdb.metrics.Emit(
+		metrics.Info("Create record"),
+		metrics.With("collection", mdb.col),
+		metrics.With("query", query),
+		metrics.With("data", fields),
+		metrics.With("public_id", publicID),
+	)
 
 	mdb.metrics.Emit(metrics.Info("Update record"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("query", query))
 
@@ -576,6 +580,9 @@ func (mdb *TokenDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error
 
 	if err := fx(database.C(mdb.col)); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+		if err == mgo.ErrNotFound {
+			return ErrNotFound
+		}
 		return err
 	}
 

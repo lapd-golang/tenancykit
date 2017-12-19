@@ -6,9 +6,10 @@ import (
 	"github.com/gokit/tenancykit"
 )
 
-// UserSessionBackend defines a backend which represents the giving
+// UserSessionDBBackend defines a backend which represents the giving
 // methods exposed by the DB implementation for the giving type UserSession.
-type UserSessionBackend interface {
+// @implement
+type UserSessionDBBackend interface {
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem tenancykit.UserSession) error
 	Get(ctx context.Context, publicID string) (tenancykit.UserSession, error)

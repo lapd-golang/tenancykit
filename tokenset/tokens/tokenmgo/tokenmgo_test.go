@@ -27,11 +27,11 @@ var (
 
 	config = mongo.Config{
 		Mode:     mgo.Monotonic,
-		DB:       os.Getenv("tokens_MONGO_DB"),
-		Host:     os.Getenv("tokens_MONGO_HOST"),
-		User:     os.Getenv("tokens_MONGO_USER"),
-		AuthDB:   os.Getenv("tokens_MONGO_AUTHDB"),
-		Password: os.Getenv("tokens_MONGO_PASSWORD"),
+		DB:       os.Getenv("tokens_MONGO_TEST_DB"),
+		Host:     os.Getenv("tokens_MONGO_TEST_HOST"),
+		User:     os.Getenv("tokens_MONGO_TEST_USER"),
+		AuthDB:   os.Getenv("tokens_MONGO_TEST_AUTHDB"),
+		Password: os.Getenv("tokens_MONGO_TEST_PASSWORD"),
 	}
 
 	testCol = "token_test_collection"
@@ -84,7 +84,7 @@ func TestGetAllToken(t *testing.T) {
 	}
 	tests.Passed("Successfully added record for Token into db.")
 
-	records, _, err := api.GetAllPerPage(ctx, "asc", "public_id", -1, -1)
+	records, _, err := api.GetAll(ctx, "asc", "public_id", -1, -1)
 	if err != nil {
 		tests.Failed("Successfully retrieved all records for Token from db: %+q.", err)
 	}

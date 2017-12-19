@@ -16,8 +16,8 @@ import (
 type UserAPI struct {
 	userapi.UserHTTP
 	TwoFactorCodeLength int
-	Backend             types.UserBackend
-	TenantBackend       types.TenantBackend
+	Backend             types.UserDBBackend
+	TenantBackend       types.TenantDBBackend
 	TFBackend           backends.TFBackend
 	IsNotFoundErrorFunc func(error) bool
 }

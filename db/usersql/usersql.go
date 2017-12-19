@@ -131,8 +131,9 @@ func (mdb *UserDB) Create(ctx context.Context, elem tenancykit.User) error {
 
 // GetAllByOrder attempts to retrieve all elements from db using provided order and orderby
 // values.
-func (mdb *UserDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.User, int, error) {
-	return mdb.GetAll(ctx, order, orderby, -1, -1)
+func (mdb *UserDB) GetAllByOrder(ctx context.Context, order string, orderby string) ([]tenancykit.User, error) {
+	res, _, err := mdb.GetAll(ctx, order, orderby, -1, -1)
+	return res, err
 }
 
 // GetAll retrieves all records from the db and returns a slice of tenancykit.User type.
@@ -177,7 +178,7 @@ func (mdb *UserDB) GetAll(ctx context.Context, order string, orderby string, pag
 // returns the tenancykit.User type.
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given User struct.
-func (mdb *UserDB) GetByField(ctx context.Context, key string, value string) (tenancykit.User, error) {
+func (mdb *UserDB) GetByField(ctx context.Context, key string, value interface{}) (tenancykit.User, error) {
 	m := metrics.NewTrace("UserDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Get"), metrics.With(key, value), metrics.WithTrace(m.End()))
 
