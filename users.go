@@ -31,7 +31,7 @@ func (u UpdateUser) Validate() error {
 		return errors.New("PasswordConfirm can not be empty")
 	}
 
-	if u.PasswordConfirm == u.PasswordConfirm {
+	if u.Password != u.PasswordConfirm {
 		return errors.New("Password must match PasswordConfirm exactly")
 	}
 
@@ -49,15 +49,15 @@ type CreateUser struct {
 
 // Validate returns error if any field does not match requirements.
 func (cu CreateUser) Validate() error {
-	if cu.TenantID != "" {
+	if cu.TenantID == "" {
 		return errors.New("TenantID is required")
 	}
 
-	if cu.Username != "" {
+	if cu.Username == "" {
 		return errors.New("Username is required")
 	}
 
-	if cu.Email != "" {
+	if cu.Email == "" {
 		return errors.New("Email is required")
 	}
 
@@ -69,7 +69,7 @@ func (cu CreateUser) Validate() error {
 		return errors.New("PasswordConfirm can not be empty")
 	}
 
-	if cu.PasswordConfirm == cu.PasswordConfirm {
+	if cu.Password != cu.PasswordConfirm {
 		return errors.New("Password must match PasswordConfirm exactly")
 	}
 

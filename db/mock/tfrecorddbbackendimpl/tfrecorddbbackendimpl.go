@@ -1,9 +1,9 @@
 package tfrecorddbbackendimpl
 
 import (
-	context "github.com/influx6/faux/context"
-
 	tenancykit "github.com/gokit/tenancykit"
+
+	context "github.com/influx6/faux/context"
 )
 
 // TFRecordDBBackendImpl defines a concrete struct which implements the methods for the

@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"minus@Roomm.name",
+    "email":	"tFerguson@Skipstorm.edu",
 
-    "password":	"qnaqph36z8ecxkpj9tjc",
+    "password":	"q7ezleavqkq8wl68c0t3",
 
     "expiration":	nil
 
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "expires":	"2017-12-20 10:14:31.925051 +0000 UTC",
+    "user_id":	"npq4kpht1xs66hxybqf1",
 
-    "user_id":	"kdlg5ohibficdm0emp64",
+    "public_id":	"xxp52qmmnuycur08sampwzfe76djgc",
 
-    "public_id":	"g3u9cqd38fdmsrxqhi0voyepm34ktj",
+    "token":	"f1bgcp7s3j6cm9ns9ud6",
 
-    "token":	"xlj8e2g3wvrfrj3qfkoi"
+    "expires":	"2017-12-20 12:28:53.677854 +0000 UTC"
 
 }
 ```
@@ -101,13 +101,13 @@ Success: 200
 {
 
 
-    "token":	"kxi69dtpxo656zbdpypz",
+    "user_id":	"vmgmxb0dfkbmqtqexts1",
 
-    "expires":	"2017-12-20 10:14:31.925434 +0000 UTC",
+    "public_id":	"o26nl06blbl3vbj9g38uxhfu9s5ya1",
 
-    "user_id":	"32kx3kwzz7oridkowxxq",
+    "token":	"aigydplzs62bfhdr7rpv",
 
-    "public_id":	"lsi8wnhramtxaf4kpzxrw5svn37ono"
+    "expires":	"2017-12-20 12:28:53.678401 +0000 UTC"
 
 }
 ```
@@ -134,24 +134,24 @@ Success: 200
 [{
 
 
-    "public_id":	"xv4a3o2i40e63dfrik991cy0qejg3e",
+    "user_id":	"o298fersr91rorn9kzv6",
 
-    "token":	"ptqjtu1xle25aj0ih2dy",
+    "public_id":	"rvntmi9kuwk1miixk3eruz61olygpw",
 
-    "expires":	"2017-12-20 10:14:31.925812 +0000 UTC",
+    "token":	"387fjfk8xab7b2e8oz4x",
 
-    "user_id":	"bbdp1pcjgiip8s5px98r"
+    "expires":	"2017-12-20 12:28:53.678866 +0000 UTC"
 
 },{
 
 
-    "token":	"bb0dkec7g1kuzkaa2gbi",
+    "user_id":	"cauv298tv0l3nryej3h3",
 
-    "expires":	"2017-12-20 10:14:31.926106 +0000 UTC",
+    "public_id":	"z8e6tucic8f2zhxb9t91w9jlnf4xqz",
 
-    "user_id":	"sp1g3wkhbx41hvrn80f1",
+    "token":	"szezz8mvhhchu3zk8jz1",
 
-    "public_id":	"kk88n8ygecy31uewlvazuihlvfsqny"
+    "expires":	"2017-12-20 12:28:53.679389 +0000 UTC"
 
 }]
 ```
@@ -178,13 +178,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"6uv70cf28vdeu0dabvog",
+    "user_id":	"jfffcnzy086t4yf8zyxy",
 
-    "public_id":	"rodvcwb1o54t4ss6zwjxqfkd2caed8",
+    "public_id":	"0to49w742bfrmbplfoc21d4500ykdm",
 
-    "token":	"4rhh3rf35isocowpjqke",
+    "token":	"kxvghs032kz8490peyb1",
 
-    "expires":	"2017-12-20 10:14:31.926418 +0000 UTC"
+    "expires":	"2017-12-20 12:28:53.680104 +0000 UTC"
 
 }
 ```

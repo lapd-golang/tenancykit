@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -18,8 +19,8 @@ func UserBackend() userdbbackendimpl.UserDBBackendImpl {
 	db := make(map[string]tenancykit.User)
 
 	mocker.CreateFunc = func(ctx context.Context, elem tenancykit.User) error {
-		if _, exist := db[elem.PublicID]; !exist {
-			return mock.ErrNotFound
+		if _, exist := db[elem.PublicID]; exist {
+			return errors.New("record already exists")
 		}
 
 		db[elem.PublicID] = elem

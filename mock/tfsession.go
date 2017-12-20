@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -18,8 +19,8 @@ func TFSessionBackend() twofactorsessiondbbackendimpl.TwoFactorSessionDBBackendI
 	db := make(map[string]tenancykit.TwoFactorSession)
 
 	mocker.CreateFunc = func(ctx context.Context, elem tenancykit.TwoFactorSession) error {
-		if _, exist := db[elem.PublicID]; !exist {
-			return mock.ErrNotFound
+		if _, exist := db[elem.PublicID]; exist {
+			return errors.New("record already exists")
 		}
 
 		db[elem.PublicID] = elem

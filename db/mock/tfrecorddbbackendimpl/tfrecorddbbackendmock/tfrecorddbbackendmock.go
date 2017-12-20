@@ -8,9 +8,9 @@ import (
 
 	"github.com/influx6/faux/reflection"
 
-	context "github.com/influx6/faux/context"
-
 	tenancykit "github.com/gokit/tenancykit"
+
+	context "github.com/influx6/faux/context"
 )
 
 // MethodCallForDelete defines a type which holds meta-details about the giving calls associated

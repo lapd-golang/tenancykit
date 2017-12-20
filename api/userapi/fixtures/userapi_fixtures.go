@@ -11,51 +11,51 @@ var (
 	UserJSON = `{
 
 
-    "email":	"sStephens@Trunyx.biz",
-
-    "tenant_id":	"x",
-
-    "private_id":	"qul4fd2dn6mucx2",
-
-    "created_at":	"2017-12-19 14:01:02.742844 +0000 UTC",
-
-    "username":	"y",
-
-    "hash":	"i",
+    "hash":	"vlfhvc9opr8xsdairh6t",
 
     "two_factor_auth":	true,
 
-    "updated_at":	"2017-12-19 14:01:02.742851 +0000 UTC",
+    "created_at":	"2017-12-20 12:28:53.779193 +0000 UTC",
 
-    "public_id":	"nxoq9fp12v15twf"
+    "username":	"et",
+
+    "public_id":	"nyatdn8sogvh5lo141ivihjbxd6w1t",
+
+    "tenant_id":	"bpd5cfzwlq65n6l1o0ie",
+
+    "private_id":	"m96hdcsbsczpa7bpi2m75szpbouj29",
+
+    "email":	"CarolynFernandez@Skyble.org",
+
+    "updated_at":	"2017-12-20 12:28:53.779211 +0000 UTC"
 
 }`
 
 	UserCreateJSON = `{
 
 
-    "password":	"z",
+    "email":	"9Graham@Babbleset.edu",
 
-    "password_confirm":	"m",
+    "username":	"qCollins",
 
-    "tenant_id":	"d",
+    "password":	"k0b2mnx7enhuq2vygigj",
 
-    "email":	"LillianBradley@Ainyx.name",
+    "password_confirm":	"2lpojwe4a224aca7f5kf",
 
-    "username":	"w"
+    "tenant_id":	"jjza0qvdc3kjcrwqbabj"
 
 }`
 
 	UserUpdateJSON = `{
 
 
-    "password":	"f",
+    "password":	"b6fmtv3jiglst8r9y0ul",
 
-    "password_confirm":	"v",
+    "password_confirm":	"v5tr32np8ubd7z20q6h6",
 
     "is_password_update":	true,
 
-    "email":	"LindaLawson@Vinte.net"
+    "email":	"unde@Divape.net"
 
 }`
 )
