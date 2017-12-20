@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"JaniceJohnston@Eadel.gov",
+    "email":	"ElizabethHicks@Agimba.org",
 
-    "password":	"n7i11upmvd4k4xc8jgml",
+    "password":	"yb4uihnc2bnkjlynzge6",
 
-    "expiration":	nil
+    "expiration":	null
 
 }
 ```
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "public_id":	"n1gw70e9dlqlfmyzez8qthke9k80jr",
+    "expires":	"2017-12-20 19:23:27.468368 +0000 UTC",
 
-    "token":	"d1kz97kq3bj8l1lp1e7i",
+    "user_id":	"hdfg14giqvos1m68g4x4",
 
-    "expires":	"2017-12-20 15:06:24.768896 +0000 UTC",
+    "public_id":	"lqudcnxu1n93aflz06x5afsm9iy705",
 
-    "user_id":	"l2a7gfn8951gm9v4v0sl"
+    "token":	"nqf22nlke26pg87exz7t"
 
 }
 ```
@@ -101,13 +101,13 @@ Success: 200
 {
 
 
-    "public_id":	"31u8hwzgjwla706oqnxgvgjey80bvf",
+    "user_id":	"3848r6kh8nzj0wqcvzh7",
 
-    "token":	"uvdrbplod7avwsrrrbud",
+    "public_id":	"smvbeht0wxmx046ka6keuuyclpderj",
 
-    "expires":	"2017-12-20 15:06:24.769429 +0000 UTC",
+    "token":	"pdxign056qxl27nndefz",
 
-    "user_id":	"sfro2m22m7m9h60kji2k"
+    "expires":	"2017-12-20 19:23:27.468779 +0000 UTC"
 
 }
 ```
@@ -134,24 +134,24 @@ Success: 200
 [{
 
 
-    "user_id":	"r06ea7p2z5md22c3epiz",
+    "user_id":	"jf9mvtfx7b1sumj5rx1q",
 
-    "public_id":	"bqddq4wbi8o9oltfxhckg0xadwv0ed",
+    "public_id":	"pgvrxo2g0zfjyc2b6x7s21hs4kj7qw",
 
-    "token":	"z90se1hmcffth25b6zxp",
+    "token":	"kldcxd6hhgbd4hv02u1v",
 
-    "expires":	"2017-12-20 15:06:24.769935 +0000 UTC"
+    "expires":	"2017-12-20 19:23:27.469536 +0000 UTC"
 
 },{
 
 
-    "token":	"yu3oz74nxt2mq1yib2zq",
+    "user_id":	"e64vq6mrvlj1m5etxdqh",
 
-    "expires":	"2017-12-20 15:06:24.770311 +0000 UTC",
+    "public_id":	"epzpu1yhai8jxg55xuz3dxzzd3o2ie",
 
-    "user_id":	"d7gvlbh24cm7u5la3kph",
+    "token":	"def5xjh4tsqqa4k8crrd",
 
-    "public_id":	"d21mtfu3gyu4l7o36s6sxr1er00fqa"
+    "expires":	"2017-12-20 19:23:27.47034 +0000 UTC"
 
 }]
 ```
@@ -178,13 +178,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "token":	"7xev1lasjeq7xgvvzrab",
+    "user_id":	"0p75qjf1msu3t3obpuzp",
 
-    "expires":	"2017-12-20 15:06:24.771023 +0000 UTC",
+    "public_id":	"f2hbcso2825htadjrxejhawlzd6vtp",
 
-    "user_id":	"trik1r0rt1j6pibhmk0x",
+    "token":	"qz7djagej9ehc76ijsup",
 
-    "public_id":	"us6x8m1lzofjfeqyyb02xq2vawdtjp"
+    "expires":	"2017-12-20 19:23:27.471169 +0000 UTC"
 
 }
 ```

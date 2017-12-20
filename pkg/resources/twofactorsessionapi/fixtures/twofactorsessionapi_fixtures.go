@@ -11,9 +11,9 @@ var (
 	TwoFactorSessionJSON = `{
 
 
-    "user_id":	"u8kya5g50adlhr9hugb1",
+    "user_id":	"znece3qporg34d4r81ph",
 
-    "public_id":	"lwmx3z4mgv9scflofw1ulm8rmt6p3n",
+    "public_id":	"3h6mqo26c77uy33itcrqy64j3murqg",
 
     "bool":	true
 
@@ -22,9 +22,9 @@ var (
 	TwoFactorSessionCreateJSON = `{
 
 
-    "user_id":	"4d4etgs0vfidp5f2rwmd",
+    "user_id":	"jwfyrie26gq0ldm2gnxw",
 
-    "public_id":	"0xf9939exv8t1011ngmoy2h698cfsj",
+    "public_id":	"ewdmivvyvcm2wh2w71qvo64cgg2vuw",
 
     "bool":	true
 
@@ -33,11 +33,11 @@ var (
 	TwoFactorSessionUpdateJSON = `{
 
 
-    "bool":	true,
+    "user_id":	"i08bdyf74tdqvzy0m1rs",
 
-    "user_id":	"mu5e5ri8kiy700j803kd",
+    "public_id":	"yvmct00yvxqzphrt9ytpdjk0wa6c35",
 
-    "public_id":	"60e16ex7s6scbw402ckw79ce2btsrt"
+    "bool":	true
 
 }`
 )

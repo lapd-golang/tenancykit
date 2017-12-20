@@ -11,51 +11,51 @@ var (
 	UserJSON = `{
 
 
-    "updated_at":	"2017-12-20 14:55:00.86284 +0000 UTC",
+    "username":	"cLewis",
 
-    "username":	"DavidLopez",
+    "tenant_id":	"cl0hc7bjq6j54uoz46ls",
 
-    "public_id":	"ewecc624bna8fwp2hokpuq1gx89fb2",
+    "private_id":	"5ggc9clurwx7c0kdcg81qae5o6ejfd",
 
-    "private_id":	"3udjxgk9ecpgxcy25haloaacs7mwm2",
+    "hash":	"sc63j1w71z8zsprzxrhk",
 
-    "hash":	"zq7d6ljg2u4v996rf0my",
+    "created_at":	"2017-12-20 19:23:27.252689 +0000 UTC",
+
+    "email":	"dolores_eum_aliquid@Linkbridge.net",
+
+    "public_id":	"9f7ega7d9ag3dd7t8vhig27ew5n0hy",
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-20 14:55:00.862829 +0000 UTC",
-
-    "email":	"AlanMendoza@Leenti.biz",
-
-    "tenant_id":	"yfpa8ps5ou9erbkgaca4"
+    "updated_at":	"2017-12-20 19:23:27.252699 +0000 UTC"
 
 }`
 
 	UserCreateJSON = `{
 
 
-    "tenant_id":	"vh3fsmm9ski2yc9z24a0",
+    "password_confirm":	"84afzu9ygh3h80rpr69w",
 
-    "email":	"CarlosPatterson@Mycat.com",
+    "tenant_id":	"a156s71p62o5oveioqol",
 
-    "username":	"jWashington",
+    "email":	"PamelaMorales@Twitterbridge.biz",
 
-    "password":	"nljmiqaam215zfxzwnc2",
+    "username":	"mFranklin",
 
-    "password_confirm":	"a261wj2viub5js4wfcz5"
+    "password":	"5cqzwbe6ybt5eugvd0ii"
 
 }`
 
 	UserUpdateJSON = `{
 
 
-    "password":	"55y9c4fc54ruu1813r35",
+    "email":	"CraigRamos@Mybuzz.net",
 
-    "password_confirm":	"4166gjxbq39pf188ijwz",
+    "password":	"78iv8wes28sgu83xkwdd",
 
-    "is_password_update":	true,
+    "password_confirm":	"ep4yjq55o9lic9dm39i4",
 
-    "email":	"kBurns@Roombo.net"
+    "is_password_update":	true
 
 }`
 )

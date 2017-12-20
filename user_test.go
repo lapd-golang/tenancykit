@@ -205,6 +205,8 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 		tests.Passed("Should have received atleast one record from backend")
 
 		user := records[0]
+
+		beforeUsername := user.Username
 		user.Username = "jackman201"
 
 		updateBodyJSON, err := json.Marshal(user)
@@ -228,6 +230,20 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 			tests.Failed("Should have received Status 204")
 		}
 		tests.Passed("Should have received Status 204")
+
+		updatedRecord, err := db.Get(context.New(), user.PublicID)
+		if err != nil {
+			tests.FailedWithError(err, "Should have succesfully retrieved update record")
+		}
+		tests.Passed("Should have succesfully retrieved update record")
+
+		if updatedRecord.Username != user.Username {
+			tests.Info("Before: %+q", beforeUsername)
+			tests.Info("After: %+q", updatedRecord.Username)
+			tests.Info("Expected: %+q", user.Username)
+			tests.Failed("Should have successfully update record field")
+		}
+		tests.Passed("Should have successfully update record field")
 	}
 }
 
@@ -261,5 +277,10 @@ func testUserDelete(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 			tests.Failed("Should have received Status 204")
 		}
 		tests.Passed("Should have received Status 204")
+
+		if _, err := db.Get(context.New(), user.PublicID); err == nil {
+			tests.Failed("Should have succesfully failed to get deleted record")
+		}
+		tests.Passed("Should have succesfully failed to get deleted record")
 	}
 }

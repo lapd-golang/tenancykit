@@ -35,13 +35,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "max_length":	10,
+    "user":	null,
 
-    "tenant":	nil,
+    "domain":	"JumpXS.edu",
 
-    "user":	nil,
+    "max_length":	8,
 
-    "domain":	"Zazio.info"
+    "tenant":	null
 
 }
 ```
@@ -63,23 +63,23 @@ Success: 201
 {
 
 
-    "public_id":	"5du3qhlqullok2s8ggk4u3zz8gcx99",
+    "user_id":	"v57rn85dmgli4muyo5fo",
 
-    "created_at":	"2017-12-20 15:06:24.610045 +0000 UTC",
+    "totp":	"i18oeovykz9khmkdcql5",
 
-    "updated_at":	"2017-12-20 15:06:24.610054 +0000 UTC",
+    "public_id":	"8qekrdkbryb8pp26uvlw52b759ix3s",
 
-    "key":	"002br4efph17x1qe7zuk",
+    "tenant_id":	"7jauf6nks6raoakln4d0",
 
-    "domain":	"Zoombox.biz",
+    "key":	"8o2vfx2pxce16ddf43t4",
 
-    "user_id":	"9bpwv8fpqkuua2eox5pj",
+    "domain":	"Skibox.edu",
 
-    "totp":	"2bq2lfk1fnw86x64lkhr",
+    "code_length":	11,
 
-    "tenant_id":	"z28y23svb40riirkvxso",
+    "created_at":	"2017-12-20 19:23:27.398534 +0000 UTC",
 
-    "code_length":	11
+    "updated_at":	"2017-12-20 19:23:27.398542 +0000 UTC"
 
 }
 ```
@@ -113,23 +113,23 @@ Success: 200
 {
 
 
-    "user_id":	"3342xurai4ijrcs3la7u",
+    "updated_at":	"2017-12-20 19:23:27.399075 +0000 UTC",
 
-    "totp":	"440ag17zq0x8iepog6jg",
+    "key":	"i3wn5a0r11ejpxt1xlfy",
 
-    "created_at":	"2017-12-20 15:06:24.610601 +0000 UTC",
+    "user_id":	"btqhh6663sx09c3xa9r8",
 
-    "tenant_id":	"aa894brg2m12h8i1nikt",
+    "tenant_id":	"y3z7qws1trraeq5i3n6u",
 
-    "code_length":	1,
+    "created_at":	"2017-12-20 19:23:27.39907 +0000 UTC",
 
-    "updated_at":	"2017-12-20 15:06:24.610607 +0000 UTC",
+    "domain":	"Wordtune.mil",
 
-    "key":	"4fbffh5lht65gpgq1mrh",
+    "totp":	"mi9b60c5wklve2w5soet",
 
-    "domain":	"Skivee.name",
+    "public_id":	"atsvexvjbvf0ky6mve2bddmgttktva",
 
-    "public_id":	"pywp9j7g4wku1xrv6boaa4wyc93ssb"
+    "code_length":	10
 
 }
 ```
@@ -156,44 +156,44 @@ Success: 200
 [{
 
 
+    "created_at":	"2017-12-20 19:23:27.399591 +0000 UTC",
+
+    "updated_at":	"2017-12-20 19:23:27.399595 +0000 UTC",
+
+    "user_id":	"1n1w91d7iak4ljuz4fmt",
+
+    "tenant_id":	"o23ecnpi7wwzry5omyjh",
+
+    "totp":	"udkv42cjrlektcdnsaxl",
+
+    "public_id":	"s54n2wxbfkgqdhh1x0bgtwizj5syrs",
+
     "code_length":	11,
 
-    "key":	"tyn746nk5vpe27g8zc5d",
+    "key":	"ltvy0219yvmb1y5nm0yj",
 
-    "totp":	"1h9my4l9ltcigbzzsjl9",
-
-    "public_id":	"b6ok5plrrpt76bxgja5nx55rnsbus4",
-
-    "tenant_id":	"pom20qq3m3tiafc32w3h",
-
-    "created_at":	"2017-12-20 15:06:24.611208 +0000 UTC",
-
-    "updated_at":	"2017-12-20 15:06:24.611214 +0000 UTC",
-
-    "domain":	"Tanoodle.name",
-
-    "user_id":	"4emvyy84e83hugudefel"
+    "domain":	"Cogibox.biz"
 
 },{
 
 
-    "tenant_id":	"mbt8u787fu2w65n1gown",
+    "key":	"il76v72gntq2mg2v9lsg",
 
-    "created_at":	"2017-12-20 15:06:24.61257 +0000 UTC",
+    "domain":	"Viva.name",
 
-    "updated_at":	"2017-12-20 15:06:24.612582 +0000 UTC",
+    "totp":	"sogtxesh7hk7183x66rf",
 
-    "domain":	"Twitternation.net",
+    "tenant_id":	"ygipsvfm9p5thdtf326u",
 
-    "user_id":	"vu8rkl07xrsnmefvy1bx",
+    "code_length":	13,
 
-    "public_id":	"mk0ovv9c6e8rnmlst1vvk9mxji39n9",
+    "user_id":	"1bxv5dd9op42w6kwa238",
 
-    "code_length":	17,
+    "public_id":	"6yti5obx2klfxpcx4ajtih7m1ynnbc",
 
-    "key":	"5ixjsl62sxv3jwzwgyx7",
+    "created_at":	"2017-12-20 19:23:27.400592 +0000 UTC",
 
-    "totp":	"acegxyl74dikbav7q9p3"
+    "updated_at":	"2017-12-20 19:23:27.4006 +0000 UTC"
 
 }]
 ```
@@ -220,23 +220,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "tenant_id":	"k4y37fgt60uxbm6nx4jo",
+    "user_id":	"upzz245egg3q0wqc8lqs",
 
-    "code_length":	0,
+    "public_id":	"b3a2bstha8kzxpv34l8jsd2zx0fehn",
 
-    "updated_at":	"2017-12-20 15:06:24.613926 +0000 UTC",
+    "tenant_id":	"ni0y68jty8n5bxzmrdcl",
 
-    "key":	"aqr4h1ozoq1g0nxvmvkb",
+    "code_length":	16,
 
-    "domain":	"Skippad.name",
+    "created_at":	"2017-12-20 19:23:27.401818 +0000 UTC",
 
-    "user_id":	"k3nv2lbnw7v9s75ntp0w",
+    "updated_at":	"2017-12-20 19:23:27.401826 +0000 UTC",
 
-    "totp":	"t42ej5oxpys1coqk9gto",
+    "domain":	"Skajo.org",
 
-    "public_id":	"w8rxluw1qpmbuu95limvta6ij2p1j7",
+    "totp":	"s2pnmzzzrrr5smmeanwj",
 
-    "created_at":	"2017-12-20 15:06:24.613917 +0000 UTC"
+    "key":	"o4ucywfsotvc9ntv1umd"
 
 }
 ```

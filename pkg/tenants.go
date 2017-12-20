@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"errors"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -21,6 +22,19 @@ type CurrentUser struct {
 type CreateTenant struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
+}
+
+// Validate returns error if any field does not match requirements.
+func (cu CreateTenant) Validate() error {
+	if cu.Name == "" {
+		return errors.New("Name is required")
+	}
+
+	if cu.Email == "" {
+		return errors.New("Email is required")
+	}
+
+	return nil
 }
 
 // Tenant defines a structure to represent a giving tenant.

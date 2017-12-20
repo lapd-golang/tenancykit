@@ -22,6 +22,10 @@ type TenantBackend struct {
 // Create modifies the underline types.TenantBackend.Create method to implement
 // the api.tenantapi.Backend interface.
 func (t TenantBackend) Create(ctx context.Context, nt pkg.CreateTenant) (pkg.Tenant, error) {
+	if err := nt.Validate(); err != nil {
+		return pkg.Tenant{}, err
+	}
+
 	newTenant := pkg.NewTenant(nt)
 	return newTenant, t.TenantDBBackend.Create(ctx, newTenant)
 }

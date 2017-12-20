@@ -11,37 +11,37 @@ var (
 	UserSessionJSON = `{
 
 
-    "user_id":	"6723lh7pu04cqhgvd8b2",
+    "user_id":	"aq6hvwb46hndd94xnpw6",
 
-    "public_id":	"s12auas7pkqvepk4a4iekhcrdc5nzs",
+    "public_id":	"l4rg6e9rxi3vni843i9507hmqskoga",
 
-    "token":	"h7o8juca1wy95cmjcdl2",
+    "token":	"h9ez2fr226bnxatlynxp",
 
-    "expires":	"2017-12-20 14:55:01.084024 +0000 UTC"
+    "expires":	"2017-12-20 19:23:27.473238 +0000 UTC"
 
 }`
 
 	UserSessionCreateJSON = `{
 
 
-    "expiration":	nil,
+    "password":	"rhmrp3mu7zvib4lel215",
 
-    "email":	"CarlosHughes@Browsezoom.gov",
+    "expiration":	null,
 
-    "password":	"6q3bzytbvqqgw3yn2x3p"
+    "email":	"hBowman@Vitz.biz"
 
 }`
 
 	UserSessionUpdateJSON = `{
 
 
-    "user_id":	"kw6zkzem84qgj96e3xb3",
+    "user_id":	"8bi0mwleuyqvl2kp3r1f",
 
-    "public_id":	"smxonj1xl6a59nfyvhw5afq584wwsl",
+    "public_id":	"twuy3dv33spvvdeqgyawlaeun28vhe",
 
-    "token":	"ur439n53jlhhor9rd9wb",
+    "token":	"qkop9n13lefezttpc7or",
 
-    "expires":	"2017-12-20 14:55:01.084486 +0000 UTC"
+    "expires":	"2017-12-20 19:23:27.47386 +0000 UTC"
 
 }`
 )
