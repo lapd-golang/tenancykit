@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 	"github.com/influx6/faux/httputil/httptesting"
@@ -64,6 +66,7 @@ func TestUserSessionAPI(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded user record")
 
+	testUserSessionLoginAndLogout(t, userRecord, userCreateBody, tenantRecord, tf, ufsdb)
 	testUserSessionCreate(t, userRecord, userCreateBody, tenantRecord, tf, ufsdb)
 	testUserSessionGetAll(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionGet(t, userRecord, tenantRecord, tf, ufsdb)
@@ -71,6 +74,77 @@ func TestUserSessionAPI(t *testing.T) {
 	testUserSessionDelete(t, userRecord, tenantRecord, tf, ufsdb)
 
 	os.RemoveAll("./keys")
+}
+
+func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
+	tests.Header("When login and logging out using the UserSessionAPI")
+	{
+		var login pkg.CreateUserSession
+		login.Email = user.Email
+		login.Password = usercreate.Password
+		login.Expiration = 24 * time.Hour
+
+		loginBodyJSON, err := json.Marshal(login)
+		if err != nil {
+			tests.Info("JSON: %+s", loginBodyJSON)
+			tests.FailedWithError(err, "Should successfully marshal create user record")
+		}
+		tests.Passed("Should successfully marshal create user record")
+
+		loginResponse := httptest.NewRecorder()
+		logginUser := httptesting.Post("/sessions", bytes.NewBuffer(loginBodyJSON), loginResponse)
+		if err := tf.Login(logginUser); err != nil {
+			tests.FailedWithError(err, "Should have successfully authenticated user")
+		}
+		tests.Passed("Should have successfully authenticated user")
+
+		if loginResponse.Code != http.StatusNoContent {
+			tests.Info("Received Status: ", loginResponse.Code)
+			tests.Failed("Should have received status no 204")
+		}
+		tests.Passed("Should have received status no 204")
+
+		authHeader := loginResponse.Header().Get("Authorization")
+		if strings.TrimSpace(authHeader) == "" {
+			tests.Failed("Should have received Authorization header")
+		}
+		tests.Passed("Should have received Authorization header")
+
+		tests.Info("User Authorization Header: %+q", authHeader)
+
+		newLoginResponse := httptest.NewRecorder()
+		newLogginUser := httptesting.Post("/sessions/login", nil, newLoginResponse)
+		newLogginUser.Request().Header.Set("Authorization", authHeader)
+		if err := tf.GetUser(newLogginUser); err != nil {
+			tests.FailedWithError(err, "Should have successfully authenticated user with header")
+		}
+		tests.Passed("Should have successfully authenticated user with header")
+
+		if newLoginResponse.Code != http.StatusOK {
+			tests.Info("Received Status: %d", newLoginResponse.Code)
+			tests.Failed("Should have received status no 204")
+		}
+		tests.Passed("Should have received status no 204")
+
+		newLogoutResponse := httptest.NewRecorder()
+		newLogoutUser := httptesting.Post("/sessions/login", nil, newLogoutResponse)
+		newLogoutUser.Request().Header.Set("Authorization", authHeader)
+		if err := tf.Logout(newLogoutUser); err != nil {
+			tests.FailedWithError(err, "Should have successfully logged out authenticated user with header")
+		}
+		tests.Passed("Should have successfully logged out authenticated user with header")
+
+		if newLogoutResponse.Code != http.StatusNoContent {
+			tests.Info("Received Status: ", newLogoutResponse.Code)
+			tests.Failed("Should have received status no 204")
+		}
+		tests.Passed("Should have received status no 204")
+
+		if err = tf.GetUser(newLogginUser); err == nil {
+			tests.Failed("Should have failed to authenticate user with header")
+		}
+		tests.Passed("Should have failed to authenticate user with header")
+	}
 }
 
 func testUserSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
@@ -92,7 +166,7 @@ func testUserSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUse
 		tests.Passed("Should successfully marshal create user record")
 
 		createResponse := httptest.NewRecorder()
-		createUser := httptesting.Post("/users", bytes.NewBuffer(createBodyJSON), createResponse)
+		createUser := httptesting.Post("/sessions", bytes.NewBuffer(createBodyJSON), createResponse)
 		if err := tf.Create(createUser); err != nil {
 			tests.Info("JSON: %+s", createBodyJSON)
 			tests.FailedWithError(err, "Should have successfully created user")

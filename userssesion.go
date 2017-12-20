@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -120,6 +121,19 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	// set current user into context.
 	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
 
+	ctx.Status(http.StatusNoContent)
+
+	authValue := fmt.Sprintf("Bearer %s", newSession.UserSessionToken())
+	privateid := base64.StdEncoding.EncodeToString([]byte(authValue))
+
+	ctx.SetHeader("Authorization", authValue)
+	ctx.SetCookie(&http.Cookie{
+		Name:    "Authorization",
+		Value:   privateid,
+		Expires: newSession.Expires,
+		Path:    "/",
+	})
+
 	return nil
 }
 
@@ -159,7 +173,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 		currentUser.Session = &cuSession
 	}
 
-	if currentUser.TFSession == nil {
+	if currentUser.TFSession == nil && currentUser.User.TwoFactorAuth {
 		tfSession, err := us.TFSessionsBackend.GetByField(ctx, "user_id", currentUser.User.PublicID)
 		if err != nil {
 			return httputil.HTTPError{
@@ -178,13 +192,16 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 		}
 	}
 
-	if err = us.TFSessionsBackend.Delete(ctx, currentUser.TFSession.PublicID); err != nil {
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusInternalServerError,
+	if currentUser.TFSession != nil {
+		if err = us.TFSessionsBackend.Delete(ctx, currentUser.TFSession.PublicID); err != nil {
+			return httputil.HTTPError{
+				Err:  err,
+				Code: http.StatusInternalServerError,
+			}
 		}
 	}
 
+	ctx.Status(http.StatusNoContent)
 	return nil
 }
 
@@ -248,6 +265,15 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	if lastCurrentUser, err := pkg.GetCurrentUser(ctx); err == nil {
 		if lastCurrentUser.Session != nil && !lastCurrentUser.Session.Expired() {
 			if lastCurrentUser.Session.ValidateToken(userToken) {
+
+				// Validate session is still valid in db.
+				if _, err := us.SessionBackend.Get(ctx, lastCurrentUser.Session.PublicID); err != nil {
+					return httputil.HTTPError{
+						Err:  err,
+						Code: http.StatusUnauthorized,
+					}
+				}
+
 				return nil
 			}
 		}
@@ -295,7 +321,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	if !session.ValidateToken(token) {
+	if !session.ValidateToken(userToken) {
 		return httputil.HTTPError{
 			Err:  errors.New("Invalid user token from Authorization header"),
 			Code: http.StatusUnauthorized,
