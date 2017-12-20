@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -10,16 +11,26 @@ import (
 
 // UpdateUser defines the set of data sent when updating a users password.
 type UpdateUser struct {
-	Email            string `json:"email"`
-	Password         string `json:"password"`
-	PasswordConfirm  string `json:"password_confirm"`
-	IsPasswordUpdate bool   `json:"is_password_update"`
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	PasswordConfirm string `json:"password_confirm"`
+}
+
+// IsPasswordUpdate returns true/false if the giving update is
+// a password update, basically the password and password confirm
+// fields must not be empty.
+func (u UpdateUser) IsPassWordUpdate() bool {
+	return u.Password != "" && u.PasswordConfirm == u.Password
 }
 
 // Validate returns error if UpdateUser fails to match its value
 // requirements.
 func (u UpdateUser) Validate() error {
-	if !u.IsPasswordUpdate {
+	if !u.IsPassWordUpdate() {
+		if strings.TrimSpace(u.Email) == "" {
+			return errors.New("Email can not be empty")
+		}
+
 		return nil
 	}
 

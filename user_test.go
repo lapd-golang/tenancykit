@@ -24,7 +24,6 @@ import (
 )
 
 func TestUserAPI(t *testing.T) {
-	defer os.RemoveAll("./keys")
 
 	m := metrics.New()
 	userdb := mock.UserBackend()
@@ -57,6 +56,7 @@ func TestUserAPI(t *testing.T) {
 	testUserGet(t, tenantRecord, users, userdb)
 	testUserUpdate(t, tenantRecord, users, userdb)
 	testUserDelete(t, tenantRecord, users, userdb)
+	os.RemoveAll("./keys")
 }
 
 func testUserCreate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
@@ -206,27 +206,31 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 
 		user := records[0]
 
-		beforeUsername := user.Username
-		user.Username = "jackman201"
+		var userUpdate pkg.UpdateUser
 
-		updateBodyJSON, err := json.Marshal(user)
+		beforeUsername := user.Email
+		userUpdate.Email = "djackman201@gmail.com"
+		userUpdate.Password = "bombabastick"
+		userUpdate.PasswordConfirm = userUpdate.Password
+
+		updateBodyJSON, err := json.Marshal(userUpdate)
 		if err != nil {
 			tests.Info("JSON: %+s", user)
 			tests.FailedWithError(err, "Should successfully marshal user record")
 		}
 		tests.Passed("Should successfully marshal user record")
 
-		getUserResponse := httptest.NewRecorder()
-		getUser := httptesting.Put("/users/"+user.PublicID, bytes.NewReader(updateBodyJSON), getUserResponse)
-		getUser.Bag().Set("public_id", user.PublicID)
+		updateUserResponse := httptest.NewRecorder()
+		updateUser := httptesting.Put("/users/"+user.PublicID, bytes.NewReader(updateBodyJSON), updateUserResponse)
+		updateUser.Bag().Set("public_id", user.PublicID)
 
-		if err := users.Update(getUser); err != nil {
-			tests.Info("User: %#v", user)
+		if err := users.Update(updateUser); err != nil {
+			tests.Info("User: %#v", updateBodyJSON)
 			tests.FailedWithError(err, "Should have successfully created user")
 		}
 		tests.Passed("Should have successfully created user")
 
-		if getUserResponse.Code != http.StatusNoContent {
+		if updateUserResponse.Code != http.StatusNoContent {
 			tests.Failed("Should have received Status 204")
 		}
 		tests.Passed("Should have received Status 204")
@@ -237,13 +241,18 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 		}
 		tests.Passed("Should have succesfully retrieved update record")
 
-		if updatedRecord.Username != user.Username {
+		if updatedRecord.Email != userUpdate.Email {
 			tests.Info("Before: %+q", beforeUsername)
-			tests.Info("After: %+q", updatedRecord.Username)
-			tests.Info("Expected: %+q", user.Username)
+			tests.Info("After: %+q", updatedRecord.Email)
+			tests.Info("Expected: %+q", userUpdate.Email)
 			tests.Failed("Should have successfully update record field")
 		}
 		tests.Passed("Should have successfully update record field")
+
+		if err := updatedRecord.Authenticate(userUpdate.Password); err != nil {
+			tests.FailedWithError(err, "Should have successfully confirmed password change")
+		}
+		tests.Passed("Should have successfully confirmed password change")
 	}
 }
 

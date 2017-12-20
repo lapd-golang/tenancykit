@@ -2,7 +2,6 @@ package backends
 
 import (
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gokit/tenancykit/pkg"
@@ -145,8 +144,8 @@ func (u UserBackend) Update(ctx context.Context, id string, updater pkg.UpdateUs
 		return err
 	}
 
-	if !updater.IsPasswordUpdate && strings.TrimSpace(updater.Email) != "" {
-		user.Email = updater.Email
+	user.Email = updater.Email
+	if !updater.IsPassWordUpdate() {
 		return u.UserDBBackend.Update(ctx, id, user)
 	}
 

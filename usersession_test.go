@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
@@ -68,6 +69,8 @@ func TestUserSessionAPI(t *testing.T) {
 	testUserSessionGet(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionUpdate(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionDelete(t, userRecord, tenantRecord, tf, ufsdb)
+
+	os.RemoveAll("./keys")
 }
 
 func testUserSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
