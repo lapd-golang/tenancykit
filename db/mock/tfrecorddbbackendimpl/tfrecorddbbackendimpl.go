@@ -17,7 +17,7 @@ type TFRecordDBBackendImpl struct {
 
 	UpdateFunc func(ctx context.Context, publicID string, elem tenancykit.TFRecord) error
 
-	GetAllByOrderFunc func(ctx context.Context, order string) ([]tenancykit.TFRecord, error)
+	GetAllByOrderFunc func(ctx context.Context, order string, orderBy string) ([]tenancykit.TFRecord, error)
 
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (tenancykit.TFRecord, error)
 
@@ -57,9 +57,9 @@ func (impl TFRecordDBBackendImpl) Update(ctx context.Context, publicID string, e
 }
 
 // GetAllByOrder implements the TFRecordDBBackend.GetAllByOrder() method for TFRecordDBBackendImpl.
-func (impl TFRecordDBBackendImpl) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.TFRecord, error) {
+func (impl TFRecordDBBackendImpl) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.TFRecord, error) {
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 	return ret1, ret2
 
 }

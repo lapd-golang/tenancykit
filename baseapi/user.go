@@ -5,8 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/api/tfrecordapi"
+
+	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/api/userapi"
 	"github.com/gokit/tenancykit/backends"
 	"github.com/gokit/tenancykit/db"
@@ -22,6 +23,7 @@ type UserAPI struct {
 	Backend             types.UserDBBackend
 	TenantBackend       types.TenantDBBackend
 	TFBackend           tfrecordapi.TFRecordBackend
+	TFDBBackend         types.TFRecordDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
 
@@ -29,6 +31,7 @@ type UserAPI struct {
 func NewUserAPI(tfCodeLen int, m metrics.Metrics, users types.UserDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserAPI {
 	var api UserAPI
 	api.Backend = users
+	api.TFDBBackend = tf
 	api.TenantBackend = tenants
 	api.TwoFactorCodeLength = tfCodeLen
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
@@ -101,7 +104,7 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	}
 
 	// Attempt to retrieve twofactor user record if user has one.
-	if tf, err := u.TFBackend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
+	if tf, err := u.TFDBBackend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
 		currentUser.TwoFactor = &tf
 	}
 

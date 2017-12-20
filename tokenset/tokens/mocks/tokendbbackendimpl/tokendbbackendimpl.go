@@ -17,7 +17,7 @@ type TokenDBBackendImpl struct {
 
 	UpdateFunc func(ctx context.Context, publicID string, elem tokens.Token) error
 
-	GetAllByOrderFunc func(ctx context.Context, order string) ([]tokens.Token, error)
+	GetAllByOrderFunc func(ctx context.Context, order string, orderBy string) ([]tokens.Token, error)
 
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (tokens.Token, error)
 
@@ -57,9 +57,9 @@ func (impl TokenDBBackendImpl) Update(ctx context.Context, publicID string, elem
 }
 
 // GetAllByOrder implements the TokenDBBackend.GetAllByOrder() method for TokenDBBackendImpl.
-func (impl TokenDBBackendImpl) GetAllByOrder(ctx context.Context, order string) ([]tokens.Token, error) {
+func (impl TokenDBBackendImpl) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tokens.Token, error) {
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 	return ret1, ret2
 
 }

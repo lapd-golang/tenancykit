@@ -33,7 +33,7 @@ func UserSessionBackend() usersessiondbbackendimpl.UserSessionDBBackendImpl {
 		return nil
 	}
 
-	mocker.GetAllByOrderFunc = func(ctx context.Context, order string) ([]tenancykit.UserSession, error) {
+	mocker.GetAllByOrderFunc = func(ctx context.Context, order string, orderby string) ([]tenancykit.UserSession, error) {
 		var records []tenancykit.UserSession
 		for _, elem := range db {
 			records = append(records, elem)

@@ -186,6 +186,8 @@ type MethodCallForGetAllByOrder struct {
 
 	Order string
 
+	OrderBy string
+
 	// Return values.
 
 	Ret1 []tenancykit.Tenant
@@ -202,6 +204,10 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 	}
 
 	if !reflection.MatchElement(me.Order, other.Order, true) {
+		return false
+	}
+
+	if !reflection.MatchElement(me.OrderBy, other.OrderBy, true) {
 		return false
 	}
 
@@ -464,7 +470,7 @@ func (impl *TenantDBBackendMock) Update(ctx context.Context, publicID string, el
 }
 
 // GetAllByOrder implements the TenantDBBackend.GetAllByOrder() method for the TenantDBBackend.
-func (impl *TenantDBBackendMock) GetAllByOrder(ctx context.Context, order string) (MethodCallForGetAllByOrder, error) {
+func (impl *TenantDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -473,6 +479,8 @@ func (impl *TenantDBBackendMock) GetAllByOrder(ctx context.Context, order string
 	caller.Ctx = ctx
 
 	caller.Order = order
+
+	caller.OrderBy = orderBy
 
 	var found bool
 	for _, possibleCall := range impl.GetAllByOrderMethodCalls {
@@ -592,7 +600,7 @@ type TenantDBBackendSnitch struct {
 	UpdateFunc        func(ctx context.Context, publicID string, elem tenancykit.Tenant) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string) ([]tenancykit.Tenant, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
 	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (tenancykit.Tenant, error)
@@ -730,7 +738,7 @@ func (impl *TenantDBBackendSnitch) Update(ctx context.Context, publicID string, 
 }
 
 // GetAllByOrder implements the TenantDBBackend.GetAllByOrder() method for the TenantDBBackend.
-func (impl *TenantDBBackendSnitch) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.Tenant, error) {
+func (impl *TenantDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -753,7 +761,9 @@ func (impl *TenantDBBackendSnitch) GetAllByOrder(ctx context.Context, order stri
 
 	caller.Order = order
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	caller.OrderBy = orderBy
+
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 
 	caller.Ret1 = ret1
 

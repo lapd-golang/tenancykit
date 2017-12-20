@@ -14,7 +14,7 @@ type TFRecordDBBackend interface {
 	Create(ctx context.Context, elem tenancykit.TFRecord) error
 	Get(ctx context.Context, publicID string) (tenancykit.TFRecord, error)
 	Update(ctx context.Context, publicID string, elem tenancykit.TFRecord) error
-	GetAllByOrder(ctx context.Context, order, orderBy string) ([]tenancykit.TFRecord, error)
+	GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.TFRecord, error)
 	GetByField(ctx context.Context, key string, value interface{}) (tenancykit.TFRecord, error)
 	GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]tenancykit.TFRecord, int, error)
 }

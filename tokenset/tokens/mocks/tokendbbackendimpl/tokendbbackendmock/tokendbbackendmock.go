@@ -186,6 +186,8 @@ type MethodCallForGetAllByOrder struct {
 
 	Order string
 
+	OrderBy string
+
 	// Return values.
 
 	Ret1 []tokens.Token
@@ -202,6 +204,10 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 	}
 
 	if !reflection.MatchElement(me.Order, other.Order, true) {
+		return false
+	}
+
+	if !reflection.MatchElement(me.OrderBy, other.OrderBy, true) {
 		return false
 	}
 
@@ -464,7 +470,7 @@ func (impl *TokenDBBackendMock) Update(ctx context.Context, publicID string, ele
 }
 
 // GetAllByOrder implements the TokenDBBackend.GetAllByOrder() method for the TokenDBBackend.
-func (impl *TokenDBBackendMock) GetAllByOrder(ctx context.Context, order string) (MethodCallForGetAllByOrder, error) {
+func (impl *TokenDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -473,6 +479,8 @@ func (impl *TokenDBBackendMock) GetAllByOrder(ctx context.Context, order string)
 	caller.Ctx = ctx
 
 	caller.Order = order
+
+	caller.OrderBy = orderBy
 
 	var found bool
 	for _, possibleCall := range impl.GetAllByOrderMethodCalls {
@@ -592,7 +600,7 @@ type TokenDBBackendSnitch struct {
 	UpdateFunc        func(ctx context.Context, publicID string, elem tokens.Token) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string) ([]tokens.Token, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]tokens.Token, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
 	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (tokens.Token, error)
@@ -730,7 +738,7 @@ func (impl *TokenDBBackendSnitch) Update(ctx context.Context, publicID string, e
 }
 
 // GetAllByOrder implements the TokenDBBackend.GetAllByOrder() method for the TokenDBBackend.
-func (impl *TokenDBBackendSnitch) GetAllByOrder(ctx context.Context, order string) ([]tokens.Token, error) {
+func (impl *TokenDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tokens.Token, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -753,7 +761,9 @@ func (impl *TokenDBBackendSnitch) GetAllByOrder(ctx context.Context, order strin
 
 	caller.Order = order
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	caller.OrderBy = orderBy
+
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 
 	caller.Ret1 = ret1
 

@@ -8,9 +8,6 @@ import (
 	"strings"
 
 	"github.com/gokit/tenancykit"
-	"github.com/gokit/tenancykit/api/tfrecordapi"
-	"github.com/gokit/tenancykit/api/twofactorsessionapi"
-	"github.com/gokit/tenancykit/api/userapi"
 	"github.com/gokit/tenancykit/api/usersessionapi"
 	"github.com/gokit/tenancykit/backends"
 	"github.com/gokit/tenancykit/db"
@@ -23,28 +20,30 @@ import (
 // methods that expose more functionality.
 type UserSessionAPI struct {
 	usersessionapi.UserSessionHTTP
-	Backend             userapi.UserBackend
+	Backend             usersessionapi.UserSessionBackend
+	SessionBackend      types.UserSessionDBBackend
+	UserBackend         types.UserDBBackend
 	TenantBackend       types.TenantDBBackend
-	TFBackend           tfrecordapi.TFRecordBackend
-	TFSessionsBackend   twofactorsessionapi.TwoFactorSessionBackend
+	TFBackend           types.TFRecordDBBackend
+	TFSessionsBackend   types.TwoFactorSessionDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewUserSessionAPI returns a new instance of UserSessionAPI.
 func NewUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions types.UserSessionDBBackend, tfsessions types.TwoFactorSessionDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserSessionAPI {
 	var api UserSessionAPI
+	api.TFBackend = tf
 	api.TenantBackend = tenants
+	api.UserBackend = users
+	api.SessionBackend = sessions
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
-	api.Backend = backends.UserBackend{UserDBBackend: users}
-	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
-	api.TFSessionsBackend = backends.TwoFactorSessionBackend{
-		TwoFactorSessionDBBackend: tfsessions,
-	}
-
-	api.UserSessionHTTP = usersessionapi.New(m, backends.UserSessionBackend{
+	api.TFSessionsBackend = tfsessions
+	api.Backend = backends.UserSessionBackend{
 		UserBackend:          users,
 		UserSessionDBBackend: sessions,
-	})
+	}
+
+	api.UserSessionHTTP = usersessionapi.New(m, api.Backend)
 
 	return api
 }
@@ -149,7 +148,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 	}
 
 	if currentUser.Session == nil {
-		cuSession, err := us.Backend.GetByField(ctx, "user_id", currentUser.User.PublicID)
+		cuSession, err := us.SessionBackend.GetByField(ctx, "user_id", currentUser.User.PublicID)
 		if err != nil {
 			return httputil.HTTPError{
 				Err:  err,
@@ -254,7 +253,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	user, err := us.Backend.Get(ctx, userID)
+	user, err := us.UserBackend.Get(ctx, userID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -268,7 +267,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	session, err := us.Backend.GetByField(ctx, "user_id", user.PublicID)
+	session, err := us.SessionBackend.GetByField(ctx, "user_id", user.PublicID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -283,7 +282,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	}
 
 	if session.Expired() {
-		if err := us.Backend.Delete(ctx, session.PublicID); err != nil {
+		if err := us.SessionBackend.Delete(ctx, session.PublicID); err != nil {
 			return httputil.HTTPError{
 				Err:  err,
 				Code: http.StatusInternalServerError,

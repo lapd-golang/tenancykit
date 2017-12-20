@@ -14,7 +14,7 @@ type TenantDBBackend interface {
 	Create(ctx context.Context, elem tenancykit.Tenant) error
 	Get(ctx context.Context, publicID string) (tenancykit.Tenant, error)
 	Update(ctx context.Context, publicID string, elem tenancykit.Tenant) error
-	GetAllByOrder(ctx context.Context, order, orderBy string) ([]tenancykit.Tenant, error)
+	GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error)
 	GetByField(ctx context.Context, key string, value interface{}) (tenancykit.Tenant, error)
 	GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]tenancykit.Tenant, int, error)
 }

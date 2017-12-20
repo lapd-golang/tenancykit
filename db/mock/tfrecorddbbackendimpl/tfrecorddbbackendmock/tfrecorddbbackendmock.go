@@ -186,6 +186,8 @@ type MethodCallForGetAllByOrder struct {
 
 	Order string
 
+	OrderBy string
+
 	// Return values.
 
 	Ret1 []tenancykit.TFRecord
@@ -202,6 +204,10 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 	}
 
 	if !reflection.MatchElement(me.Order, other.Order, true) {
+		return false
+	}
+
+	if !reflection.MatchElement(me.OrderBy, other.OrderBy, true) {
 		return false
 	}
 
@@ -464,7 +470,7 @@ func (impl *TFRecordDBBackendMock) Update(ctx context.Context, publicID string, 
 }
 
 // GetAllByOrder implements the TFRecordDBBackend.GetAllByOrder() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) GetAllByOrder(ctx context.Context, order string) (MethodCallForGetAllByOrder, error) {
+func (impl *TFRecordDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -473,6 +479,8 @@ func (impl *TFRecordDBBackendMock) GetAllByOrder(ctx context.Context, order stri
 	caller.Ctx = ctx
 
 	caller.Order = order
+
+	caller.OrderBy = orderBy
 
 	var found bool
 	for _, possibleCall := range impl.GetAllByOrderMethodCalls {
@@ -592,7 +600,7 @@ type TFRecordDBBackendSnitch struct {
 	UpdateFunc        func(ctx context.Context, publicID string, elem tenancykit.TFRecord) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string) ([]tenancykit.TFRecord, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]tenancykit.TFRecord, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
 	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (tenancykit.TFRecord, error)
@@ -730,7 +738,7 @@ func (impl *TFRecordDBBackendSnitch) Update(ctx context.Context, publicID string
 }
 
 // GetAllByOrder implements the TFRecordDBBackend.GetAllByOrder() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.TFRecord, error) {
+func (impl *TFRecordDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.TFRecord, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -753,7 +761,9 @@ func (impl *TFRecordDBBackendSnitch) GetAllByOrder(ctx context.Context, order st
 
 	caller.Order = order
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	caller.OrderBy = orderBy
+
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 
 	caller.Ret1 = ret1
 

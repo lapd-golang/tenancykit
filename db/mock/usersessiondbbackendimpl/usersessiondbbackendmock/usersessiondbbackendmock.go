@@ -186,6 +186,8 @@ type MethodCallForGetAllByOrder struct {
 
 	Order string
 
+	OrderBy string
+
 	// Return values.
 
 	Ret1 []tenancykit.UserSession
@@ -202,6 +204,10 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 	}
 
 	if !reflection.MatchElement(me.Order, other.Order, true) {
+		return false
+	}
+
+	if !reflection.MatchElement(me.OrderBy, other.OrderBy, true) {
 		return false
 	}
 
@@ -464,7 +470,7 @@ func (impl *UserSessionDBBackendMock) Update(ctx context.Context, publicID strin
 }
 
 // GetAllByOrder implements the UserSessionDBBackend.GetAllByOrder() method for the UserSessionDBBackend.
-func (impl *UserSessionDBBackendMock) GetAllByOrder(ctx context.Context, order string) (MethodCallForGetAllByOrder, error) {
+func (impl *UserSessionDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -473,6 +479,8 @@ func (impl *UserSessionDBBackendMock) GetAllByOrder(ctx context.Context, order s
 	caller.Ctx = ctx
 
 	caller.Order = order
+
+	caller.OrderBy = orderBy
 
 	var found bool
 	for _, possibleCall := range impl.GetAllByOrderMethodCalls {
@@ -592,7 +600,7 @@ type UserSessionDBBackendSnitch struct {
 	UpdateFunc        func(ctx context.Context, publicID string, elem tenancykit.UserSession) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string) ([]tenancykit.UserSession, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]tenancykit.UserSession, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
 	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (tenancykit.UserSession, error)
@@ -730,7 +738,7 @@ func (impl *UserSessionDBBackendSnitch) Update(ctx context.Context, publicID str
 }
 
 // GetAllByOrder implements the UserSessionDBBackend.GetAllByOrder() method for the UserSessionDBBackend.
-func (impl *UserSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.UserSession, error) {
+func (impl *UserSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.UserSession, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -753,7 +761,9 @@ func (impl *UserSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, order
 
 	caller.Order = order
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	caller.OrderBy = orderBy
+
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 
 	caller.Ret1 = ret1
 

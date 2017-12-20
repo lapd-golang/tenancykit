@@ -35,13 +35,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "domain":	"BlogXS.edu",
-
-    "max_length":	7,
+    "max_length":	0,
 
     "tenant":	nil,
 
-    "user":	nil
+    "user":	nil,
+
+    "domain":	"Zoozzy.biz"
 
 }
 ```
@@ -63,23 +63,23 @@ Success: 201
 {
 
 
-    "public_id":	"eed6chcyaqlveruhtjsfp29zfhz4ok",
+    "updated_at":	"2017-12-20 10:14:32.026383 +0000 UTC",
 
-    "code_length":	14,
+    "key":	"zwouakt1fiqjhbhqnjou",
 
-    "key":	"aj036y77oa06dc8djmy9",
+    "domain":	"Browseblab.biz",
 
-    "domain":	"Snaptags.net",
+    "user_id":	"s1953k2n50546vhb4fhy",
 
-    "tenant_id":	"8hz13jlwbdv1r3dl9gx6",
+    "totp":	"9t00qawl0k1lfbk7xeoq",
 
-    "created_at":	"2017-12-20 08:05:05.584616 +0000 UTC",
+    "created_at":	"2017-12-20 10:14:32.026374 +0000 UTC",
 
-    "updated_at":	"2017-12-20 08:05:05.584628 +0000 UTC",
+    "public_id":	"yaxdlgcqsgxmmajgds90udu1sb0wkl",
 
-    "user_id":	"z0ngfg4sjc9ioowo78zs",
+    "tenant_id":	"n5c880gy9db37dreq7g7",
 
-    "totp":	"5obj8halpcu4md3m81jf"
+    "code_length":	18
 
 }
 ```
@@ -113,23 +113,23 @@ Success: 200
 {
 
 
-    "tenant_id":	"566d5ymq2d3oy15eru99",
+    "key":	"i8n5ajdjo5lj0c10kkav",
 
-    "created_at":	"2017-12-20 08:05:05.585907 +0000 UTC",
+    "totp":	"mm64mkoxtgxnhisr2onu",
 
-    "updated_at":	"2017-12-20 08:05:05.585916 +0000 UTC",
+    "code_length":	8,
 
-    "key":	"sqjfnpn8ns6eb07m5tpo",
+    "domain":	"Twinte.gov",
 
-    "domain":	"Eire.edu",
+    "user_id":	"htlrfhm66euq8w8qz6im",
 
-    "user_id":	"0jwu3441z09hzitdr4or",
+    "public_id":	"paadx3n7nzb2v88rgax1vwhllum5yp",
 
-    "totp":	"vjtg96iicoemonok46dq",
+    "tenant_id":	"59ggiu8kr1t2bln8bdzi",
 
-    "public_id":	"oo7du7k7wz6xi1d84n8kdedmscda2n",
+    "created_at":	"2017-12-20 10:14:32.026857 +0000 UTC",
 
-    "code_length":	16
+    "updated_at":	"2017-12-20 10:14:32.026861 +0000 UTC"
 
 }
 ```
@@ -156,44 +156,44 @@ Success: 200
 [{
 
 
-    "totp":	"b9da98p8hm4ay6bfrba5",
+    "domain":	"Kwimbee.edu",
 
-    "public_id":	"h6pnri4t05uqkxltlvbf7dgzj9oxbx",
+    "totp":	"c0llku1w1p55ardu7c3m",
 
-    "tenant_id":	"s2vui5ofj780147hk31i",
+    "public_id":	"m7oo11f9urqjn0bmo3gcnbylbfdb6q",
 
-    "code_length":	15,
+    "tenant_id":	"jc9kp323mql8iuhyr2et",
 
-    "created_at":	"2017-12-20 08:05:05.587228 +0000 UTC",
+    "key":	"qdp684adcv43pzgcwxcs",
 
-    "updated_at":	"2017-12-20 08:05:05.587244 +0000 UTC",
+    "user_id":	"28sxn36svpxg0yr0sdsn",
 
-    "key":	"tm964lzvuv95zbmqgpt8",
+    "code_length":	16,
 
-    "domain":	"Realbridge.name",
+    "created_at":	"2017-12-20 10:14:32.027364 +0000 UTC",
 
-    "user_id":	"aavim3k11binmtrbv6us"
+    "updated_at":	"2017-12-20 10:14:32.027368 +0000 UTC"
 
 },{
 
 
-    "public_id":	"s1mdj0xa8zessyylgnjsyv2gq5e7b5",
+    "user_id":	"6lh3fgajpymz5j6zajsm",
 
-    "tenant_id":	"5l1plhkn8l2q63pct3p4",
+    "code_length":	9,
 
-    "code_length":	13,
+    "key":	"a2jcl1x48jzl1tkiyrez",
 
-    "domain":	"Photospace.mil",
+    "totp":	"0ksm8kf6tvite3683whh",
 
-    "user_id":	"wecki257sjlowtinluos",
+    "public_id":	"yna389mw052lo9yasgepkj3pb839xf",
 
-    "totp":	"nvp02tay9y6tvyffum02",
+    "tenant_id":	"o0rcddd2js83bb6vfcqx",
 
-    "key":	"trmagtv2zchyrwgdzwax",
+    "created_at":	"2017-12-20 10:14:32.027837 +0000 UTC",
 
-    "created_at":	"2017-12-20 08:05:05.587942 +0000 UTC",
+    "updated_at":	"2017-12-20 10:14:32.027843 +0000 UTC",
 
-    "updated_at":	"2017-12-20 08:05:05.587948 +0000 UTC"
+    "domain":	"Twimbo.net"
 
 }]
 ```
@@ -220,23 +220,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "public_id":	"kj76j601faatbfleukcbqlivmj7uqq",
+    "key":	"igxppn9fmwfptxi6scsa",
 
-    "tenant_id":	"vx419aulhfnnkt4e3acn",
+    "totp":	"6qmjuw8a124ekubv79tr",
 
-    "updated_at":	"2017-12-20 08:05:05.588468 +0000 UTC",
+    "updated_at":	"2017-12-20 10:14:32.028372 +0000 UTC",
 
-    "key":	"r3ayot0q1ljtabh0mbr7",
+    "code_length":	4,
 
-    "domain":	"Kwilith.edu",
+    "created_at":	"2017-12-20 10:14:32.028367 +0000 UTC",
 
-    "code_length":	8,
+    "domain":	"Zoonoodle.edu",
 
-    "created_at":	"2017-12-20 08:05:05.588462 +0000 UTC",
+    "user_id":	"02s5rbp3chctm663xf6l",
 
-    "user_id":	"pbmbzu9t757wkncohqqv",
+    "public_id":	"04tf465stdf2rhaotpoezmyp4krqt0",
 
-    "totp":	"udss80vy1j3v9zo73oj3"
+    "tenant_id":	"lc9w0eyhchqlft0i4k7q"
 
 }
 ```

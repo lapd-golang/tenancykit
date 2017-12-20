@@ -17,7 +17,7 @@ type UserSessionDBBackendImpl struct {
 
 	UpdateFunc func(ctx context.Context, publicID string, elem tenancykit.UserSession) error
 
-	GetAllByOrderFunc func(ctx context.Context, order string) ([]tenancykit.UserSession, error)
+	GetAllByOrderFunc func(ctx context.Context, order string, orderBy string) ([]tenancykit.UserSession, error)
 
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (tenancykit.UserSession, error)
 
@@ -57,9 +57,9 @@ func (impl UserSessionDBBackendImpl) Update(ctx context.Context, publicID string
 }
 
 // GetAllByOrder implements the UserSessionDBBackend.GetAllByOrder() method for UserSessionDBBackendImpl.
-func (impl UserSessionDBBackendImpl) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.UserSession, error) {
+func (impl UserSessionDBBackendImpl) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.UserSession, error) {
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 	return ret1, ret2
 
 }

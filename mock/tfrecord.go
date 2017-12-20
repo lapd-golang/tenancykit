@@ -33,7 +33,7 @@ func TFRecordBackend() tfrecorddbbackendimpl.TFRecordDBBackendImpl {
 		return nil
 	}
 
-	mocker.GetAllByOrderFunc = func(ctx context.Context, order string) ([]tenancykit.TFRecord, error) {
+	mocker.GetAllByOrderFunc = func(ctx context.Context, order string, orderby string) ([]tenancykit.TFRecord, error) {
 		var records []tenancykit.TFRecord
 		for _, elem := range db {
 			records = append(records, elem)

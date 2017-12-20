@@ -8,9 +8,9 @@ import (
 
 	"github.com/influx6/faux/reflection"
 
-	tenancykit "github.com/gokit/tenancykit"
-
 	context "github.com/influx6/faux/context"
+
+	tenancykit "github.com/gokit/tenancykit"
 )
 
 // MethodCallForDelete defines a type which holds meta-details about the giving calls associated
@@ -186,6 +186,8 @@ type MethodCallForGetAllByOrder struct {
 
 	Order string
 
+	OrderBy string
+
 	// Return values.
 
 	Ret1 []tenancykit.TwoFactorSession
@@ -202,6 +204,10 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 	}
 
 	if !reflection.MatchElement(me.Order, other.Order, true) {
+		return false
+	}
+
+	if !reflection.MatchElement(me.OrderBy, other.OrderBy, true) {
 		return false
 	}
 
@@ -464,7 +470,7 @@ func (impl *TwoFactorSessionDBBackendMock) Update(ctx context.Context, publicID 
 }
 
 // GetAllByOrder implements the TwoFactorSessionDBBackend.GetAllByOrder() method for the TwoFactorSessionDBBackend.
-func (impl *TwoFactorSessionDBBackendMock) GetAllByOrder(ctx context.Context, order string) (MethodCallForGetAllByOrder, error) {
+func (impl *TwoFactorSessionDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -473,6 +479,8 @@ func (impl *TwoFactorSessionDBBackendMock) GetAllByOrder(ctx context.Context, or
 	caller.Ctx = ctx
 
 	caller.Order = order
+
+	caller.OrderBy = orderBy
 
 	var found bool
 	for _, possibleCall := range impl.GetAllByOrderMethodCalls {
@@ -592,7 +600,7 @@ type TwoFactorSessionDBBackendSnitch struct {
 	UpdateFunc        func(ctx context.Context, publicID string, elem tenancykit.TwoFactorSession) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string) ([]tenancykit.TwoFactorSession, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]tenancykit.TwoFactorSession, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
 	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (tenancykit.TwoFactorSession, error)
@@ -730,7 +738,7 @@ func (impl *TwoFactorSessionDBBackendSnitch) Update(ctx context.Context, publicI
 }
 
 // GetAllByOrder implements the TwoFactorSessionDBBackend.GetAllByOrder() method for the TwoFactorSessionDBBackend.
-func (impl *TwoFactorSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.TwoFactorSession, error) {
+func (impl *TwoFactorSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.TwoFactorSession, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -753,7 +761,9 @@ func (impl *TwoFactorSessionDBBackendSnitch) GetAllByOrder(ctx context.Context, 
 
 	caller.Order = order
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	caller.OrderBy = orderBy
+
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 
 	caller.Ret1 = ret1
 

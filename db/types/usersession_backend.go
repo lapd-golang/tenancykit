@@ -14,7 +14,7 @@ type UserSessionDBBackend interface {
 	Create(ctx context.Context, elem tenancykit.UserSession) error
 	Get(ctx context.Context, publicID string) (tenancykit.UserSession, error)
 	Update(ctx context.Context, publicID string, elem tenancykit.UserSession) error
-	GetAllByOrder(ctx context.Context, order, orderBy string) ([]tenancykit.UserSession, error)
+	GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.UserSession, error)
 	GetByField(ctx context.Context, key string, value interface{}) (tenancykit.UserSession, error)
 	GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]tenancykit.UserSession, int, error)
 }

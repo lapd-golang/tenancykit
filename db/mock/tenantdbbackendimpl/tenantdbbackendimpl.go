@@ -17,7 +17,7 @@ type TenantDBBackendImpl struct {
 
 	UpdateFunc func(ctx context.Context, publicID string, elem tenancykit.Tenant) error
 
-	GetAllByOrderFunc func(ctx context.Context, order string) ([]tenancykit.Tenant, error)
+	GetAllByOrderFunc func(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error)
 
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (tenancykit.Tenant, error)
 
@@ -57,9 +57,9 @@ func (impl TenantDBBackendImpl) Update(ctx context.Context, publicID string, ele
 }
 
 // GetAllByOrder implements the TenantDBBackend.GetAllByOrder() method for TenantDBBackendImpl.
-func (impl TenantDBBackendImpl) GetAllByOrder(ctx context.Context, order string) ([]tenancykit.Tenant, error) {
+func (impl TenantDBBackendImpl) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error) {
 
-	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order)
+	ret1, ret2 := impl.GetAllByOrderFunc(ctx, order, orderBy)
 	return ret1, ret2
 
 }

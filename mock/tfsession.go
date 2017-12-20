@@ -34,7 +34,7 @@ func TFSessionBackend() twofactorsessiondbbackendimpl.TwoFactorSessionDBBackendI
 		return nil
 	}
 
-	mocker.GetAllByOrderFunc = func(ctx context.Context, order string) ([]tenancykit.TwoFactorSession, error) {
+	mocker.GetAllByOrderFunc = func(ctx context.Context, order string, orderby string) ([]tenancykit.TwoFactorSession, error) {
 		var records []tenancykit.TwoFactorSession
 		for _, elem := range db {
 			records = append(records, elem)

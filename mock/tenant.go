@@ -33,7 +33,7 @@ func TenantDBBackend() tenantdbbackendimpl.TenantDBBackendImpl {
 		return nil
 	}
 
-	mocker.GetAllByOrderFunc = func(ctx context.Context, order string) ([]tenancykit.Tenant, error) {
+	mocker.GetAllByOrderFunc = func(ctx context.Context, order string, orderBy string) ([]tenancykit.Tenant, error) {
 		var records []tenancykit.Tenant
 		for _, elem := range db {
 			records = append(records, elem)
