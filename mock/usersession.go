@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gokit/tenancykit/db/types"
+
 	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/db/mock"
 	"github.com/gokit/tenancykit/db/mock/usersessiondbbackendimpl"
@@ -12,7 +14,7 @@ import (
 )
 
 // UserSessionBackend returns a mock implementation of the db.types.UserSessionDBBackend interface.
-func UserSessionBackend() usersessiondbbackendimpl.UserSessionDBBackendImpl {
+func UserSessionBackend() types.UserSessionDBBackend {
 	var mocker usersessiondbbackendimpl.UserSessionDBBackendImpl
 
 	db := make(map[string]tenancykit.UserSession)

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gokit/tenancykit/db/types"
+
 	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/db/mock"
 	"github.com/gokit/tenancykit/db/mock/tenantdbbackendimpl"
@@ -12,7 +14,7 @@ import (
 )
 
 // TenantDBBackend returns a mock implementation of the db.types.TenantDBBackend interface.
-func TenantDBBackend() tenantdbbackendimpl.TenantDBBackendImpl {
+func TenantDBBackend() types.TenantDBBackend {
 	var mocker tenantdbbackendimpl.TenantDBBackendImpl
 
 	db := make(map[string]tenancykit.Tenant)

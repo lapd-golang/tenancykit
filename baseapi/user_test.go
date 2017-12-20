@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/gokit/tenancykit/api/userapi"
@@ -26,6 +27,8 @@ import (
 )
 
 func TestUserAPI(t *testing.T) {
+	defer os.Remove("./keys")
+
 	m := metrics.New()
 	userdb := mock.UserBackend()
 	tenantdb := mock.TenantDBBackend()

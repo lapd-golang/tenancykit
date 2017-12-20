@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gokit/tenancykit/db/types"
+
 	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/db/mock"
 	"github.com/gokit/tenancykit/db/mock/tfrecorddbbackendimpl"
@@ -12,7 +14,7 @@ import (
 )
 
 // TFRecordBackend returns a mock implementation of the db.types.TFRecordDBBackend interface.
-func TFRecordBackend() tfrecorddbbackendimpl.TFRecordDBBackendImpl {
+func TFRecordBackend() types.TFRecordDBBackend {
 	var mocker tfrecorddbbackendimpl.TFRecordDBBackendImpl
 
 	db := make(map[string]tenancykit.TFRecord)

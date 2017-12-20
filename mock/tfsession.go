@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gokit/tenancykit/db/types"
+
 	"github.com/gokit/tenancykit/db/mock/twofactorsessiondbbackendimpl"
 
 	"github.com/gokit/tenancykit"
@@ -13,7 +15,7 @@ import (
 )
 
 // TFSessionBackend returns a mock implementation of the db.types.TwoFactorSessionDBBackend interface.
-func TFSessionBackend() twofactorsessiondbbackendimpl.TwoFactorSessionDBBackendImpl {
+func TFSessionBackend() types.TwoFactorSessionDBBackend {
 	var mocker twofactorsessiondbbackendimpl.TwoFactorSessionDBBackendImpl
 
 	db := make(map[string]tenancykit.TwoFactorSession)

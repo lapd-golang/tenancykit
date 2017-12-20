@@ -73,9 +73,9 @@ func NewTokenSet(m metrics.Metrics, db types.TokenDBBackend) TokenSet {
 	}
 }
 
-// HasToken returns true/false if giving token exists or not within underline
+// Has returns true/false if giving token exists or not within underline
 // db. Returns an error if call to db failed.
-func (tf TokenSet) HasToken(ctx context.Context, targetID string, token string) (bool, error) {
+func (tf TokenSet) Has(ctx context.Context, targetID string, token string) (bool, error) {
 	_, err := tf.db.GetByField(ctx, "target_id", token)
 	if err != nil && (err == tokensql.ErrNotFound || err == tokenmgo.ErrNotFound) {
 		return false, nil
@@ -88,9 +88,9 @@ func (tf TokenSet) HasToken(ctx context.Context, targetID string, token string) 
 	return true, nil
 }
 
-// AddToken adds giving underline tokendb into db, returning error if
+// Add adds giving underline tokendb into db, returning error if
 // it fails to do so, or call to db errors out.
-func (tf TokenSet) AddToken(ctx context.Context, targetID string, token string) (tokens.Token, error) {
+func (tf TokenSet) Add(ctx context.Context, targetID string, token string) (tokens.Token, error) {
 	tf.m.Emit(
 		metrics.Info("Add token"),
 		metrics.With("target_id", targetID),
