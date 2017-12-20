@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/gokit/tenancykit/db/mock"
 	"github.com/gokit/tenancykit/db/tenantmgo"
 	"github.com/gokit/tenancykit/db/tenantsql"
 	"github.com/gokit/tenancykit/db/tfrecordmgo"
@@ -36,6 +37,8 @@ func IsNotFoundError(err error) bool {
 	case twofactorsessionmgo.ErrNotFound:
 		return true
 	case twofactorsessionsql.ErrNotFound:
+		return true
+	case mock.ErrNotFound:
 		return true
 	}
 	return false

@@ -22,6 +22,7 @@ var (
 //go:generate mgokit generate
 //go:generate sqlkit generate
 //go:generate httpkit generate
+//go:generate mockkit -generate.dest=./mocks -generate.target=./types generate
 
 // Token defines a specific record with associated id and
 // value.

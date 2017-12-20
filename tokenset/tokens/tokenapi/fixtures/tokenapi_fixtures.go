@@ -11,33 +11,33 @@ var (
 	TokenJSON = `{
 
 
-    "value":	"dktbnwyvyhf54o9mo353",
+    "target_id":	"e08w7yfhno2troa2kixb",
 
-    "public_id":	"d1qdmmpcoq7aat7qyijz4ethdwbtv6",
+    "value":	"r7gus9prgokrugd9a3wy",
 
-    "target_id":	"t8oae33fz3vsvdmpmbqq"
+    "public_id":	"s3mmmq1npzpkn0tiblwme12zk4s2in"
 
 }`
 
 	TokenCreateJSON = `{
 
 
-    "value":	"6qn333jy225u9aqgke0t",
+    "target_id":	"evq736jg98toa0ye6gah",
 
-    "public_id":	"fgug0xbk57cx0p3cwulzkfn8pn2gj9",
+    "value":	"hizl0hd0l2vmi6ca1anm",
 
-    "target_id":	"0k6s7y59vcbcfa6utc76"
+    "public_id":	"11p866zpvamc3okdifelh0wvh2nua4"
 
 }`
 
 	TokenUpdateJSON = `{
 
 
-    "value":	"g3fcihccu8o6wb15t1do",
+    "public_id":	"efvbpkdnp558ydiaumx3tj9d2sh3hc",
 
-    "public_id":	"l4dvt04csnm3ief2puiema71jnqtc4",
+    "target_id":	"dq2jhl0lfbzwkc5e7fee",
 
-    "target_id":	"jrkbowiol3ccdj9pcjsk"
+    "value":	"agvfbkhp27f7gmd8ayzh"
 
 }`
 )

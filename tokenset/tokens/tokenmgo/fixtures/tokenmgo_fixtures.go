@@ -14,11 +14,11 @@ var (
  TokenJSON = `{
 
 
-    "value":	"9aqhopzkmawcyacw80k2",
+    "value":	"890754pjn9j18vbdmtay",
 
-    "public_id":	"w98upc13pein1sa19q4k6up6n3flkm",
+    "public_id":	"wwmjttrlrxgg42lm05rvstjjkj3nh4",
 
-    "target_id":	"clpipv8jlyyqtj2oyi23"
+    "target_id":	"ci8lvar0z06of7xkijou"
 
 }`
 )

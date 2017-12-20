@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "domain":	"Mybuzz.name",
+    "domain":	"BlogXS.edu",
 
-    "max_length":	10,
+    "max_length":	7,
 
     "tenant":	nil,
 
@@ -63,23 +63,23 @@ Success: 201
 {
 
 
-    "key":	"7lkwet7uo0r3quztro9c",
+    "public_id":	"eed6chcyaqlveruhtjsfp29zfhz4ok",
 
-    "code_length":	11,
+    "code_length":	14,
 
-    "created_at":	"2017-12-19 18:15:32.336901 +0000 UTC",
+    "key":	"aj036y77oa06dc8djmy9",
 
-    "updated_at":	"2017-12-19 18:15:32.336913 +0000 UTC",
+    "domain":	"Snaptags.net",
 
-    "domain":	"Realfire.gov",
+    "tenant_id":	"8hz13jlwbdv1r3dl9gx6",
 
-    "user_id":	"9f68xnhepo63f2sl9hmr",
+    "created_at":	"2017-12-20 08:05:05.584616 +0000 UTC",
 
-    "totp":	"v4u1yf07s7kbb68abons",
+    "updated_at":	"2017-12-20 08:05:05.584628 +0000 UTC",
 
-    "public_id":	"z1ussbkxh8blz5oth37rp5d6fowtfr",
+    "user_id":	"z0ngfg4sjc9ioowo78zs",
 
-    "tenant_id":	"hhq2xlohxdv6lhssiqso"
+    "totp":	"5obj8halpcu4md3m81jf"
 
 }
 ```
@@ -113,23 +113,23 @@ Success: 200
 {
 
 
-    "domain":	"Oyope.name",
+    "tenant_id":	"566d5ymq2d3oy15eru99",
 
-    "code_length":	1,
+    "created_at":	"2017-12-20 08:05:05.585907 +0000 UTC",
 
-    "created_at":	"2017-12-19 18:15:32.337905 +0000 UTC",
+    "updated_at":	"2017-12-20 08:05:05.585916 +0000 UTC",
 
-    "updated_at":	"2017-12-19 18:15:32.337917 +0000 UTC",
+    "key":	"sqjfnpn8ns6eb07m5tpo",
 
-    "key":	"hvl3uqxnehwt2cvhitec",
+    "domain":	"Eire.edu",
 
-    "user_id":	"ttkb6wlv6fajujpyubq4",
+    "user_id":	"0jwu3441z09hzitdr4or",
 
-    "totp":	"5t97jceyqterdulvsysf",
+    "totp":	"vjtg96iicoemonok46dq",
 
-    "public_id":	"927wacpo9jmca7hskq8njcdnpgeh2q",
+    "public_id":	"oo7du7k7wz6xi1d84n8kdedmscda2n",
 
-    "tenant_id":	"mvqva8d6ny6ick4s2akl"
+    "code_length":	16
 
 }
 ```
@@ -156,44 +156,44 @@ Success: 200
 [{
 
 
-    "key":	"xo3tybeieubbvgz0uezb",
+    "totp":	"b9da98p8hm4ay6bfrba5",
 
-    "user_id":	"rq2mlml53ifsamz5692i",
+    "public_id":	"h6pnri4t05uqkxltlvbf7dgzj9oxbx",
 
-    "public_id":	"l8s964xy3wvvw6cxi90vdgwecfyww2",
+    "tenant_id":	"s2vui5ofj780147hk31i",
 
-    "tenant_id":	"nxy1x9r9vbihqnxr0u6r",
+    "code_length":	15,
 
-    "updated_at":	"2017-12-19 18:15:32.33881 +0000 UTC",
+    "created_at":	"2017-12-20 08:05:05.587228 +0000 UTC",
 
-    "domain":	"Fliptune.name",
+    "updated_at":	"2017-12-20 08:05:05.587244 +0000 UTC",
 
-    "totp":	"lgzshbz47m85o3ymj9qa",
+    "key":	"tm964lzvuv95zbmqgpt8",
 
-    "code_length":	11,
+    "domain":	"Realbridge.name",
 
-    "created_at":	"2017-12-19 18:15:32.338799 +0000 UTC"
+    "user_id":	"aavim3k11binmtrbv6us"
 
 },{
 
 
-    "key":	"79eqnsemy6la6g6zqjiq",
+    "public_id":	"s1mdj0xa8zessyylgnjsyv2gq5e7b5",
 
-    "user_id":	"7r245ui97nalqzp2kw6r",
+    "tenant_id":	"5l1plhkn8l2q63pct3p4",
 
-    "totp":	"0evffzoq52dm5mouz1iy",
+    "code_length":	13,
 
-    "tenant_id":	"snxe5v2rrtbtw14z5mnp",
+    "domain":	"Photospace.mil",
 
-    "code_length":	17,
+    "user_id":	"wecki257sjlowtinluos",
 
-    "created_at":	"2017-12-19 18:15:32.339375 +0000 UTC",
+    "totp":	"nvp02tay9y6tvyffum02",
 
-    "updated_at":	"2017-12-19 18:15:32.339385 +0000 UTC",
+    "key":	"trmagtv2zchyrwgdzwax",
 
-    "domain":	"Browsezoom.name",
+    "created_at":	"2017-12-20 08:05:05.587942 +0000 UTC",
 
-    "public_id":	"3rob5ti2a55e66il6xm9b0ztcxmhy5"
+    "updated_at":	"2017-12-20 08:05:05.587948 +0000 UTC"
 
 }]
 ```
@@ -220,23 +220,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"t93r4fw8ihsjimjg9l12",
+    "public_id":	"kj76j601faatbfleukcbqlivmj7uqq",
 
-    "public_id":	"8l29pqy6et3gz3b976cube108if82v",
+    "tenant_id":	"vx419aulhfnnkt4e3acn",
 
-    "code_length":	0,
+    "updated_at":	"2017-12-20 08:05:05.588468 +0000 UTC",
 
-    "created_at":	"2017-12-19 18:15:32.340096 +0000 UTC",
+    "key":	"r3ayot0q1ljtabh0mbr7",
 
-    "domain":	"Zoomdog.com",
+    "domain":	"Kwilith.edu",
 
-    "totp":	"pgxyooa9qeos5j9uuzg5",
+    "code_length":	8,
 
-    "tenant_id":	"dr6wnfk4h44mvyu463gn",
+    "created_at":	"2017-12-20 08:05:05.588462 +0000 UTC",
 
-    "updated_at":	"2017-12-19 18:15:32.340105 +0000 UTC",
+    "user_id":	"pbmbzu9t757wkncohqqv",
 
-    "key":	"henj49awpvjk1dgottgc"
+    "totp":	"udss80vy1j3v9zo73oj3"
 
 }
 ```
