@@ -1,7 +1,7 @@
 // Package tenancykit implements structures for creating a multi-tenant api.
 package tenancykit
 
-//go:generate mgokit -generate.dest=./db generate
-//go:generate sqlkit -generate.dest=./db generate
-//go:generate httpkit -generate.dest=./api generate
-//go:generate mockkit -generate.target=./db/types -generate.dest=./db/mock generate
+//go:generate mgokit -generate.dest=./pkg/db -generate.target=./pkg generate
+//go:generate sqlkit -generate.dest=./pkg/db -generate.target=./pkg generate
+//go:generate httpkit -generate.dest=./pkg/resources -generate.target=./pkg generate
+//go:generate mockkit -generate.target=./pkg/db/types -generate.dest=./pkg/db/mocks generate

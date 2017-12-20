@@ -1,15 +1,15 @@
 package routes
 
 import (
-	"github.com/gokit/tenancykit/api/tenantapi"
-	"github.com/gokit/tenancykit/api/tfrecordapi"
-	"github.com/gokit/tenancykit/baseapi"
+	"github.com/gokit/tenancykit"
+	"github.com/gokit/tenancykit/pkg/resources/tenantapi"
+	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 	"github.com/gorilla/mux"
 	"github.com/influx6/faux/httputil"
 )
 
 // RegisterUsers registers users api routes with the provided gorilla router.
-func RegisterUsers(version string, r *mux.Router, users baseapi.UserAPI, mw httputil.Middleware) {
+func RegisterUsers(version string, r *mux.Router, users tenancykit.UserAPI, mw httputil.Middleware) {
 	mw = httputil.MWi(httputil.GorillaMW, mw)
 
 	r.PathPrefix(version).Path("/users").Methods("GET").HandlerFunc(httputil.HTTPFunc(mw(
@@ -136,7 +136,7 @@ func RegisterTwoFactorRecords(version string, r *mux.Router, tf tfrecordapi.TFRe
 }
 
 // RegisterUserSessions registers tenants api routes with the provided gorilla router.
-func RegisterUserSessions(version string, r *mux.Router, us baseapi.UserSessionAPI, mw httputil.Middleware) {
+func RegisterUserSessions(version string, r *mux.Router, us tenancykit.UserSessionAPI, mw httputil.Middleware) {
 	mw = httputil.MWi(httputil.GorillaMW, mw)
 
 	r.PathPrefix(version).Path("/sessions").Methods("GET").HandlerFunc(httputil.HTTPFunc(mw(
