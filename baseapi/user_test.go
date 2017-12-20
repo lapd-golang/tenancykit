@@ -27,7 +27,7 @@ import (
 )
 
 func TestUserAPI(t *testing.T) {
-	defer os.Remove("./keys")
+	defer os.RemoveAll("./keys")
 
 	m := metrics.New()
 	userdb := mock.UserBackend()
