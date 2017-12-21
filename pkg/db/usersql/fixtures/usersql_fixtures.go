@@ -1,36 +1,33 @@
 package fixtures
 
 import (
-     "encoding/json"
+	"encoding/json"
 
-
-     "github.com/gokit/tenancykit/pkg"
-
+	"github.com/gokit/tenancykit/pkg"
 )
-
 
 // json fixtures ...
 var (
- UserJSON = `{
+	UserJSON = `{
 
 
-    "username":	"est_hic",
+    "email":	"wDaniels@Topiclounge.gov",
 
-    "private_id":	"sjyemnr822t712ggdi8v0rvf0xbc7a",
+    "public_id":	"2fn8zsgjmfi2loosrejyv861obmg16",
 
-    "updated_at":	"2017-12-20 14:55:00.218095 +0000 UTC",
+    "tenant_id":	"dug7o5smw8skun3is9ef",
 
-    "email":	"RobertPalmer@Blogtag.name",
+    "private_id":	"84mg43epfhk4ra2m1rdx64qt9qfnti",
 
-    "public_id":	"9iczvfoso3r56mspzqagzszt7lw4yp",
+    "hash":	"d1cf670oere0yone7hkn",
 
-    "tenant_id":	"mysdrmd26b0ql947zcvt",
+    "created_at":	"2017-12-21 12:06:19.518979 +0000 UTC",
 
-    "hash":	"kra5djgenb4wvcmpp6c3",
+    "updated_at":	"2017-12-21 12:06:19.518988 +0000 UTC",
 
-    "two_factor_auth":	true,
+    "username":	"vMorrison",
 
-    "created_at":	"2017-12-20 14:55:00.218084 +0000 UTC"
+    "two_factor_auth":	true
 
 }`
 )
@@ -45,4 +42,3 @@ func LoadUserJSON(content string) (pkg.User, error) {
 
 	return elem, nil
 }
-

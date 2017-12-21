@@ -73,7 +73,7 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	var currentUser pkg.CurrentUser
 
 	// Retreive user from db.
-	currentUser.User, err = u.Backend.Get(ctx, id)
+	currentUser.User, err = u.Backend.Get(ctx.Context(), id)
 	if err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -88,7 +88,7 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	}
 
 	// Rerieve user's tenant.
-	currentUser.Tenant, err = u.TenantBackend.Get(ctx, currentUser.User.TenantID)
+	currentUser.Tenant, err = u.TenantBackend.Get(ctx.Context(), currentUser.User.TenantID)
 	if err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -103,7 +103,7 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	}
 
 	// Attempt to retrieve twofactor user record if user has one.
-	if tf, err := u.TFDBBackend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
+	if tf, err := u.TFDBBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID); err == nil {
 		currentUser.TwoFactor = &tf
 	}
 
@@ -191,7 +191,7 @@ func (u UserAPI) DisableTwoFactor(ctx *httputil.Context) error {
 	}
 
 	// Delete user's twofactor record from db.
-	if err := u.TFBackend.Delete(ctx, currentUser.TwoFactor.PublicID); err != nil {
+	if err := u.TFBackend.Delete(ctx.Context(), currentUser.TwoFactor.PublicID); err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
 				Err:  err,
@@ -205,7 +205,7 @@ func (u UserAPI) DisableTwoFactor(ctx *httputil.Context) error {
 	}
 
 	currentUser.User.TwoFactorAuth = false
-	if err := u.Backend.Update(ctx, currentUser.User.PublicID, currentUser.User); err != nil {
+	if err := u.Backend.Update(ctx.Context(), currentUser.User.PublicID, currentUser.User); err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
 				Err:  err,
@@ -260,7 +260,7 @@ func (u UserAPI) EnableTwoFactor(ctx *httputil.Context) error {
 	newTF.Tenant = currentUser.Tenant
 	newTF.MaxLength = u.TwoFactorCodeLength
 
-	ntwRecord, err := u.TFBackend.Create(ctx, newTF)
+	ntwRecord, err := u.TFBackend.Create(ctx.Context(), newTF)
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,

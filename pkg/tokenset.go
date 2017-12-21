@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"github.com/influx6/faux/context"
+	"context"
 )
 
 // TokenSet defines a interface contract which exposes a method to

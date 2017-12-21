@@ -15,6 +15,8 @@ import (
 
 	"github.com/gokit/tenancykit/pkg"
 
+	"context"
+
 	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
@@ -22,7 +24,6 @@ import (
 	tenantFixtures "github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
 	userFixtures "github.com/gokit/tenancykit/pkg/resources/userapi/fixtures"
 	"github.com/gokit/tenancykit/pkg/resources/usersessionapi/fixtures"
-	"github.com/influx6/faux/context"
 	"github.com/influx6/faux/metrics"
 	"github.com/influx6/faux/tests"
 )
@@ -44,7 +45,7 @@ func TestUserSessionAPI(t *testing.T) {
 	tests.Passed("Should have successfully loaded tenant record")
 
 	tenants := backends.TenantBackend{TenantDBBackend: ttdb}
-	tenantRecord, err := tenants.Create(context.New(), createTenant)
+	tenantRecord, err := tenants.Create(context.Background(), createTenant)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created tenant")
 	}
@@ -60,7 +61,7 @@ func TestUserSessionAPI(t *testing.T) {
 	userCreateBody.PasswordConfirm = userCreateBody.Password
 
 	users := backends.UserBackend{UserDBBackend: udb}
-	userRecord, err := users.Create(context.New(), userCreateBody)
+	userRecord, err := users.Create(context.Background(), userCreateBody)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully loaded user record")
 	}
@@ -92,7 +93,7 @@ func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.C
 		tests.Passed("Should successfully marshal create user record")
 
 		loginResponse := httptest.NewRecorder()
-		logginUser := httptesting.Post("/sessions", bytes.NewBuffer(loginBodyJSON), loginResponse)
+		logginUser := httptesting.Post("/sessions/login", bytes.NewBuffer(loginBodyJSON), loginResponse)
 		if err := tf.Login(logginUser); err != nil {
 			tests.FailedWithError(err, "Should have successfully authenticated user")
 		}
@@ -193,7 +194,7 @@ func testUserSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUse
 func testUserSessionGetAll(t *testing.T, user pkg.User, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When retrieving all two factor records using the UserSessionAPI")
 	{
-		_, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -238,7 +239,7 @@ func testUserSessionGetAll(t *testing.T, user pkg.User, tenant pkg.Tenant, tf te
 func testUserSessionGet(t *testing.T, user pkg.User, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When retrieving a two factor record using the UserSessionAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -281,7 +282,7 @@ func testUserSessionGet(t *testing.T, user pkg.User, tenant pkg.Tenant, tf tenan
 func testUserSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When updating a two factor record using the UserSessionAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -319,7 +320,7 @@ func testUserSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant, tf te
 		}
 		tests.Passed("Should have received Status 202")
 
-		updatedRecord, err := db.Get(context.New(), record.PublicID)
+		updatedRecord, err := db.Get(context.Background(), record.PublicID)
 		if err != nil {
 			tests.FailedWithError(err, "Should have succesfully retrieved update record")
 		}
@@ -338,7 +339,7 @@ func testUserSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant, tf te
 func testUserSessionDelete(t *testing.T, user pkg.User, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When deleting a two factor record using the UserSessionAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -366,7 +367,7 @@ func testUserSessionDelete(t *testing.T, user pkg.User, tenant pkg.Tenant, tf te
 		}
 		tests.Passed("Should have received Status 202")
 
-		if _, err := db.Get(context.New(), record.PublicID); err == nil {
+		if _, err := db.Get(context.Background(), record.PublicID); err == nil {
 			tests.Failed("Should have succesfully failed to get deleted record")
 		}
 		tests.Passed("Should have succesfully failed to get deleted record")

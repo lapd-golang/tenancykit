@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"strconv"
 
+	"context"
+
 	"net/http"
 
 	"encoding/json"
-
-	"github.com/influx6/faux/context"
 
 	"github.com/influx6/faux/metrics"
 
@@ -98,7 +98,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"url":  ctx.Request().URL.String(),
 	}))
 
-	response, err := api.operator.Create(ctx, incoming)
+	response, err := api.operator.Create(ctx.Context(), incoming)
 	if err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to create record"), metrics.WithFields(metrics.Field{
 			"error": err,
@@ -167,7 +167,7 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 		"public_id": publicID,
 	}))
 
-	if err := api.operator.Update(ctx, publicID, incoming); err != nil {
+	if err := api.operator.Update(ctx.Context(), publicID, incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{
 			"error":     err,
 			"public_id": publicID,
@@ -213,7 +213,7 @@ func (api *HTTPAPI) Delete(ctx *httputil.Context) error {
 		"public_id": publicID,
 	}))
 
-	if err := api.operator.Delete(ctx, publicID); err != nil {
+	if err := api.operator.Delete(ctx.Context(), publicID); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to delete pkg.Tenant record"), metrics.WithFields(metrics.Field{
 			"error":     err,
 			"public_id": publicID,
@@ -256,7 +256,7 @@ func (api *HTTPAPI) Get(ctx *httputil.Context) error {
 		return errors.New("public_id parameter not found")
 	}
 
-	requested, err := api.operator.Get(ctx, publicID)
+	requested, err := api.operator.Get(ctx.Context(), publicID)
 	if err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to get pkg.Tenant record"), metrics.WithFields(metrics.Field{
 			"error":     err,
@@ -346,7 +346,7 @@ func (api *HTTPAPI) GetAll(ctx *httputil.Context) error {
 		pageNo = -1
 	}
 
-	requested, total, err := api.operator.GetAll(ctx, order, orderBy, pageNo, responsePerPage)
+	requested, total, err := api.operator.GetAll(ctx.Context(), order, orderBy, pageNo, responsePerPage)
 	if err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to get all pkg.Tenant record"), metrics.WithFields(metrics.Field{
 			"error": err,

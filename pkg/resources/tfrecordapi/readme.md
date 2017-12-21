@@ -35,13 +35,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
+    "max_length":	4,
+
+    "tenant":	null,
+
     "user":	null,
 
-    "domain":	"JumpXS.edu",
-
-    "max_length":	8,
-
-    "tenant":	null
+    "domain":	"Jayo.biz"
 
 }
 ```
@@ -63,23 +63,23 @@ Success: 201
 {
 
 
-    "user_id":	"v57rn85dmgli4muyo5fo",
+    "key":	"bryhqf4xtny6oftvqbb7",
 
-    "totp":	"i18oeovykz9khmkdcql5",
+    "domain":	"Blogspan.name",
 
-    "public_id":	"8qekrdkbryb8pp26uvlw52b759ix3s",
+    "user_id":	"srridgzc7dqygmvugglq",
 
-    "tenant_id":	"7jauf6nks6raoakln4d0",
+    "totp":	"mfnommqi5zbcwmh6jxad",
 
-    "key":	"8o2vfx2pxce16ddf43t4",
+    "public_id":	"fqxrl0geqevr4reryuv2yyu4u8rowu",
 
-    "domain":	"Skibox.edu",
+    "code_length":	7,
 
-    "code_length":	11,
+    "tenant_id":	"o2ruy97w54hbjd4i9ik2",
 
-    "created_at":	"2017-12-20 19:23:27.398534 +0000 UTC",
+    "created_at":	"2017-12-21 13:40:49.368449 +0000 UTC",
 
-    "updated_at":	"2017-12-20 19:23:27.398542 +0000 UTC"
+    "updated_at":	"2017-12-21 13:40:49.368458 +0000 UTC"
 
 }
 ```
@@ -113,23 +113,23 @@ Success: 200
 {
 
 
-    "updated_at":	"2017-12-20 19:23:27.399075 +0000 UTC",
+    "tenant_id":	"vuj0rlj1dl7jpufqndw8",
 
-    "key":	"i3wn5a0r11ejpxt1xlfy",
+    "code_length":	14,
 
-    "user_id":	"btqhh6663sx09c3xa9r8",
+    "updated_at":	"2017-12-21 13:40:49.368995 +0000 UTC",
 
-    "tenant_id":	"y3z7qws1trraeq5i3n6u",
+    "public_id":	"i2als8paozye7yh6fett5q2b2fzanb",
 
-    "created_at":	"2017-12-20 19:23:27.39907 +0000 UTC",
+    "created_at":	"2017-12-21 13:40:49.368991 +0000 UTC",
 
-    "domain":	"Wordtune.mil",
+    "key":	"6z5rvb6hhuj99f4s5z4x",
 
-    "totp":	"mi9b60c5wklve2w5soet",
+    "domain":	"Oba.org",
 
-    "public_id":	"atsvexvjbvf0ky6mve2bddmgttktva",
+    "user_id":	"fy7mq8zqw7zfmdasrays",
 
-    "code_length":	10
+    "totp":	"ahzbecdwcxc475eck2dl"
 
 }
 ```
@@ -156,44 +156,44 @@ Success: 200
 [{
 
 
-    "created_at":	"2017-12-20 19:23:27.399591 +0000 UTC",
+    "domain":	"Pixope.gov",
 
-    "updated_at":	"2017-12-20 19:23:27.399595 +0000 UTC",
+    "user_id":	"j8j8s7rgydxnuqbpk1fh",
 
-    "user_id":	"1n1w91d7iak4ljuz4fmt",
+    "tenant_id":	"xtrgqs53k0rlt3an7nbr",
 
-    "tenant_id":	"o23ecnpi7wwzry5omyjh",
+    "code_length":	16,
 
-    "totp":	"udkv42cjrlektcdnsaxl",
+    "updated_at":	"2017-12-21 13:40:49.369583 +0000 UTC",
 
-    "public_id":	"s54n2wxbfkgqdhh1x0bgtwizj5syrs",
+    "key":	"l7u6q5zr5sxqosqt1qjv",
 
-    "code_length":	11,
+    "totp":	"zpkirie263vnnlmjqmqa",
 
-    "key":	"ltvy0219yvmb1y5nm0yj",
+    "public_id":	"u3tba7oamxz24kfojyxih1aytf9zbc",
 
-    "domain":	"Cogibox.biz"
+    "created_at":	"2017-12-21 13:40:49.369578 +0000 UTC"
 
 },{
 
 
-    "key":	"il76v72gntq2mg2v9lsg",
+    "created_at":	"2017-12-21 13:40:49.370126 +0000 UTC",
 
-    "domain":	"Viva.name",
+    "updated_at":	"2017-12-21 13:40:49.370131 +0000 UTC",
 
-    "totp":	"sogtxesh7hk7183x66rf",
+    "totp":	"dr5sezwqx33s05tbartm",
 
-    "tenant_id":	"ygipsvfm9p5thdtf326u",
+    "tenant_id":	"v9u5wvxcc8iqe5h380le",
 
-    "code_length":	13,
+    "user_id":	"iie59zejbpe7rb03py4p",
 
-    "user_id":	"1bxv5dd9op42w6kwa238",
+    "public_id":	"1nhwe18qq36zyqh00huuuk85efl4f0",
 
-    "public_id":	"6yti5obx2klfxpcx4ajtih7m1ynnbc",
+    "code_length":	15,
 
-    "created_at":	"2017-12-20 19:23:27.400592 +0000 UTC",
+    "key":	"m9h5r84l00tqapvqzrr6",
 
-    "updated_at":	"2017-12-20 19:23:27.4006 +0000 UTC"
+    "domain":	"Meembee.name"
 
 }]
 ```
@@ -220,23 +220,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"upzz245egg3q0wqc8lqs",
+    "tenant_id":	"t8kxnn4iwo7afivkmonp",
 
-    "public_id":	"b3a2bstha8kzxpv34l8jsd2zx0fehn",
+    "created_at":	"2017-12-21 13:40:49.370582 +0000 UTC",
 
-    "tenant_id":	"ni0y68jty8n5bxzmrdcl",
+    "updated_at":	"2017-12-21 13:40:49.370588 +0000 UTC",
 
-    "code_length":	16,
+    "key":	"8ugxdig0tyu4swzhzgpu",
 
-    "created_at":	"2017-12-20 19:23:27.401818 +0000 UTC",
+    "user_id":	"mgw6toiu6dgxhzkhet08",
 
-    "updated_at":	"2017-12-20 19:23:27.401826 +0000 UTC",
+    "public_id":	"s1bc2lp14ifuju2lpbl57zqea8pdk9",
 
-    "domain":	"Skajo.org",
+    "domain":	"Kazu.name",
 
-    "totp":	"s2pnmzzzrrr5smmeanwj",
+    "totp":	"7jw5xhioodtpp6pwkuma",
 
-    "key":	"o4ucywfsotvc9ntv1umd"
+    "code_length":	13
 
 }
 ```

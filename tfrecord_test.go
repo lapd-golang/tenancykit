@@ -10,7 +10,8 @@ import (
 
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 
-	"github.com/influx6/faux/context"
+	"context"
+
 	"github.com/influx6/faux/httputil/httptesting"
 
 	"github.com/gokit/tenancykit"
@@ -65,7 +66,7 @@ func testTwoFactorRecordCreate(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 func testTwoFactorRecordGetAll(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When retrieving all twofactor records using the TwoFactorRecordAPI")
 	{
-		_, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -110,7 +111,7 @@ func testTwoFactorRecordGetAll(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 func testTwoFactorRecordGet(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When retrieving a twofactor record using the TwoFactorRecordAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -153,7 +154,7 @@ func testTwoFactorRecordGet(t *testing.T, tf tenancykit.TwoFactorAPI, db types.T
 func testTwoFactorRecordUpdate(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When updating a twofactor record using the TwoFactorRecordAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -191,7 +192,7 @@ func testTwoFactorRecordUpdate(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 		}
 		tests.Passed("Should have received Status 202")
 
-		updatedRecord, err := db.Get(context.New(), record.PublicID)
+		updatedRecord, err := db.Get(context.Background(), record.PublicID)
 		if err != nil {
 			tests.FailedWithError(err, "Should have succesfully retrieved update record")
 		}
@@ -210,7 +211,7 @@ func testTwoFactorRecordUpdate(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 func testTwoFactorRecordDelete(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When deleting a twofactor record using the TwoFactorRecordAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -238,7 +239,7 @@ func testTwoFactorRecordDelete(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 		}
 		tests.Passed("Should have received Status 202")
 
-		if _, err := db.Get(context.New(), record.PublicID); err == nil {
+		if _, err := db.Get(context.Background(), record.PublicID); err == nil {
 			tests.Failed("Should have succesfully failed to get deleted record")
 		}
 		tests.Passed("Should have succesfully failed to get deleted record")

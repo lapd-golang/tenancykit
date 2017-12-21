@@ -3,7 +3,7 @@ package pkg
 import (
 	"errors"
 
-	"github.com/influx6/faux/context"
+	"github.com/influx6/faux/httputil"
 )
 
 // variables of context keys for the tenancypackage.
@@ -25,8 +25,8 @@ func (c contextKey) String() string {
 }
 
 // GetUserSession retrieves currently stored UserSession struct in provided context.
-func GetUserSession(ctx context.Context) (UserSession, error) {
-	receivedVal, ok := ctx.Bag().Get(ContextKeyUserSession)
+func GetUserSession(ctx *httputil.Context) (UserSession, error) {
+	receivedVal, ok := ctx.Get(ContextKeyUserSession)
 	if !ok {
 		return UserSession{}, errors.New("not found")
 	}
@@ -40,8 +40,8 @@ func GetUserSession(ctx context.Context) (UserSession, error) {
 }
 
 // GetCurrentUser retrieves currently stored CurrentUser struct in provided context.
-func GetCurrentUser(ctx context.Context) (CurrentUser, error) {
-	receivedVal, ok := ctx.Bag().Get(ContextKeyCurrentUser)
+func GetCurrentUser(ctx *httputil.Context) (CurrentUser, error) {
+	receivedVal, ok := ctx.Get(ContextKeyCurrentUser)
 	if !ok {
 		return CurrentUser{}, errors.New("not found")
 	}
@@ -55,8 +55,8 @@ func GetCurrentUser(ctx context.Context) (CurrentUser, error) {
 }
 
 // GetTwoFactorRecord retrieves currently stored user in provided context.
-func GetTwoFactorRecord(ctx context.Context) (TFRecord, error) {
-	receivedVal, ok := ctx.Bag().Get(ContextKeyTFRecord)
+func GetTwoFactorRecord(ctx *httputil.Context) (TFRecord, error) {
+	receivedVal, ok := ctx.Get(ContextKeyTFRecord)
 	if !ok {
 		return TFRecord{}, errors.New("not found")
 	}
@@ -70,8 +70,8 @@ func GetTwoFactorRecord(ctx context.Context) (TFRecord, error) {
 }
 
 // GetUser retrieves currently stored user in provided context.
-func GetUser(ctx context.Context) (User, error) {
-	receivedVal, ok := ctx.Bag().Get(ContextKeyUser)
+func GetUser(ctx *httputil.Context) (User, error) {
+	receivedVal, ok := ctx.Get(ContextKeyUser)
 	if !ok {
 		return User{}, errors.New("not found")
 	}
@@ -85,8 +85,8 @@ func GetUser(ctx context.Context) (User, error) {
 }
 
 // GetTenant retrieves currently stored tenant in provided context.
-func GetTenant(ctx context.Context) (Tenant, error) {
-	receivedVal, ok := ctx.Bag().Get(ContextKeyTenant)
+func GetTenant(ctx *httputil.Context) (Tenant, error) {
+	receivedVal, ok := ctx.Get(ContextKeyTenant)
 	if !ok {
 		return Tenant{}, errors.New("not found")
 	}

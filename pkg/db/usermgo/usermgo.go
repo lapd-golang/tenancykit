@@ -5,6 +5,7 @@ package usermgo
 
 import (
 	"errors"
+
 	"fmt"
 
 	"strings"
@@ -13,7 +14,7 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/influx6/faux/context"
+	"context"
 
 	"github.com/influx6/faux/metrics"
 
@@ -115,7 +116,7 @@ func (mdb *UserDB) Count(ctx context.Context) (int, error) {
 	m := metrics.NewTrace("UserDB.Count")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Count"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 
 		mdb.metrics.Emit(metrics.Errorf("Failed to get record count"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
@@ -157,7 +158,7 @@ func (mdb *UserDB) Delete(ctx context.Context, publicID string) error {
 	m := metrics.NewTrace("UserDB.Delete")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("publicID", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -201,7 +202,7 @@ func (mdb *UserDB) Create(ctx context.Context, elem pkg.User) error {
 	m := metrics.NewTrace("UserDB.Create")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to create record"), metrics.With("publicID", elem.PublicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -253,7 +254,7 @@ func (mdb *UserDB) GetAll(ctx context.Context, order string, orderBy string, pag
 		orderBy = "-" + orderBy
 	}
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return nil, -1, err
@@ -345,7 +346,7 @@ func (mdb *UserDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]
 		orderBy = "-" + orderBy
 	}
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
@@ -402,7 +403,7 @@ func (mdb *UserDB) GetByField(ctx context.Context, key string, value interface{}
 	m := metrics.NewTrace("UserDB.GetByField")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With(key, value), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 
@@ -453,7 +454,7 @@ func (mdb *UserDB) Get(ctx context.Context, publicID string) (pkg.User, error) {
 	m := metrics.NewTrace("UserDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("publicID", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return pkg.User{}, err
@@ -501,7 +502,7 @@ func (mdb *UserDB) Update(ctx context.Context, publicID string, elem pkg.User) e
 	m := metrics.NewTrace("UserDB.Update")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to finish, context has expired"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
@@ -559,7 +560,7 @@ func (mdb *UserDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error)
 	m := metrics.NewTrace("UserDB.Exec")
 	defer mdb.metrics.Emit(metrics.Info("UserDB.Exec"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -589,4 +590,13 @@ func (mdb *UserDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error)
 	mdb.metrics.Emit(metrics.Info("Operation executed"), metrics.With("collection", mdb.col))
 
 	return nil
+}
+
+func isContextExpired(ctx context.Context) bool {
+	select {
+	case <-ctx.Done():
+		return true
+	default:
+		return false
+	}
 }

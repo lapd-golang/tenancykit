@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/influx6/faux/context"
+	"context"
 
 	"github.com/gokit/tenancykit/pkg"
 )

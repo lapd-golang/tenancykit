@@ -1,36 +1,33 @@
 package fixtures
 
 import (
-     "encoding/json"
+	"encoding/json"
 
-
-     "github.com/gokit/tenancykit/pkg"
-
+	"github.com/gokit/tenancykit/pkg"
 )
-
 
 // json fixtures ...
 var (
- TFRecordJSON = `{
+	TFRecordJSON = `{
 
 
-    "domain":	"Gabcube.gov",
+    "public_id":	"s4bgv1sstqid6sdm4369d3731k8s2e",
 
-    "user_id":	"cc30dmqu2ki3hwx1rs83",
+    "tenant_id":	"d1abgprwuymwuro0xl3l",
 
-    "totp":	"idwx30q82zvg5zi9nhyp",
+    "totp":	"iwsxwgn7gzwh7kxkzhk8",
 
-    "public_id":	"z8tiqc8wkdvh064qwehn6xybv7yann",
+    "domain":	"Abatz.info",
 
-    "updated_at":	"2017-12-20 14:54:59.811171 +0000 UTC",
-
-    "key":	"y4rmiq28vjkzzs86ddja",
-
-    "tenant_id":	"gpz5mvegh4mw975u573e",
+    "user_id":	"tiada7zdzr6im6q6p6a5",
 
     "code_length":	1,
 
-    "created_at":	"2017-12-20 14:54:59.811162 +0000 UTC"
+    "created_at":	"2017-12-21 11:37:52.109066 +0000 UTC",
+
+    "updated_at":	"2017-12-21 11:37:52.109075 +0000 UTC",
+
+    "key":	"5r395v6pskn9wtaf0ws4"
 
 }`
 )
@@ -45,4 +42,3 @@ func LoadTFRecordJSON(content string) (pkg.TFRecord, error) {
 
 	return elem, nil
 }
-

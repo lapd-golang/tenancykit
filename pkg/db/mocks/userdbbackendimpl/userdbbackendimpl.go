@@ -1,7 +1,7 @@
 package userdbbackendimpl
 
 import (
-	context "github.com/influx6/faux/context"
+	context "context"
 
 	pkg "github.com/gokit/tenancykit/pkg"
 )

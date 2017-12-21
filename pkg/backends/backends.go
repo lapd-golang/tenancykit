@@ -1,6 +1,7 @@
 package backends
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/gokit/tenancykit/pkg/db/tokenmgo"
 	"github.com/gokit/tenancykit/pkg/db/tokensql"
 	"github.com/gokit/tenancykit/pkg/db/types"
-	"github.com/influx6/faux/context"
 	"github.com/influx6/faux/httputil"
 )
 
@@ -89,8 +89,6 @@ func (us UserSessionBackend) Create(ctx context.Context, cus pkg.CreateUserSessi
 			Code: http.StatusUnauthorized,
 		}
 	}
-
-	ctx.Bag().Set(pkg.ContextKeyUser, user)
 
 	// Check if old session exist and if not expired, then return that, else delete it.
 	if oldSession, err := us.UserSessionDBBackend.GetByField(ctx, "user_id", user.PublicID); err == nil {

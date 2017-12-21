@@ -4,6 +4,8 @@
 package tokensql
 
 import (
+	"context"
+
 	"fmt"
 
 	"errors"
@@ -11,8 +13,6 @@ import (
 	dsql "database/sql"
 
 	"github.com/influx6/faux/db"
-
-	"github.com/influx6/faux/context"
 
 	"github.com/influx6/faux/metrics"
 
@@ -78,7 +78,7 @@ func (mdb *TokenDB) Delete(ctx context.Context, publicID string) error {
 	m := metrics.NewTrace("TokenDB.Delete")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("publicID", publicID), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -105,7 +105,7 @@ func (mdb *TokenDB) Create(ctx context.Context, elem pkg.Token) error {
 	m := metrics.NewTrace("TokenDB.Create")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to create record"), metrics.With("publicID", elem.PublicID), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -143,7 +143,7 @@ func (mdb *TokenDB) GetAll(ctx context.Context, order string, orderby string, pa
 	m := metrics.NewTrace("TokenDB.GetAll")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.GetAll"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 
@@ -182,7 +182,7 @@ func (mdb *TokenDB) GetByField(ctx context.Context, key string, value interface{
 	m := metrics.NewTrace("TokenDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Get"), metrics.With(key, value), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With(key, value), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 
@@ -213,7 +213,7 @@ func (mdb *TokenDB) Get(ctx context.Context, publicID string) (pkg.Token, error)
 	m := metrics.NewTrace("TokenDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("publicID", publicID), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 		return pkg.Token{}, err
@@ -242,7 +242,7 @@ func (mdb *TokenDB) Update(ctx context.Context, publicID string, elem pkg.Token)
 	m := metrics.NewTrace("TokenDB.Update")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to finish, context has expired"), metrics.With("table", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
@@ -266,7 +266,7 @@ func (mdb *TokenDB) Exec(ctx context.Context, fx func(*sql.SQL, sql.DB) error) e
 	m := metrics.NewTrace("TokenDB.Exec")
 	defer mdb.metrics.Emit(metrics.Info("TokenDB.Exec"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("table", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -283,4 +283,13 @@ func (mdb *TokenDB) Exec(ctx context.Context, fx func(*sql.SQL, sql.DB) error) e
 	mdb.metrics.Emit(metrics.Info("Operation executed"), metrics.With("table", mdb.col))
 
 	return nil
+}
+
+func isContextExpired(ctx context.Context) bool {
+	select {
+	case <-ctx.Done():
+		return true
+	default:
+		return false
+	}
 }

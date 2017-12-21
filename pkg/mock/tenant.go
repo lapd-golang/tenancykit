@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"strings"
 
+	"context"
+
 	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/db/mocks"
 	"github.com/gokit/tenancykit/pkg/db/mocks/tenantdbbackendimpl"
 	"github.com/gokit/tenancykit/pkg/db/types"
-	"github.com/influx6/faux/context"
 )
 
 // TenantDBBackend returns a mock implementation of the db.types.TenantDBBackend interface.

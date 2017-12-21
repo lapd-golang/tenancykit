@@ -69,7 +69,7 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 		}
 	}
 
-	used, err := tfs.TokenSet.Has(ctx, currentUser.TwoFactor.PublicID, userCode)
+	used, err := tfs.TokenSet.Has(ctx.Context(), currentUser.User.PublicID, userCode)
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
@@ -91,7 +91,7 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 		}
 	}
 
-	if _, err := tfs.TokenSet.Add(ctx, currentUser.TwoFactor.PublicID, userCode); err != nil {
+	if _, err := tfs.TokenSet.Add(ctx.Context(), currentUser.User.PublicID, userCode); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
@@ -147,7 +147,7 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		}
 	}
 
-	used, err := tfs.TokenSet.Has(ctx, currentUser.TwoFactor.PublicID, userCode)
+	used, err := tfs.TokenSet.Has(ctx.Context(), currentUser.User.PublicID, userCode)
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
@@ -164,9 +164,9 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 
 	// If we have an existing two-factor session, then validate code sent is correct,
 	// then update current tfrecord and pass on the session record to context.
-	if tfSession, err := tfs.Backend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
+	if tfSession, err := tfs.Backend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID); err == nil {
 		if err := currentUser.TwoFactor.ValidateOTP(userCode); err != nil {
-			tfs.Backend.Delete(ctx, tfSession.PublicID)
+			tfs.Backend.Delete(ctx.Context(), tfSession.PublicID)
 
 			return httputil.HTTPError{
 				Err:  err,
@@ -185,7 +185,7 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		}
 	}
 
-	if _, err := tfs.TokenSet.Add(ctx, currentUser.TwoFactor.PublicID, userCode); err != nil {
+	if _, err := tfs.TokenSet.Add(ctx.Context(), currentUser.User.PublicID, userCode); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
@@ -202,7 +202,7 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		return nil
 	}
 
-	if err := tfs.Backend.Create(ctx, newTFSession); err != nil {
+	if err := tfs.Backend.Create(ctx.Context(), newTFSession); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,

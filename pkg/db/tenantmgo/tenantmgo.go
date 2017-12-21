@@ -5,6 +5,7 @@ package tenantmgo
 
 import (
 	"errors"
+
 	"fmt"
 
 	"strings"
@@ -13,7 +14,7 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/influx6/faux/context"
+	"context"
 
 	"github.com/influx6/faux/metrics"
 
@@ -115,7 +116,7 @@ func (mdb *TenantDB) Count(ctx context.Context) (int, error) {
 	m := metrics.NewTrace("TenantDB.Count")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Count"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 
 		mdb.metrics.Emit(metrics.Errorf("Failed to get record count"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
@@ -157,7 +158,7 @@ func (mdb *TenantDB) Delete(ctx context.Context, publicID string) error {
 	m := metrics.NewTrace("TenantDB.Delete")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to delete record"), metrics.With("publicID", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -201,7 +202,7 @@ func (mdb *TenantDB) Create(ctx context.Context, elem pkg.Tenant) error {
 	m := metrics.NewTrace("TenantDB.Create")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to create record"), metrics.With("publicID", elem.PublicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -253,7 +254,7 @@ func (mdb *TenantDB) GetAll(ctx context.Context, order string, orderBy string, p
 		orderBy = "-" + orderBy
 	}
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return nil, -1, err
@@ -345,7 +346,7 @@ func (mdb *TenantDB) GetAllByOrder(ctx context.Context, order, orderBy string) (
 		orderBy = "-" + orderBy
 	}
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
@@ -402,7 +403,7 @@ func (mdb *TenantDB) GetByField(ctx context.Context, key string, value interface
 	m := metrics.NewTrace("TenantDB.GetByField")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With(key, value), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 
@@ -453,7 +454,7 @@ func (mdb *TenantDB) Get(ctx context.Context, publicID string) (pkg.Tenant, erro
 	m := metrics.NewTrace("TenantDB.Get")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve record"), metrics.With("publicID", publicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return pkg.Tenant{}, err
@@ -501,7 +502,7 @@ func (mdb *TenantDB) Update(ctx context.Context, publicID string, elem pkg.Tenan
 	m := metrics.NewTrace("TenantDB.Update")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to finish, context has expired"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
@@ -559,7 +560,7 @@ func (mdb *TenantDB) Exec(ctx context.Context, fx func(col *mgo.Collection) erro
 	m := metrics.NewTrace("TenantDB.Exec")
 	defer mdb.metrics.Emit(metrics.Info("TenantDB.Exec"), metrics.WithTrace(m.End()))
 
-	if context.IsExpired(ctx) {
+	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to execute operation"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
@@ -589,4 +590,13 @@ func (mdb *TenantDB) Exec(ctx context.Context, fx func(col *mgo.Collection) erro
 	mdb.metrics.Emit(metrics.Info("Operation executed"), metrics.With("collection", mdb.col))
 
 	return nil
+}
+
+func isContextExpired(ctx context.Context) bool {
+	select {
+	case <-ctx.Done():
+		return true
+	default:
+		return false
+	}
 }

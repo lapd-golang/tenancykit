@@ -11,37 +11,37 @@ var (
 	UserSessionJSON = `{
 
 
-    "user_id":	"aq6hvwb46hndd94xnpw6",
+    "user_id":	"kddlpvr93j97iw85va39",
 
-    "public_id":	"l4rg6e9rxi3vni843i9507hmqskoga",
+    "public_id":	"p0y4s38y1dv400yfr1giufnolz6tnq",
 
-    "token":	"h9ez2fr226bnxatlynxp",
+    "token":	"b9cjagocqh4i4p56gbqc",
 
-    "expires":	"2017-12-20 19:23:27.473238 +0000 UTC"
+    "expires":	"2017-12-21 13:02:17.67844 +0000 UTC"
 
 }`
 
 	UserSessionCreateJSON = `{
 
 
-    "password":	"rhmrp3mu7zvib4lel215",
+    "email":	"lLee@Podcat.edu",
 
-    "expiration":	null,
+    "password":	"th824z1rgz8843kz9xis",
 
-    "email":	"hBowman@Vitz.biz"
+    "expiration":	null
 
 }`
 
 	UserSessionUpdateJSON = `{
 
 
-    "user_id":	"8bi0mwleuyqvl2kp3r1f",
+    "user_id":	"qcy98t0iyzovms8fqfzu",
 
-    "public_id":	"twuy3dv33spvvdeqgyawlaeun28vhe",
+    "public_id":	"y3kla23wj4ifqcczgjiqnk34k9nb7g",
 
-    "token":	"qkop9n13lefezttpc7or",
+    "token":	"xmu9vbjh148ulzsw4mr0",
 
-    "expires":	"2017-12-20 19:23:27.47386 +0000 UTC"
+    "expires":	"2017-12-21 13:02:17.679077 +0000 UTC"
 
 }`
 )

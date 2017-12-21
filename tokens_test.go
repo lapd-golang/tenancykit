@@ -9,7 +9,8 @@ import (
 
 	"github.com/gokit/tenancykit/pkg/resources/tokenapi"
 
-	"github.com/influx6/faux/context"
+	"context"
+
 	"github.com/influx6/faux/httputil/httptesting"
 
 	"github.com/gokit/tenancykit"
@@ -63,7 +64,7 @@ func testTokenCreate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBacke
 func testTokenGetAll(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {
 	tests.Header("When retrieving all token records using the TokenAPI")
 	{
-		_, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -108,7 +109,7 @@ func testTokenGetAll(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBacke
 func testTokenGet(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {
 	tests.Header("When retrieving a token record using the TokenAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -151,7 +152,7 @@ func testTokenGet(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend)
 func testTokenUpdate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {
 	tests.Header("When updating a token record using the TokenAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -189,7 +190,7 @@ func testTokenUpdate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBacke
 		}
 		tests.Passed("Should have received Status 202")
 
-		updatedRecord, err := db.Get(context.New(), record.PublicID)
+		updatedRecord, err := db.Get(context.Background(), record.PublicID)
 		if err != nil {
 			tests.FailedWithError(err, "Should have succesfully retrieved update record")
 		}
@@ -208,7 +209,7 @@ func testTokenUpdate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBacke
 func testTokenDelete(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {
 	tests.Header("When deleting a token record using the TokenAPI")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -236,7 +237,7 @@ func testTokenDelete(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBacke
 		}
 		tests.Passed("Should have received Status 202")
 
-		if _, err := db.Get(context.New(), record.PublicID); err == nil {
+		if _, err := db.Get(context.Background(), record.PublicID); err == nil {
 			tests.Failed("Should have succesfully failed to get deleted record")
 		}
 		tests.Passed("Should have succesfully failed to get deleted record")

@@ -79,7 +79,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 		}
 	}
 
-	newSession, err := us.Backend.Create(ctx, credentials)
+	newSession, err := us.Backend.Create(ctx.Context(), credentials)
 	if err != nil {
 		if httperr, ok := err.(httputil.HTTPError); ok {
 			return httperr
@@ -91,7 +91,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 		}
 	}
 
-	user, err := pkg.GetUser(ctx)
+	user, err := us.UserBackend.Get(ctx.Context(), newSession.UserID)
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
@@ -104,7 +104,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	currentUser.Session = &newSession
 
 	// Rerieve user's tenant.
-	currentUser.Tenant, err = us.TenantBackend.Get(ctx, user.TenantID)
+	currentUser.Tenant, err = us.TenantBackend.Get(ctx.Context(), user.TenantID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -116,6 +116,24 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 			Err:  err,
 			Code: http.StatusNotFound,
 		}
+	}
+
+	if user.TwoFactorAuth {
+		tfrecord, err := us.TFBackend.Get(ctx.Context(), user.PublicID)
+		if err != nil {
+			if !us.isNotFoundError(err) {
+				return httputil.HTTPError{
+					Err:  err,
+					Code: http.StatusInternalServerError,
+				}
+			}
+			return httputil.HTTPError{
+				Err:  err,
+				Code: http.StatusNotFound,
+			}
+		}
+
+		currentUser.TwoFactor = &tfrecord
 	}
 
 	// set current user into context.
@@ -162,7 +180,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 	}
 
 	if currentUser.Session == nil {
-		cuSession, err := us.SessionBackend.GetByField(ctx, "user_id", currentUser.User.PublicID)
+		cuSession, err := us.SessionBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID)
 		if err != nil {
 			return httputil.HTTPError{
 				Err:  err,
@@ -174,7 +192,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 	}
 
 	if currentUser.TFSession == nil && currentUser.User.TwoFactorAuth {
-		tfSession, err := us.TFSessionsBackend.GetByField(ctx, "user_id", currentUser.User.PublicID)
+		tfSession, err := us.TFSessionsBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID)
 		if err != nil {
 			return httputil.HTTPError{
 				Err:  err,
@@ -185,7 +203,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 		currentUser.TFSession = &tfSession
 	}
 
-	if err := us.Backend.Delete(ctx, currentUser.Session.PublicID); err != nil {
+	if err := us.Backend.Delete(ctx.Context(), currentUser.Session.PublicID); err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
@@ -193,7 +211,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 	}
 
 	if currentUser.TFSession != nil {
-		if err = us.TFSessionsBackend.Delete(ctx, currentUser.TFSession.PublicID); err != nil {
+		if err = us.TFSessionsBackend.Delete(ctx.Context(), currentUser.User.PublicID); err != nil {
 			return httputil.HTTPError{
 				Err:  err,
 				Code: http.StatusInternalServerError,
@@ -218,56 +236,20 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 //		where <TOKEN> = <USERID>:<SESSIONTOKEN>
 //
 func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
-	authorization, err := us.GetAuthorization(ctx)
+	userID, userToken, err := us.GetAuthorizationCredentials(ctx)
 	if err != nil {
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusBadRequest,
-		}
+		return err
 	}
-
-	authtype, token, err := httputil.ParseAuthorization(authorization)
-	if err != nil {
-		return httputil.HTTPError{
-			Err:  errors.New("Invalid Authorization header"),
-			Code: http.StatusBadRequest,
-		}
-	}
-
-	if authtype != "Bearer" {
-		err := errors.New("Only `Bearer` Authorization supported")
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusBadRequest,
-		}
-	}
-
-	tokens, err := httputil.ParseTokens(token)
-	if err != nil {
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusBadRequest,
-		}
-	}
-
-	if len(tokens) < 2 {
-		err := errors.New("invalid token count, expected 2 token values")
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusBadRequest,
-		}
-	}
-
-	userID, userToken := tokens[0], tokens[1]
 
 	// If we are already logged in and user's token is valid and session is not
 	// expired, then go ahead.
 	if lastCurrentUser, err := pkg.GetCurrentUser(ctx); err == nil {
+		ctx.Bag().Set(pkg.ContextKeyUser, lastCurrentUser.User)
 		if lastCurrentUser.Session != nil && !lastCurrentUser.Session.Expired() {
 			if lastCurrentUser.Session.ValidateToken(userToken) {
 
 				// Validate session is still valid in db.
-				if _, err := us.SessionBackend.Get(ctx, lastCurrentUser.Session.PublicID); err != nil {
+				if _, err := us.SessionBackend.Get(ctx.Context(), lastCurrentUser.Session.PublicID); err != nil {
 					return httputil.HTTPError{
 						Err:  err,
 						Code: http.StatusUnauthorized,
@@ -279,7 +261,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	user, err := us.UserBackend.Get(ctx, userID)
+	user, err := us.UserBackend.Get(ctx.Context(), userID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -293,7 +275,9 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
-	session, err := us.SessionBackend.GetByField(ctx, "user_id", user.PublicID)
+	ctx.Bag().Set(pkg.ContextKeyUser, user)
+
+	session, err := us.SessionBackend.GetByField(ctx.Context(), "user_id", user.PublicID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -308,7 +292,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	}
 
 	if session.Expired() {
-		if err := us.SessionBackend.Delete(ctx, session.PublicID); err != nil {
+		if err := us.SessionBackend.Delete(ctx.Context(), session.PublicID); err != nil {
 			return httputil.HTTPError{
 				Err:  err,
 				Code: http.StatusInternalServerError,
@@ -333,7 +317,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	currentUser.Session = &session
 
 	// Rerieve user's tenant.
-	currentUser.Tenant, err = us.TenantBackend.Get(ctx, user.TenantID)
+	currentUser.Tenant, err = us.TenantBackend.Get(ctx.Context(), user.TenantID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -348,7 +332,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	}
 
 	// Attempt to retrieve twofactor user record if user has one.
-	if tf, err := us.TFBackend.GetByField(ctx, "user_id", currentUser.User.PublicID); err == nil {
+	if tf, err := us.TFBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID); err == nil {
 		currentUser.TwoFactor = &tf
 	}
 
@@ -371,4 +355,50 @@ func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error)
 	}
 
 	return "", errors.New("no valid authorization found")
+}
+
+// GetAuthorizationCredentials returns the current Authentication User ID and Auth token else an error.
+func (us UserSessionAPI) GetAuthorizationCredentials(ctx *httputil.Context) (string, string, error) {
+	authorization, err := us.GetAuthorization(ctx)
+	if err != nil {
+		return "", "", httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	authtype, token, err := httputil.ParseAuthorization(authorization)
+	if err != nil {
+		return "", "", httputil.HTTPError{
+			Err:  errors.New("Invalid Authorization header"),
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	if authtype != "Bearer" {
+		err := errors.New("Only `Bearer` Authorization supported")
+		return "", "", httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	tokens, err := httputil.ParseTokens(token)
+	if err != nil {
+		return "", "", httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	if len(tokens) < 2 {
+		err := errors.New("invalid token count, expected 2 token values")
+		return "", "", httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	userID, userToken := tokens[0], tokens[1]
+	return userID, userToken, nil
 }

@@ -8,9 +8,10 @@ import (
 	"os"
 	"testing"
 
+	"context"
+
 	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/influx6/faux/context"
 	"github.com/influx6/faux/httputil/httptesting"
 	"github.com/influx6/faux/tests"
 
@@ -45,7 +46,7 @@ func TestUserAPI(t *testing.T) {
 	tests.Passed("Should have successfully loaded tenant record")
 
 	tenants := backends.TenantBackend{TenantDBBackend: tenantdb}
-	tenantRecord, err := tenants.Create(context.New(), createTenant)
+	tenantRecord, err := tenants.Create(context.Background(), createTenant)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created tenant")
 	}
@@ -105,7 +106,7 @@ func testUserCreate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 func testUserGetAll(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
 	tests.Header("When retrieving all users with User API")
 	{
-		_, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -150,7 +151,7 @@ func testUserGetAll(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 func testUserGet(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
 	tests.Header("When retrieving user with User API")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -193,7 +194,7 @@ func testUserGet(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db t
 func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
 	tests.Header("When updating user with User API")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -235,7 +236,7 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 		}
 		tests.Passed("Should have received Status 204")
 
-		updatedRecord, err := db.Get(context.New(), user.PublicID)
+		updatedRecord, err := db.Get(context.Background(), user.PublicID)
 		if err != nil {
 			tests.FailedWithError(err, "Should have succesfully retrieved update record")
 		}
@@ -259,7 +260,7 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 func testUserDelete(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
 	tests.Header("When deleting user with User API")
 	{
-		records, total, err := db.GetAll(context.New(), "", "", 0, 0)
+		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all results from backend")
 		}
@@ -287,7 +288,7 @@ func testUserDelete(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 		}
 		tests.Passed("Should have received Status 204")
 
-		if _, err := db.Get(context.New(), user.PublicID); err == nil {
+		if _, err := db.Get(context.Background(), user.PublicID); err == nil {
 			tests.Failed("Should have succesfully failed to get deleted record")
 		}
 		tests.Passed("Should have succesfully failed to get deleted record")

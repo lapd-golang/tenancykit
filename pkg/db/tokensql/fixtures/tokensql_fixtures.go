@@ -1,24 +1,21 @@
 package fixtures
 
 import (
-     "encoding/json"
+	"encoding/json"
 
-
-     "github.com/gokit/tenancykit/pkg"
-
+	"github.com/gokit/tenancykit/pkg"
 )
-
 
 // json fixtures ...
 var (
- TokenJSON = `{
+	TokenJSON = `{
 
 
-    "value":	"ikd3amgzpqecm1zg1iy2",
+    "target_id":	"8qhlr7kx4cjzx958t24m",
 
-    "public_id":	"bdll7a95mjlasy5dsuq1s355e1fs4u",
+    "value":	"965e2rx0juzdg348x6p4",
 
-    "target_id":	"8esszpp387uupr0pae4m"
+    "public_id":	"bmbp7plnjg846jjnpq9hbild6oulz6"
 
 }`
 )
@@ -33,4 +30,3 @@ func LoadTokenJSON(content string) (pkg.Token, error) {
 
 	return elem, nil
 }
-
