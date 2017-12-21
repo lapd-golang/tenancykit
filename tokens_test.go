@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/gokit/tenancykit/pkg/resources/tokenapi"
@@ -31,7 +30,6 @@ func TestTokenAPI(t *testing.T) {
 	testTokenGet(t, tf, tfdb)
 	testTokenUpdate(t, tf, tfdb)
 	testTokenDelete(t, tf, tfdb)
-	os.RemoveAll("./keys")
 }
 
 func testTokenCreate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {
