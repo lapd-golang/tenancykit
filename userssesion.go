@@ -360,7 +360,7 @@ func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error)
 			if val, err := base64.StdEncoding.DecodeString(cookie.Value); err == nil {
 				return string(val), nil
 			}
-			return cookie.Value, err
+			return cookie.Value, nil
 		}
 	}
 
