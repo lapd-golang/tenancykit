@@ -18,3 +18,7 @@ cohesive but flexible customization as to structure fields and behaviours.*
 go get -u github.com/gokit/tenancykit
 ```
 
+
+### Vendoring
+
+Project is vendored using [Govendor](https://github.com/kardianos/govendor).
