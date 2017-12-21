@@ -65,7 +65,22 @@ func (us UserSessionAPI) isNotFoundError(err error) bool {
 // user into context after is successfully validates credentails.
 func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	if err := us.GetUser(ctx); err == nil {
-		return nil
+		currentUser, err := pkg.GetCurrentUser(ctx)
+		if err != nil {
+			return httputil.HTTPError{
+				Err:  err,
+				Code: http.StatusInternalServerError,
+			}
+		}
+
+		if currentUser.Session == nil {
+			return httputil.HTTPError{
+				Err:  errors.New("CurrentUser session can not be nil"),
+				Code: http.StatusInternalServerError,
+			}
+		}
+
+		return ctx.JSON(200, pkg.UserAuthorization{Token: currentUser.Session.UserSessionToken()})
 	}
 
 	body := ctx.Request().Body
@@ -138,21 +153,13 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 
 	// set current user into context.
 	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
-
-	ctx.Status(http.StatusNoContent)
+	ctx.Set(pkg.ContextKeyUserAuthorization, pkg.UserAuthorization{Token: newSession.UserSessionToken()})
 
 	authValue := fmt.Sprintf("Bearer %s", newSession.UserSessionToken())
-	privateid := base64.StdEncoding.EncodeToString([]byte(authValue))
 
 	ctx.SetHeader("Authorization", authValue)
-	ctx.SetCookie(&http.Cookie{
-		Name:    "Authorization",
-		Value:   privateid,
-		Expires: newSession.Expires,
-		Path:    "/",
-	})
 
-	return nil
+	return ctx.JSON(200, pkg.UserAuthorization{Token: newSession.UserSessionToken()})
 }
 
 // Logout ends a existing users session, and deletes all existing twofactor
@@ -341,7 +348,8 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	return nil
 }
 
-// GetAuthorization returns authorization value for giving request.
+// GetAuthorization returns authorization value for giving request from either it's header or
+// cookies if found, else returns an error.
 func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error) {
 	if ctx.HasHeader("Authorization", "") {
 		return ctx.GetHeader("Authorization"), nil
@@ -349,8 +357,10 @@ func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error)
 
 	for _, cookie := range ctx.Cookies() {
 		if strings.ToLower(cookie.Name) == "authorization" {
-			val, err := base64.StdEncoding.DecodeString(cookie.Value)
-			return string(val), err
+			if val, err := base64.StdEncoding.DecodeString(cookie.Value); err == nil {
+				return string(val), nil
+			}
+			return cookie.Value, err
 		}
 	}
 

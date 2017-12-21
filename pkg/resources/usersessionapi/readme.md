@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"DorothyRamirez@Meemm.mil",
+    "email":	"AnthonyOliver@Dabjam.com",
 
-    "password":	"y2trt6wtmqf9pd97qfil",
+    "password":	"walytwexieikketlytan",
 
     "expiration":	null
 
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "user_id":	"1j364r0llgwu5lqeja30",
+    "user_id":	"jgi7q9te4757s1q1qijc",
 
-    "public_id":	"4zzapsu12gked2h5rlrvr23qp88yep",
+    "public_id":	"lqm246xef2huajw7ps7ggo8weybdz6",
 
-    "token":	"qfyjzjqw76a6s0lbt8gd",
+    "token":	"dv9uk8yrhzco6t5764i6",
 
-    "expires":	"2017-12-21 15:13:51.098507 +0000 UTC"
+    "expires":	"2017-12-21 20:42:41.37754 +0000 UTC"
 
 }
 ```
@@ -125,13 +125,13 @@ Success: 200
 {
 
 
-    "expires":	"2017-12-21 15:13:51.099083 +0000 UTC",
+    "user_id":	"85w05ffe9oa77zk7bjkf",
 
-    "user_id":	"zesbws1kgoru0l7pito4",
+    "public_id":	"93uhg5vvproljg1eqfo696cspsrfkd",
 
-    "public_id":	"8w5gml6a37qqhvmy2r37jotgfphd2s",
+    "token":	"z0gkfziwv2pm72zhkz5k",
 
-    "token":	"48sa6kbv1vh86wn4gl4a"
+    "expires":	"2017-12-21 20:42:41.378055 +0000 UTC"
 
 }
 ```
@@ -158,24 +158,24 @@ Success: 200
 [{
 
 
-    "user_id":	"8pgbosrv8buowcu46t6k",
+    "public_id":	"fzyg8p1px3q760bfqrzy6565bslljw",
 
-    "public_id":	"u8ub75me3rtljgk25ul4kigjvohx16",
+    "token":	"c3ihehvoo1ypgkddhrr6",
 
-    "token":	"ptnjrrllofppkqqihfm1",
+    "expires":	"2017-12-21 20:42:41.378441 +0000 UTC",
 
-    "expires":	"2017-12-21 15:13:51.099883 +0000 UTC"
+    "user_id":	"29z358qd9mmk56h0gs5n"
 
 },{
 
 
-    "user_id":	"kgst642luuaiu9ctvzfw",
+    "public_id":	"p0zd8e9uo613pgkmmflmzeap2hf9l7",
 
-    "public_id":	"8nkyolu130yo8grfz5x0ecjg8apg8c",
+    "token":	"24otuxersconfvhlj137",
 
-    "token":	"5cgbsl58j74mb95y7avn",
+    "expires":	"2017-12-21 20:42:41.378755 +0000 UTC",
 
-    "expires":	"2017-12-21 15:13:51.100284 +0000 UTC"
+    "user_id":	"8k1zv3cgi0k2c5kq8wdw"
 
 }]
 ```
@@ -202,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"d9ge9nyxq39voaodqlbx",
+    "user_id":	"ujedii011bqrnm8b8l0l",
 
-    "public_id":	"ah4ce2hi2jrx4cbeun4foyce6fpymm",
+    "public_id":	"s3lni8x5d00uh1c2s9nqy6barhyenu",
 
-    "token":	"tgey3ngpx6kn3u8cidid",
+    "token":	"7dysy41aisuk06fjbahe",
 
-    "expires":	"2017-12-21 15:13:51.10064 +0000 UTC"
+    "expires":	"2017-12-21 20:42:41.379075 +0000 UTC"
 
 }
 ```

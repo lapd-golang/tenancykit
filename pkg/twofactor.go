@@ -91,6 +91,22 @@ func (tf *TFRecord) ValidateOTP(userCode string) error {
 	return tf.serializeAndUpdateTOTP(totp)
 }
 
+// OTP returns the next one-time-password from the
+func (tf *TFRecord) OTP() (string, error) {
+	totp, err := tf.deserializeTOTP()
+	if err != nil {
+		return "", err
+	}
+
+	otp, err := totp.OTP()
+	if err != nil {
+		tf.serializeAndUpdateTOTP(totp)
+		return "", err
+	}
+
+	return otp, tf.serializeAndUpdateTOTP(totp)
+}
+
 // QR returns QR png byte slice for TFRecord.
 func (tf *TFRecord) QR() ([]byte, error) {
 	totp, err := tf.deserializeTOTP()

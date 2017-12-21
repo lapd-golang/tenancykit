@@ -1,9 +1,9 @@
 package twofactorsessiondbbackendimpl
 
 import (
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // TwoFactorSessionDBBackendImpl defines a concrete struct which implements the methods for the

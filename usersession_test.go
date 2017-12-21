@@ -80,7 +80,7 @@ func TestUserSessionAPI(t *testing.T) {
 	os.RemoveAll("./keys")
 }
 
-func testUserSessionCount(t *testing.T, us tenancykit.UserSessionAPI, db types.TenantDBBackend) {
+func testUserSessionCount(t *testing.T, us tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When getting info on records using the UserSessionAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -112,6 +112,7 @@ func testUserSessionCount(t *testing.T, us tenancykit.UserSessionAPI, db types.T
 		tests.Passed("Should have atleast one record in backend")
 	}
 }
+
 func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When login and logging out using the UserSessionAPI")
 	{
@@ -134,11 +135,11 @@ func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.C
 		}
 		tests.Passed("Should have successfully authenticated user")
 
-		if loginResponse.Code != http.StatusNoContent {
+		if loginResponse.Code != http.StatusOK {
 			tests.Info("Received Status: ", loginResponse.Code)
-			tests.Failed("Should have received status no 204")
+			tests.Failed("Should have received status no 200")
 		}
-		tests.Passed("Should have received status no 204")
+		tests.Passed("Should have received status no 200")
 
 		authHeader := loginResponse.Header().Get("Authorization")
 		if strings.TrimSpace(authHeader) == "" {
@@ -147,6 +148,18 @@ func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.C
 		tests.Passed("Should have received Authorization header")
 
 		tests.Info("User Authorization Header: %+q", authHeader)
+
+		var authentication pkg.UserAuthorization
+		if err := json.Unmarshal(loginResponse.Body.Bytes(), &authentication); err != nil {
+			tests.Info("JSON: %+q", loginResponse.Body.Bytes())
+			tests.FailedWithError(err, "Should have successfully unserialized data")
+		}
+		tests.Passed("Should have successfully unserialized data")
+
+		if auth := strings.TrimSpace(strings.TrimPrefix(authHeader, "Bearer")); auth != authentication.Token {
+			tests.Failed("Should have authentication data match incoming response")
+		}
+		tests.Passed("Should have authentication data match incoming response")
 
 		newLoginResponse := httptest.NewRecorder()
 		newLogginUser := httptesting.Post("/sessions/login", nil, newLoginResponse)

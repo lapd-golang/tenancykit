@@ -9,6 +9,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// UserAuthorization embodies authenticate data sent to the
+// user after login.
+type UserAuthorization struct {
+	Token string `json:"token"`
+}
+
 // UpdateUser defines the set of data sent when updating a users password.
 type UpdateUser struct {
 	Email           string `json:"email"`
@@ -56,6 +62,7 @@ type CreateUser struct {
 	Username        string `json:"username"`
 	Password        string `json:"password"`
 	PasswordConfirm string `json:"password_confirm"`
+	TwoFactorAuth   bool   `json:"twofactor_auth"`
 }
 
 // Validate returns error if any field does not match requirements.
@@ -111,6 +118,7 @@ func NewUser(nw CreateUser) (User, error) {
 	u.Updated = time.Now()
 	u.TenantID = nw.TenantID
 	u.Username = nw.Username
+	u.TwoFactorAuth = nw.TwoFactorAuth
 	u.PublicID = uuid.NewV4().String()
 	u.PrivateID = uuid.NewV4().String()
 	if err := u.ChangePassword(nw.Password); err != nil {

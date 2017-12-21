@@ -109,7 +109,6 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 //
 // Params:
 //		:user_code => "434544" // provide user generate auth code
-//		:till_logout => true	// indicate whether session is lives till user logs out.
 //
 func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 	currentUser, err := pkg.GetCurrentUser(ctx)
@@ -138,7 +137,6 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		}
 	}
 
-	tillLogout, _ := ctx.Bag().GetBool("till_logout")
 	userCode, ok := ctx.Bag().GetString("user_code")
 	if !ok {
 		return httputil.HTTPError{
@@ -193,14 +191,6 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 	}
 
 	newTFSession := pkg.NewTwoFactorSession(currentUser.User.PublicID, true)
-
-	// if we are dealing with a one time session run, then dont bother saving, just
-	// return and let context have the new session.
-	if !tillLogout {
-		currentUser.TFSession = &newTFSession
-		ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
-		return nil
-	}
 
 	if err := tfs.Backend.Create(ctx.Context(), newTFSession); err != nil {
 		return httputil.HTTPError{

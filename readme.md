@@ -18,6 +18,15 @@ cohesive but flexible customization as to structure fields and behaviours.*
 go get -u github.com/gokit/tenancykit
 ```
 
+## Implemented
+
+Below are areas these package provides coverage for when building your own multitenant backend system:
+
+- User API
+- Tenant API
+- Tranditional Session API
+- Two Factor Authorization API
+
 
 ### Vendoring
 

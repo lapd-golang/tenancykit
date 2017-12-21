@@ -8,12 +8,13 @@ import (
 
 // variables of context keys for the tenancypackage.
 var (
-	ContextKeyUser        = contextKey("user")
-	ContextKeyTenant      = contextKey("tenant")
-	ContextKeyCurrentUser = contextKey("current-user")
-	ContextKeyUserSession = contextKey("user-session")
-	ContextKeyTFRecord    = contextKey("user-two-factor-record")
-	ContextKeyTFSession   = contextKey("user-two-factor-session")
+	ContextKeyUser              = contextKey("user")
+	ContextKeyUserAuthorization = contextKey("user-authorization")
+	ContextKeyTenant            = contextKey("tenant")
+	ContextKeyCurrentUser       = contextKey("current-user")
+	ContextKeyUserSession       = contextKey("user-session")
+	ContextKeyTFRecord          = contextKey("user-two-factor-record")
+	ContextKeyTFSession         = contextKey("user-two-factor-session")
 )
 
 // contextKey contains provided key value for creating context based key names.
@@ -37,6 +38,21 @@ func GetUserSession(ctx *httputil.Context) (UserSession, error) {
 	}
 
 	return userSession, nil
+}
+
+// GetUserAuthorization retrieves currently stored userAuthorization struct in provided context.
+func GetUserAuthorization(ctx *httputil.Context) (UserAuthorization, error) {
+	receivedVal, ok := ctx.Get(ContextKeyUserAuthorization)
+	if !ok {
+		return UserAuthorization{}, errors.New("not found")
+	}
+
+	auth, ok := receivedVal.(UserAuthorization)
+	if !ok {
+		return UserAuthorization{}, errors.New("received value is not CurrentUser")
+	}
+
+	return auth, nil
 }
 
 // GetCurrentUser retrieves currently stored CurrentUser struct in provided context.

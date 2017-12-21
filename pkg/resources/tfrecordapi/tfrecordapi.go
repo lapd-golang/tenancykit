@@ -99,7 +99,7 @@ func (api *HTTPAPI) Info(ctx *httputil.Context) error {
 		return err
 	}
 
-	if err := ctx.JSON(http.StatusOK, pkg.TFRecordInfo{Total: total}); err != nil {
+	if err := ctx.JSON(http.StatusOK, TFRecordInfo{Total: total}); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to get serialized pkg.TFRecord record to response writer"), metrics.WithFields(metrics.Field{
 			"error": err,
 			"url":   ctx.Request().URL.String(),
