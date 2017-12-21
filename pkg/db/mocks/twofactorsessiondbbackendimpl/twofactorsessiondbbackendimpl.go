@@ -9,6 +9,8 @@ import (
 // TwoFactorSessionDBBackendImpl defines a concrete struct which implements the methods for the
 // TwoFactorSessionDBBackend interface. All methods will panic, so add necessary internal logic.
 type TwoFactorSessionDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.TwoFactorSession) error
@@ -22,6 +24,14 @@ type TwoFactorSessionDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.TwoFactorSession, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TwoFactorSession, int, error)
+}
+
+// Count implements the TwoFactorSessionDBBackend.Count() method for TwoFactorSessionDBBackendImpl.
+func (impl TwoFactorSessionDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the TwoFactorSessionDBBackend.Delete() method for TwoFactorSessionDBBackendImpl.

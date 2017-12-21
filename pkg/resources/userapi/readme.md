@@ -35,15 +35,15 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "username":	"EricBanks",
+    "tenant_id":	"xb94mtwnqt04ku7ucw7p",
 
-    "password":	"7pt1xcnf6fdm12o1bdkf",
+    "email":	"hGordon@Dablist.net",
 
-    "password_confirm":	"i7e532f4ubr5zye6ji7f",
+    "username":	"LouisStewart",
 
-    "tenant_id":	"3t4bgcykpt783umatv8x",
+    "password":	"b0wb7xkr8grjywoqry1y",
 
-    "email":	"hWilliamson@Zoovu.biz"
+    "password_confirm":	"26gfhn58wp7gzvefqu5o"
 
 }
 ```
@@ -65,24 +65,48 @@ Success: 201
 {
 
 
-    "created_at":	"2017-12-21 13:40:49.317101 +0000 UTC",
-
-    "tenant_id":	"8sfus2bf0k6u5mblolz9",
-
-    "private_id":	"9axdtuslfzn63l3lwy1jp3czmzdtjv",
-
-    "hash":	"x9fysbty6o6mubyca9cl",
+    "hash":	"4x11rjw2tcun68el27ob",
 
     "two_factor_auth":	true,
 
-    "updated_at":	"2017-12-21 13:40:49.31711 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:51.283143 +0000 UTC",
 
-    "username":	"pRivera",
+    "username":	"numquam_unde",
 
-    "email":	"9Woods@Trupe.biz",
+    "email":	"et_placeat@Oyoyo.edu",
 
-    "public_id":	"usyjumpoef991zpppml66ddt75psem"
+    "public_id":	"vanmdqqkv5gu7aexkr5rrwys6omfnp",
 
+    "private_id":	"6z6weixdydcvwzs8jwym70y5vfxjtg",
+
+    "tenant_id":	"k0fn71idkg84l2blwz11",
+
+    "updated_at":	"2017-12-21 15:13:51.283153 +0000 UTC"
+
+}
+```
+
+## INFO /User/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.User.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -115,23 +139,23 @@ Success: 200
 {
 
 
-    "hash":	"fx4ebwsuz8ygfey36s5q",
+    "hash":	"bzfqe8er0saxgu03i5jq",
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-21 13:40:49.317598 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:51.283903 +0000 UTC",
 
-    "username":	"SaraStephens",
+    "public_id":	"1u0lndpe0490xdd3k7ieer5er67zll",
 
-    "public_id":	"spi79qozwj7icr3g2q1whak1geswp3",
+    "private_id":	"j37su5quqs6efjv3ld8od6aq42lgwh",
 
-    "tenant_id":	"1ej3cdkpznr2rzkciuwp",
+    "tenant_id":	"78bjc4w27nio7prs358h",
 
-    "private_id":	"krf9qb4sfh5f19z01e1tvxd98m7vzc",
+    "updated_at":	"2017-12-21 15:13:51.28391 +0000 UTC",
 
-    "email":	"zCole@Edgetag.com",
+    "username":	"SeanStevens",
 
-    "updated_at":	"2017-12-21 13:40:49.317603 +0000 UTC"
+    "email":	"GaryGriffin@Eare.name"
 
 }
 ```
@@ -158,44 +182,44 @@ Success: 200
 [{
 
 
-    "username":	"nostrum_id",
+    "hash":	"mnj9lq40xfwj2bq8tm8y",
 
-    "email":	"BrendaHamilton@Yacero.org",
+    "created_at":	"2017-12-21 15:13:51.284529 +0000 UTC",
 
-    "public_id":	"s5ymepzhe1oyg7uctpi8e3cyesvq2g",
+    "updated_at":	"2017-12-21 15:13:51.284534 +0000 UTC",
 
-    "hash":	"7js1trua868t21esfxup",
+    "email":	"MarieMartinez@Flashspan.com",
+
+    "private_id":	"v572pljpcv0juv8p2ue6qmwzqt982y",
+
+    "tenant_id":	"fkga4yaw42reboxywnmy",
 
     "two_factor_auth":	true,
 
-    "tenant_id":	"thwc68ot885qit53q1e6",
+    "username":	"BettyMontgomery",
 
-    "private_id":	"wty1oq5xmy12ltiv3eg58rppfh40x0",
-
-    "created_at":	"2017-12-21 13:40:49.318076 +0000 UTC",
-
-    "updated_at":	"2017-12-21 13:40:49.318081 +0000 UTC"
+    "public_id":	"qvlegyt12vxs1yhnbipdt93fscdnxy"
 
 },{
 
 
-    "created_at":	"2017-12-21 13:40:49.318457 +0000 UTC",
+    "username":	"consequuntur_maxime_perferendis",
 
-    "updated_at":	"2017-12-21 13:40:49.318462 +0000 UTC",
-
-    "email":	"zReynolds@Jetpulse.mil",
-
-    "tenant_id":	"bd7dgrde3wrdhse1sl16",
+    "tenant_id":	"6mjh2s8o7f2cq9jfvpas",
 
     "two_factor_auth":	true,
 
-    "hash":	"ckyxczf3cl2muxn56ou7",
+    "created_at":	"2017-12-21 15:13:51.28494 +0000 UTC",
 
-    "username":	"est",
+    "email":	"3Bennett@Camimbo.name",
 
-    "public_id":	"97o8nvvwqikul7b0tugs6nqgqpsx3w",
+    "public_id":	"z4na9av7cg5d3nl3tgpd1xy5nz7j41",
 
-    "private_id":	"qwulcllbog7th45c4426hitftcuxxs"
+    "private_id":	"4f1h8wmxa3bs4ks3iwwejeip4m97dd",
+
+    "hash":	"q3tzhxj95n3lhogxxpma",
+
+    "updated_at":	"2017-12-21 15:13:51.284944 +0000 UTC"
 
 }]
 ```
@@ -222,11 +246,11 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "email":	"ea_ratione@Flashdog.mil",
+    "email":	"3Peters@Livefish.gov",
 
-    "password":	"s13hm79uknb20959uvqa",
+    "password":	"craptyzfc1wom9l4o11s",
 
-    "password_confirm":	"eko15vzdzk3z2dl5yzsx"
+    "password_confirm":	"tiqthdjeu9bp43qpgvdi"
 
 }
 ```

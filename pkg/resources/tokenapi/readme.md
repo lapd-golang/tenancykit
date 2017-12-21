@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "value":	"mq9vuvsow8y8p5lw8m3s",
+    "value":	"qlads8bozg74xwgv60ql",
 
-    "public_id":	"47u15d22jb2fhqa6pvediarvmiwcca",
+    "public_id":	"wr9rf3ck4uu713okcpggjo7key2hp3",
 
-    "target_id":	"lbqscx7av7m9w5bt8who"
+    "target_id":	"a0t0wvmsgev0xl5p5fnq"
 
 }
 ```
@@ -61,12 +61,36 @@ Success: 201
 {
 
 
-    "value":	"v40jdpes2bpfmwg2k6dx",
+    "public_id":	"j1j3wherhdjf515l965gm891rj7h6f",
 
-    "public_id":	"6xar18fedquo3dxlr4i2dwck0xd2qn",
+    "target_id":	"ml4835wpnhiz8kwetz2v",
 
-    "target_id":	"qzste18jhcjd2ictuxc0"
+    "value":	"khmnzzxh8xkybzowjh81"
 
+}
+```
+
+## INFO /Token/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.Token.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -99,11 +123,11 @@ Success: 200
 {
 
 
-    "value":	"8d8hxnonxhgh6lof3e23",
+    "value":	"c0ak4nmmgb2u0jwtrsji",
 
-    "public_id":	"5m4f08eirty93v7rdssucdig1wosck",
+    "public_id":	"hq933jgfidcgrhof3qu8epbm71l8ue",
 
-    "target_id":	"w5qdgallzsfiayvf8mmn"
+    "target_id":	"3wzs7z8j331fkeakak0h"
 
 }
 ```
@@ -130,20 +154,20 @@ Success: 200
 [{
 
 
-    "value":	"f3lkwbngijvpcqgwby05",
+    "value":	"jiou9vvpq4xejpe887i2",
 
-    "public_id":	"0p8k6hvkqzflbso7qukrm6miyamr3i",
+    "public_id":	"l1phfwaznul3cbxpurv5i1z9mmquwa",
 
-    "target_id":	"ylk7nfr52mwlud4jq0xm"
+    "target_id":	"l73afegvwd4yxz1442eg"
 
 },{
 
 
-    "value":	"jf1f5gmr5si1n2cmnt4t",
+    "value":	"puf7cpi70p8xwuj7tcc5",
 
-    "public_id":	"fe04rrwdhk645h2x2aa2170rh685g9",
+    "public_id":	"gj8swmzk61f5qgblhua071ktefj1g4",
 
-    "target_id":	"c53oose8pup9ht4fc25x"
+    "target_id":	"u3cmakgmpwrlltggyxl9"
 
 }]
 ```
@@ -170,11 +194,11 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "value":	"2f0sf849hysnvfba0ntn",
+    "value":	"3l8xy4w5srjlqsyshmcy",
 
-    "public_id":	"pipxxn1snvqjgwzq5d7ldmzzqdh06w",
+    "public_id":	"x287zx00zrm1qnag3yy34ja8xy82ki",
 
-    "target_id":	"kqtulxiotdyvw1xdsna6"
+    "target_id":	"r1fz06mh9f2n68zmb416"
 
 }
 ```

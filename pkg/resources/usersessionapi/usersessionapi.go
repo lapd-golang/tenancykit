@@ -25,6 +25,7 @@ import (
 // the given CRUD request for the "UserSession" type. This is provided by the user.
 // @implement
 type UserSessionBackend interface {
+	Count(context.Context) (int, error)
 	Delete(context.Context, string) error
 	Get(context.Context, string) (pkg.UserSession, error)
 	Update(context.Context, string, pkg.UserSession) error
@@ -35,10 +36,17 @@ type UserSessionBackend interface {
 // UserSessionHTTP defines an interface which expose the methods provided by the http backend.
 type UserSessionHTTP interface {
 	Get(*httputil.Context) error
+	Info(*httputil.Context) error
 	Create(*httputil.Context) error
 	Update(*httputil.Context) error
 	Delete(*httputil.Context) error
 	GetAll(*httputil.Context) error
+}
+
+// UserSessionInfo contains meta-data regarding records in db of
+// type pkg.UserSession.
+type UserSessionInfo struct {
+	Total int `json:"total"`
 }
 
 // UserSessionRecords defines a type to represent the response given to a request for
@@ -64,6 +72,48 @@ func New(m metrics.Metrics, backend UserSessionBackend) *HTTPAPI {
 		metrics:  m,
 		operator: backend,
 	}
+}
+
+// Info receives an http request to get record info for all available records of type "UserSession".
+//
+// Route: /{Route}/info
+// Method: INFO
+// RESPONSE-BODY: JSON
+func (api *HTTPAPI) Info(ctx *httputil.Context) error {
+	m := metrics.NewTrace()
+	defer api.metrics.Emit(metrics.Info("HTTPAPI.Info"), metrics.WithTrace(m.End()))
+
+	ctx.Header().Set("Content-Type", "application/json")
+
+	api.metrics.Emit(metrics.Info("Info request received"), metrics.WithFields(metrics.Field{
+		"url": ctx.Request().URL.String(),
+	}))
+
+	total, err := api.operator.Count(ctx.Context())
+	if err != nil {
+		api.metrics.Emit(metrics.Errorf("Failed to get pkg.UserSession record count"), metrics.WithFields(metrics.Field{
+			"error": err,
+			"url":   ctx.Request().URL.String(),
+		}))
+
+		return err
+	}
+
+	if err := ctx.JSON(http.StatusOK, pkg.UserSessionInfo{Total: total}); err != nil {
+		api.metrics.Emit(metrics.Errorf("Failed to get serialized pkg.UserSession record to response writer"), metrics.WithFields(metrics.Field{
+			"error": err,
+			"url":   ctx.Request().URL.String(),
+		}))
+
+		return err
+	}
+
+	api.metrics.Emit(metrics.Info("Response Delivered"), metrics.WithFields(metrics.Field{
+		"url":    ctx.Request().URL.String(),
+		"status": http.StatusOK,
+	}))
+
+	return nil
 }
 
 // Create receives an http request to create a new "UserSession".

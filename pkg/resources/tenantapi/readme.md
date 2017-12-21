@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "name":	"Thomas Lane",
+    "name":	"Cheryl Jackson",
 
-    "email":	"AndreaThomas@Browseblab.mil"
+    "email":	"bRichards@Tambee.info"
 
 }
 ```
@@ -59,16 +59,40 @@ Success: 201
 {
 
 
-    "created_at":	"2017-12-21 13:40:49.093831 +0000 UTC",
+    "name":	"Susan Mitchell",
 
-    "updated_at":	"2017-12-21 13:40:49.093855 +0000 UTC",
+    "email":	"dolore_eligendi@Quimba.info",
 
-    "name":	"Susan Howell I II III IV V MD DDS PhD DVM",
+    "public_id":	"xdkuiuuic2a99522dsbxrqb9zhbj2w",
 
-    "email":	"necessitatibus@Layo.name",
+    "created_at":	"2017-12-21 15:13:50.998233 +0000 UTC",
 
-    "public_id":	"tzlzxs1cwyj872srgwasoni9ttyomj"
+    "updated_at":	"2017-12-21 15:13:50.998259 +0000 UTC"
 
+}
+```
+
+## INFO /Tenant/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.Tenant.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -101,15 +125,15 @@ Success: 200
 {
 
 
-    "name":	"Kimberly Ferguson",
+    "name":	"Joseph Reed",
 
-    "email":	"eum_est@Gigashots.name",
+    "email":	"nHarrison@Linktype.biz",
 
-    "public_id":	"5ksugm2c200f7ctp1iwmt0gkjn0hov",
+    "public_id":	"jb269uvofrf5acicn2hcemfjcceoaq",
 
-    "created_at":	"2017-12-21 13:40:49.094148 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:50.998749 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:40:49.094153 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:50.998755 +0000 UTC"
 
 }
 ```
@@ -136,28 +160,28 @@ Success: 200
 [{
 
 
-    "updated_at":	"2017-12-21 13:40:49.094458 +0000 UTC",
+    "name":	"Amanda Wheeler",
 
-    "name":	"Mr. Dr. James Reynolds",
+    "email":	"velit@Rhynoodle.gov",
 
-    "email":	"rerum_sed@Innojam.info",
+    "public_id":	"kcqc6eorce56gf8qaf9idw0k78nkpy",
 
-    "public_id":	"fc07kggvqmmh78u5z54aaxdlx0vcsf",
+    "created_at":	"2017-12-21 15:13:50.999058 +0000 UTC",
 
-    "created_at":	"2017-12-21 13:40:49.094453 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:50.999063 +0000 UTC"
 
 },{
 
 
-    "name":	"Jean Banks",
+    "name":	"Mr. Dr. Eric Hanson",
 
-    "email":	"tenetur@Devpoint.org",
+    "email":	"BillyHarrison@Gigabox.mil",
 
-    "public_id":	"6gde041k4llwiu804wtu6f6ll1h3g8",
+    "public_id":	"8tf18a0etafyyzq9ruvawzxanjxglh",
 
-    "created_at":	"2017-12-21 13:40:49.094689 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:50.999318 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:40:49.094693 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:50.999324 +0000 UTC"
 
 }]
 ```
@@ -184,15 +208,15 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "email":	"ElizabethPeters@Wikizz.name",
+    "public_id":	"klsza7hbql006c61tmqzxk2wobzyx1",
 
-    "public_id":	"4lhl6awkq2r55jnt18m9gdr5k0weht",
+    "created_at":	"2017-12-21 15:13:50.999629 +0000 UTC",
 
-    "created_at":	"2017-12-21 13:40:49.094977 +0000 UTC",
+    "updated_at":	"2017-12-21 15:13:50.999634 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:40:49.094981 +0000 UTC",
+    "name":	"Jean Anderson",
 
-    "name":	"Teresa Stewart"
+    "email":	"6Richardson@Gabtype.net"
 
 }
 ```

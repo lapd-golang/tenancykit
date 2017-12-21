@@ -35,13 +35,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "max_length":	4,
+    "max_length":	18,
 
     "tenant":	null,
 
     "user":	null,
 
-    "domain":	"Jayo.biz"
+    "domain":	"Trilith.name"
 
 }
 ```
@@ -63,24 +63,48 @@ Success: 201
 {
 
 
-    "key":	"bryhqf4xtny6oftvqbb7",
+    "key":	"mef9hf40eabdaled8no4",
 
-    "domain":	"Blogspan.name",
+    "user_id":	"kze3zg0c6q0q73wcoq2a",
 
-    "user_id":	"srridgzc7dqygmvugglq",
+    "public_id":	"7tx89ltkfiltg2m7ez7rdcnzyjmlah",
 
-    "totp":	"mfnommqi5zbcwmh6jxad",
+    "tenant_id":	"aru88h9ewug9mhzsa8ej",
 
-    "public_id":	"fqxrl0geqevr4reryuv2yyu4u8rowu",
+    "code_length":	8,
 
-    "code_length":	7,
+    "created_at":	"2017-12-21 15:13:51.232143 +0000 UTC",
 
-    "tenant_id":	"o2ruy97w54hbjd4i9ik2",
+    "domain":	"Rhyzio.com",
 
-    "created_at":	"2017-12-21 13:40:49.368449 +0000 UTC",
+    "totp":	"2c0x5r20yurlyrtbzi1k",
 
-    "updated_at":	"2017-12-21 13:40:49.368458 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:51.232155 +0000 UTC"
 
+}
+```
+
+## INFO /TFRecord/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.TFRecord.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -113,23 +137,23 @@ Success: 200
 {
 
 
-    "tenant_id":	"vuj0rlj1dl7jpufqndw8",
+    "domain":	"Blogtag.net",
 
-    "code_length":	14,
+    "created_at":	"2017-12-21 15:13:51.233104 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:40:49.368995 +0000 UTC",
+    "updated_at":	"2017-12-21 15:13:51.233122 +0000 UTC",
 
-    "public_id":	"i2als8paozye7yh6fett5q2b2fzanb",
+    "key":	"8o4iunfc69mt916z2szl",
 
-    "created_at":	"2017-12-21 13:40:49.368991 +0000 UTC",
+    "user_id":	"vdct9kxfmo30vofdqhd3",
 
-    "key":	"6z5rvb6hhuj99f4s5z4x",
+    "totp":	"yba2p26aaitus1j4uewn",
 
-    "domain":	"Oba.org",
+    "public_id":	"5p9slum3ml56vhq7b8fbgdrlz8vfrp",
 
-    "user_id":	"fy7mq8zqw7zfmdasrays",
+    "tenant_id":	"81mc3x1lbkciqog7p0yv",
 
-    "totp":	"ahzbecdwcxc475eck2dl"
+    "code_length":	16
 
 }
 ```
@@ -156,44 +180,44 @@ Success: 200
 [{
 
 
-    "domain":	"Pixope.gov",
+    "key":	"dpcyq4gep6wq7m405x2h",
 
-    "user_id":	"j8j8s7rgydxnuqbpk1fh",
+    "public_id":	"69k3e4g46cdtbw6xk3ws22hp7q6fyq",
 
-    "tenant_id":	"xtrgqs53k0rlt3an7nbr",
+    "code_length":	9,
 
-    "code_length":	16,
+    "updated_at":	"2017-12-21 15:13:51.233913 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:40:49.369583 +0000 UTC",
+    "domain":	"Dynabox.mil",
 
-    "key":	"l7u6q5zr5sxqosqt1qjv",
+    "user_id":	"4cdgxn78gbtebyk5alwa",
 
-    "totp":	"zpkirie263vnnlmjqmqa",
+    "totp":	"bsuf8e1lmogr87ozrywz",
 
-    "public_id":	"u3tba7oamxz24kfojyxih1aytf9zbc",
+    "tenant_id":	"iy88c2prftbeh34bbnmg",
 
-    "created_at":	"2017-12-21 13:40:49.369578 +0000 UTC"
+    "created_at":	"2017-12-21 15:13:51.233906 +0000 UTC"
 
 },{
 
 
-    "created_at":	"2017-12-21 13:40:49.370126 +0000 UTC",
+    "key":	"t3yv4q35rt9gwgw0kgvf",
 
-    "updated_at":	"2017-12-21 13:40:49.370131 +0000 UTC",
+    "domain":	"Lajo.info",
 
-    "totp":	"dr5sezwqx33s05tbartm",
+    "totp":	"fci9h8tztu3axw2xhc2o",
 
-    "tenant_id":	"v9u5wvxcc8iqe5h380le",
+    "public_id":	"26l3owf91l9gr8y58ywiohagj31pdg",
 
-    "user_id":	"iie59zejbpe7rb03py4p",
+    "code_length":	4,
 
-    "public_id":	"1nhwe18qq36zyqh00huuuk85efl4f0",
+    "user_id":	"7dpf2vwf6w1lokswy9cc",
 
-    "code_length":	15,
+    "tenant_id":	"sdxpj8mypyuku05xu8le",
 
-    "key":	"m9h5r84l00tqapvqzrr6",
+    "created_at":	"2017-12-21 15:13:51.234349 +0000 UTC",
 
-    "domain":	"Meembee.name"
+    "updated_at":	"2017-12-21 15:13:51.234357 +0000 UTC"
 
 }]
 ```
@@ -220,23 +244,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "tenant_id":	"t8kxnn4iwo7afivkmonp",
+    "domain":	"JumpXS.info",
 
-    "created_at":	"2017-12-21 13:40:49.370582 +0000 UTC",
+    "user_id":	"g851vqsvlv9mg3wiaq0s",
 
-    "updated_at":	"2017-12-21 13:40:49.370588 +0000 UTC",
+    "totp":	"05il73r9vt9xowlnd7pc",
 
-    "key":	"8ugxdig0tyu4swzhzgpu",
+    "created_at":	"2017-12-21 15:13:51.235054 +0000 UTC",
 
-    "user_id":	"mgw6toiu6dgxhzkhet08",
+    "updated_at":	"2017-12-21 15:13:51.235059 +0000 UTC",
 
-    "public_id":	"s1bc2lp14ifuju2lpbl57zqea8pdk9",
+    "key":	"6fx8fpmwp9cnr00ffab1",
 
-    "domain":	"Kazu.name",
+    "public_id":	"8trrrnqvblmkstq4zrb0lf2w4kcvdf",
 
-    "totp":	"7jw5xhioodtpp6pwkuma",
+    "tenant_id":	"mwqrwaci649wjrnfrbxw",
 
-    "code_length":	13
+    "code_length":	7
 
 }
 ```

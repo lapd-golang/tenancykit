@@ -27,10 +27,44 @@ func TestTokenAPI(t *testing.T) {
 	tf := tenancykit.NewTokenAPI(m, tfdb)
 
 	testTokenCreate(t, tf, tfdb)
+	testTokenCount(t, tf, tfdb)
 	testTokenGetAll(t, tf, tfdb)
 	testTokenGet(t, tf, tfdb)
 	testTokenUpdate(t, tf, tfdb)
 	testTokenDelete(t, tf, tfdb)
+}
+
+func testTokenCount(t *testing.T, tokens tenancykit.TokenAPI, db types.TokenDBBackend) {
+	tests.Header("When getting info on records using the TokenAPI")
+	{
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/tenants", nil, infoResponse)
+		if err := tokens.Info(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully made info request")
+		}
+		tests.Passed("Should have successfully created record")
+
+		if infoResponse.Code != http.StatusOK {
+			tests.Failed("Should have received Status 200")
+		}
+		tests.Passed("Should have received Status 200")
+
+		if infoResponse.Body == nil {
+			tests.Failed("Should have received body response")
+		}
+		tests.Passed("Should have received body response")
+
+		var info tokenapi.TokenInfo
+		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
+			tests.FailedWithError(err, "Should have successfully collected record info")
+		}
+		tests.Passed("Should have successfully collected record info")
+
+		if info.Total == 0 {
+			tests.Failed("Should have atleast one record in backend")
+		}
+		tests.Passed("Should have atleast one record in backend")
+	}
 }
 
 func testTokenCreate(t *testing.T, tf tenancykit.TokenAPI, db types.TokenDBBackend) {

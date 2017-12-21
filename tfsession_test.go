@@ -30,11 +30,45 @@ func TestTwoFactorSessionAPI(t *testing.T) {
 	tf := tenancykit.NewTwoFactorSessionAPI(m, tfset, tfdb)
 
 	testTwoFactorSessionCreate(t, tf, tfdb)
+	testTwoFactorSessionCount(t, tf, tfdb)
 	testTwoFactorSessionGetAll(t, tf, tfdb)
 	testTwoFactorSessionGet(t, tf, tfdb)
 	testTwoFactorSessionUpdate(t, tf, tfdb)
 	testTwoFactorSessionDelete(t, tf, tfdb)
 	os.RemoveAll("./keys")
+}
+
+func testTwoFactorSessionCount(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+	tests.Header("When getting info on records using the TwoFactorSessionAPI")
+	{
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/tfrecords", nil, infoResponse)
+		if err := tf.Info(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully made info request")
+		}
+		tests.Passed("Should have successfully created record")
+
+		if infoResponse.Code != http.StatusOK {
+			tests.Failed("Should have received Status 200")
+		}
+		tests.Passed("Should have received Status 200")
+
+		if infoResponse.Body == nil {
+			tests.Failed("Should have received body response")
+		}
+		tests.Passed("Should have received body response")
+
+		var info twofactorsessionapi.TwoFactorSessionInfo
+		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
+			tests.FailedWithError(err, "Should have successfully collected record info")
+		}
+		tests.Passed("Should have successfully collected record info")
+
+		if info.Total == 0 {
+			tests.Failed("Should have atleast one record in backend")
+		}
+		tests.Passed("Should have atleast one record in backend")
+	}
 }
 
 func testTwoFactorSessionCreate(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {

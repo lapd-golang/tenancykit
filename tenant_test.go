@@ -27,10 +27,44 @@ func TestTenantAPI(t *testing.T) {
 	tenants := tenancykit.NewTenantAPI(m, tenantdb)
 
 	testTenantCreate(t, tenants, tenantdb)
+	testTenantCount(t, tenants, tenantdb)
 	testTenantGetAll(t, tenants, tenantdb)
 	testTenantGet(t, tenants, tenantdb)
 	testTenantUpdate(t, tenants, tenantdb)
 	testTenantDelete(t, tenants, tenantdb)
+}
+
+func testTenantCount(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+	tests.Header("When getting info on records using the TenantAPI")
+	{
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/tenants", nil, infoResponse)
+		if err := tenants.Info(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully made info request")
+		}
+		tests.Passed("Should have successfully created record")
+
+		if infoResponse.Code != http.StatusOK {
+			tests.Failed("Should have received Status 200")
+		}
+		tests.Passed("Should have received Status 200")
+
+		if infoResponse.Body == nil {
+			tests.Failed("Should have received body response")
+		}
+		tests.Passed("Should have received body response")
+
+		var info tenantapi.TenantInfo
+		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
+			tests.FailedWithError(err, "Should have successfully collected record info")
+		}
+		tests.Passed("Should have successfully collected record info")
+
+		if info.Total == 0 {
+			tests.Failed("Should have atleast one record in backend")
+		}
+		tests.Passed("Should have atleast one record in backend")
+	}
 }
 
 func testTenantCreate(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {

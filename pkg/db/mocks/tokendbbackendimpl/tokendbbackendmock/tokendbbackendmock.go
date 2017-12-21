@@ -13,6 +13,39 @@ import (
 	pkg "github.com/gokit/tenancykit/pkg"
 )
 
+// MethodCallForCount defines a type which holds meta-details about the giving calls associated
+// with the TokenDBBackend.Count() method.
+type MethodCallForCount struct {
+	When  time.Time
+	Start time.Time
+	End   time.Time
+
+	// Details of panic if such occurs.
+	PanicStack []byte
+	PanicError interface{}
+
+	// Argument values.
+
+	Ctx context.Context
+
+	// Return values.
+
+	Ret1 int
+
+	Ret2 error
+}
+
+// MatchArguments returns true/false if provider other(MethodCallForCount) arguments
+// values match this existing argument values.
+func (me MethodCallForCount) MatchArguments(other MethodCallForCount) bool {
+
+	if !reflection.MatchElement(me.Ctx, other.Ctx, true) {
+		return false
+	}
+
+	return true
+}
+
 // MethodCallForDelete defines a type which holds meta-details about the giving calls associated
 // with the TokenDBBackend.Delete() method.
 type MethodCallForDelete struct {
@@ -322,6 +355,8 @@ func (me MethodCallForGetAll) MatchArguments(other MethodCallForGetAll) bool {
 // methods for the TokenDBBackend as fields which allows you provide implementations of
 // these functions to provide flexible testing.
 type TokenDBBackendMock struct {
+	CountMethodCalls []MethodCallForCount
+
 	DeleteMethodCalls []MethodCallForDelete
 
 	CreateMethodCalls []MethodCallForCreate
@@ -335,6 +370,38 @@ type TokenDBBackendMock struct {
 	GetByFieldMethodCalls []MethodCallForGetByField
 
 	GetAllMethodCalls []MethodCallForGetAll
+}
+
+// Count implements the TokenDBBackend.Count() method for the TokenDBBackend.
+func (impl *TokenDBBackendMock) Count(ctx context.Context) (MethodCallForCount, error) {
+	var caller MethodCallForCount
+
+	caller.When = time.Now()
+	caller.Start = caller.When
+
+	caller.Ctx = ctx
+
+	var found bool
+	for _, possibleCall := range impl.CountMethodCalls {
+		if possibleCall.MatchArguments(caller) {
+			found = true
+
+			caller.Ret1 = possibleCall.Ret1
+
+			caller.Ret2 = possibleCall.Ret2
+
+			caller.PanicError = possibleCall.PanicError
+			caller.PanicStack = possibleCall.PanicStack
+			break
+		}
+	}
+
+	caller.End = time.Now()
+	if found {
+		return caller, nil
+	}
+
+	return caller, errors.New("no matching response found")
 }
 
 // Delete implements the TokenDBBackend.Delete() method for the TokenDBBackend.
@@ -587,6 +654,9 @@ func (impl *TokenDBBackendMock) GetAll(ctx context.Context, order string, orderB
 // methods for the TokenDBBackend as fields which allows you provide implementations of
 // these functions to provide flexible testing.
 type TokenDBBackendSnitch struct {
+	CountMethodCalls []MethodCallForCount
+	CountFunc        func(ctx context.Context) (int, error)
+
 	DeleteMethodCalls []MethodCallForDelete
 	DeleteFunc        func(ctx context.Context, publicID string) error
 
@@ -607,6 +677,37 @@ type TokenDBBackendSnitch struct {
 
 	GetAllMethodCalls []MethodCallForGetAll
 	GetAllFunc        func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Token, int, error)
+}
+
+// Count implements the TokenDBBackend.Count() method for the TokenDBBackend.
+func (impl *TokenDBBackendSnitch) Count(ctx context.Context) (int, error) {
+	var caller MethodCallForCount
+
+	defer func() {
+		if err := recover(); err != nil {
+			trace := make([]byte, 1000)
+			trace = trace[:runtime.Stack(trace, true)]
+
+			caller.PanicError = err
+			caller.PanicStack = trace
+		}
+
+		caller.End = time.Now()
+		impl.CountMethodCalls = append(impl.CountMethodCalls, caller)
+	}()
+
+	caller.When = time.Now()
+	caller.Start = caller.When
+
+	caller.Ctx = ctx
+
+	ret1, ret2 := impl.CountFunc(ctx)
+
+	caller.Ret1 = ret1
+
+	caller.Ret2 = ret2
+
+	return ret1, ret2
 }
 
 // Delete implements the TokenDBBackend.Delete() method for the TokenDBBackend.

@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "bool":	true,
+    "user_id":	"yurpr6h5tt2ygznpqcd2",
 
-    "user_id":	"fgklr4zxdkloknhx307x",
+    "public_id":	"oimai9brl002f2le8p1kthikq09c5q",
 
-    "public_id":	"n6l7k4uqu4ljxn6e7khv5knpbgyes4"
+    "bool":	true
 
 }
 ```
@@ -61,12 +61,36 @@ Success: 201
 {
 
 
-    "user_id":	"g60haa51qyzcatp7g9vt",
+    "bool":	true,
 
-    "public_id":	"v6uhto9meiwbcnrpwiptjbu4w6tpba",
+    "user_id":	"3hirp9xfm61k5oegqjlf",
 
-    "bool":	true
+    "public_id":	"zfwrh0q378qmxujzne9wycvyfq8glw"
 
+}
+```
+
+## INFO /TwoFactorSession/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.TwoFactorSession.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -99,11 +123,11 @@ Success: 200
 {
 
 
-    "user_id":	"m7xn844clwlkdlttjk2b",
+    "public_id":	"s7sxzjzmr3qxmp34148zik2kcuwyll",
 
-    "public_id":	"p8h3w45vlelvsui1f2mj3gjpba0gap",
+    "bool":	true,
 
-    "bool":	true
+    "user_id":	"xnttlqkksfw8pzg15z18"
 
 }
 ```
@@ -130,18 +154,18 @@ Success: 200
 [{
 
 
-    "user_id":	"b83rzt5l235u0svmpktd",
+    "public_id":	"4uqwez4atigwl76yk84vqicneftz9x",
 
-    "public_id":	"zn2tlcrnq5grzz9q7h8da9wnoj7se8",
+    "bool":	true,
 
-    "bool":	true
+    "user_id":	"1kyabhkdpysl4l8s0phz"
 
 },{
 
 
-    "user_id":	"dg007ubq5o1dikgkxjvn",
+    "user_id":	"n0tqwans2lzp4v2m4gac",
 
-    "public_id":	"4ukk4u1m3ye0jc2yxa7mwaoam0d2d3",
+    "public_id":	"pd522ne8haxiz8luyx80s1x5qgset8",
 
     "bool":	true
 
@@ -170,9 +194,9 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"w7ficho7s9dwsjep2sjl",
+    "user_id":	"atboe3pi246mxuht7ypl",
 
-    "public_id":	"9gfpc39o8felzr8nk2cwjuokg903rc",
+    "public_id":	"uqvux647dv2uv80ea775dw9ry6nafd",
 
     "bool":	true
 

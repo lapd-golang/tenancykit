@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"autem_non@Abatz.mil",
+    "email":	"DorothyRamirez@Meemm.mil",
 
-    "password":	"23pk1mktu7l0r2u31tj8",
+    "password":	"y2trt6wtmqf9pd97qfil",
 
     "expiration":	null
 
@@ -61,14 +61,38 @@ Success: 201
 {
 
 
-    "token":	"vflvscxv23fh0onhoktx",
+    "user_id":	"1j364r0llgwu5lqeja30",
 
-    "expires":	"2017-12-21 13:40:49.270925 +0000 UTC",
+    "public_id":	"4zzapsu12gked2h5rlrvr23qp88yep",
 
-    "user_id":	"pu39dbdqygbft1pz4rmb",
+    "token":	"qfyjzjqw76a6s0lbt8gd",
 
-    "public_id":	"ogj7lg00t6f5642r2ts4yp2w3c16fy"
+    "expires":	"2017-12-21 15:13:51.098507 +0000 UTC"
 
+}
+```
+
+## INFO /UserSession/
+### Method: `func (api *HTTPAPI) Info(ctx *httputil.Context) error`
+
+Info returns total of records available in api for type pkg.UserSession.
+
+- Expected Status Code
+
+```
+Failure: 500
+Success: 200
+```
+
+- Expected Response Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{
+    "total": 10,
 }
 ```
 
@@ -101,13 +125,13 @@ Success: 200
 {
 
 
-    "token":	"q4113re28rc17ki2q0j0",
+    "expires":	"2017-12-21 15:13:51.099083 +0000 UTC",
 
-    "expires":	"2017-12-21 13:40:49.271923 +0000 UTC",
+    "user_id":	"zesbws1kgoru0l7pito4",
 
-    "user_id":	"1yg68ff1hj3gyzslllq1",
+    "public_id":	"8w5gml6a37qqhvmy2r37jotgfphd2s",
 
-    "public_id":	"h5fqncxjkh4463xhmebp7i1sxuclwi"
+    "token":	"48sa6kbv1vh86wn4gl4a"
 
 }
 ```
@@ -134,24 +158,24 @@ Success: 200
 [{
 
 
-    "user_id":	"e5fyqeqyvzg15in1uct4",
+    "user_id":	"8pgbosrv8buowcu46t6k",
 
-    "public_id":	"l5ntd56e8bg4dtw2mgkkuv3seyalvp",
+    "public_id":	"u8ub75me3rtljgk25ul4kigjvohx16",
 
-    "token":	"ocmx8lg6uj8gbq2fvp37",
+    "token":	"ptnjrrllofppkqqihfm1",
 
-    "expires":	"2017-12-21 13:40:49.272704 +0000 UTC"
+    "expires":	"2017-12-21 15:13:51.099883 +0000 UTC"
 
 },{
 
 
-    "user_id":	"6v9b4j4g3uaxa9pg5fil",
+    "user_id":	"kgst642luuaiu9ctvzfw",
 
-    "public_id":	"ocz5gqqs26wzm6x8w45zv6570tr8i7",
+    "public_id":	"8nkyolu130yo8grfz5x0ecjg8apg8c",
 
-    "token":	"4q65cfbonky5vgh68rbq",
+    "token":	"5cgbsl58j74mb95y7avn",
 
-    "expires":	"2017-12-21 13:40:49.273086 +0000 UTC"
+    "expires":	"2017-12-21 15:13:51.100284 +0000 UTC"
 
 }]
 ```
@@ -178,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"vl6ncnqcjv3h1in71ruo",
+    "user_id":	"d9ge9nyxq39voaodqlbx",
 
-    "public_id":	"t6xdf15jbd52sb1m9u02i6bqh8kcu7",
+    "public_id":	"ah4ce2hi2jrx4cbeun4foyce6fpymm",
 
-    "token":	"2zanyhjvdcpcy0tusohz",
+    "token":	"tgey3ngpx6kn3u8cidid",
 
-    "expires":	"2017-12-21 13:40:49.273413 +0000 UTC"
+    "expires":	"2017-12-21 15:13:51.10064 +0000 UTC"
 
 }
 ```

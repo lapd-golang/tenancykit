@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type TFRecord.
 // @implement
 type TFRecordDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.TFRecord) error
 	Get(ctx context.Context, publicID string) (pkg.TFRecord, error)

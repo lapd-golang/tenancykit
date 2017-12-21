@@ -9,6 +9,8 @@ import (
 // TokenDBBackendImpl defines a concrete struct which implements the methods for the
 // TokenDBBackend interface. All methods will panic, so add necessary internal logic.
 type TokenDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.Token) error
@@ -22,6 +24,14 @@ type TokenDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.Token, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Token, int, error)
+}
+
+// Count implements the TokenDBBackend.Count() method for TokenDBBackendImpl.
+func (impl TokenDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the TokenDBBackend.Delete() method for TokenDBBackendImpl.

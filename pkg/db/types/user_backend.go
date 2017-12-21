@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type User.
 // @implement
 type UserDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.User) error
 	Get(ctx context.Context, publicID string) (pkg.User, error)

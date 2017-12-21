@@ -10,6 +10,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gokit/tenancykit/pkg/resources/usersessionapi"
+
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 	"github.com/influx6/faux/httputil/httptesting"
 
@@ -69,6 +71,7 @@ func TestUserSessionAPI(t *testing.T) {
 
 	testUserSessionLoginAndLogout(t, userRecord, userCreateBody, tenantRecord, tf, ufsdb)
 	testUserSessionCreate(t, userRecord, userCreateBody, tenantRecord, tf, ufsdb)
+	testUserSessionCount(t, tf, ufsdb)
 	testUserSessionGetAll(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionGet(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionUpdate(t, userRecord, tenantRecord, tf, ufsdb)
@@ -77,6 +80,38 @@ func TestUserSessionAPI(t *testing.T) {
 	os.RemoveAll("./keys")
 }
 
+func testUserSessionCount(t *testing.T, us tenancykit.UserSessionAPI, db types.TenantDBBackend) {
+	tests.Header("When getting info on records using the UserSessionAPI")
+	{
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/tenants", nil, infoResponse)
+		if err := us.Info(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully made info request")
+		}
+		tests.Passed("Should have successfully created record")
+
+		if infoResponse.Code != http.StatusOK {
+			tests.Failed("Should have received Status 200")
+		}
+		tests.Passed("Should have received Status 200")
+
+		if infoResponse.Body == nil {
+			tests.Failed("Should have received body response")
+		}
+		tests.Passed("Should have received body response")
+
+		var info usersessionapi.UserSessionInfo
+		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
+			tests.FailedWithError(err, "Should have successfully collected record info")
+		}
+		tests.Passed("Should have successfully collected record info")
+
+		if info.Total == 0 {
+			tests.Failed("Should have atleast one record in backend")
+		}
+		tests.Passed("Should have atleast one record in backend")
+	}
+}
 func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When login and logging out using the UserSessionAPI")
 	{

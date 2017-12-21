@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type Tenant.
 // @implement
 type TenantDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.Tenant) error
 	Get(ctx context.Context, publicID string) (pkg.Tenant, error)

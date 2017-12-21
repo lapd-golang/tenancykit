@@ -19,6 +19,10 @@ func TenantDBBackend() types.TenantDBBackend {
 
 	db := make(map[string]pkg.Tenant)
 
+	mocker.CountFunc = func(ctx context.Context) (int, error) {
+		return len(db), nil
+	}
+
 	mocker.CreateFunc = func(ctx context.Context, elem pkg.Tenant) error {
 		if _, exist := db[elem.PublicID]; exist {
 			return errors.New("record already exists")

@@ -9,6 +9,8 @@ import (
 // UserDBBackendImpl defines a concrete struct which implements the methods for the
 // UserDBBackend interface. All methods will panic, so add necessary internal logic.
 type UserDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.User) error
@@ -22,6 +24,14 @@ type UserDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.User, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.User, int, error)
+}
+
+// Count implements the UserDBBackend.Count() method for UserDBBackendImpl.
+func (impl UserDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the UserDBBackend.Delete() method for UserDBBackendImpl.

@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type UserSession.
 // @implement
 type UserSessionDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.UserSession) error
 	Get(ctx context.Context, publicID string) (pkg.UserSession, error)

@@ -11,39 +11,39 @@ var (
 	TenantJSON = `{
 
 
-    "name":	"Mrs. Ms. Miss Jane Owens",
+    "public_id":	"9v7hppfblc9b1h01x5vaduflkehhcu",
 
-    "email":	"AngelaBurke@Centimia.name",
+    "created_at":	"2017-12-21 15:13:27.87264 +0000 UTC",
 
-    "public_id":	"jo26h9tixwz6ecjz2ztiyrqxx4g0jq",
+    "updated_at":	"2017-12-21 15:13:27.872647 +0000 UTC",
 
-    "created_at":	"2017-12-21 13:02:17.334862 +0000 UTC",
+    "name":	"Kevin Wood",
 
-    "updated_at":	"2017-12-21 13:02:17.334869 +0000 UTC"
+    "email":	"0Oliver@Riffpath.net"
 
 }`
 
 	TenantCreateJSON = `{
 
 
-    "name":	"Michael Wallace",
+    "email":	"8Larson@Teklist.edu",
 
-    "email":	"LillianWard@Realmix.edu"
+    "name":	"Douglas Robinson"
 
 }`
 
 	TenantUpdateJSON = `{
 
 
-    "email":	"KellyLee@Trunyx.biz",
+    "created_at":	"2017-12-21 15:13:27.873194 +0000 UTC",
 
-    "public_id":	"aefc7hfwqvxwk3liqokkjboay3npjo",
+    "updated_at":	"2017-12-21 15:13:27.873199 +0000 UTC",
 
-    "created_at":	"2017-12-21 13:02:17.335315 +0000 UTC",
+    "name":	"Keith Garza",
 
-    "updated_at":	"2017-12-21 13:02:17.33532 +0000 UTC",
+    "email":	"lGarrett@Vinder.org",
 
-    "name":	"Martha Martin"
+    "public_id":	"vzftudc2m6vfl72bw2c9rng3ir8vlz"
 
 }`
 )

@@ -11,21 +11,21 @@ var (
 	UserJSON = `{
 
 
-    "private_id":	"of4ocka8bp8cbh9xf2mwg1kip65g7w",
+    "email":	"RichardHarvey@Thoughtbridge.edu",
 
-    "created_at":	"2017-12-21 13:02:17.813825 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:27.80115 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:02:17.813833 +0000 UTC",
+    "updated_at":	"2017-12-21 15:13:27.801159 +0000 UTC",
 
-    "username":	"JaneBennett",
+    "username":	"accusantium",
 
-    "email":	"RonaldKennedy@Jetwire.info",
+    "public_id":	"j4nid6z2gr4yo2meiyyxoocs3u4gnl",
 
-    "public_id":	"o3l3k3udxi3adsl33lo51ownwos9a7",
+    "tenant_id":	"9pwiulp7ztmuilq9az7j",
 
-    "tenant_id":	"oa1jpref1d1kv1jlzb85",
+    "private_id":	"bv2pfku3jsighwzskzh6qsfwmdyt1x",
 
-    "hash":	"jm6l68ip7nm5feqvykgz",
+    "hash":	"k26be6zpkzaln7gmyzn3",
 
     "two_factor_auth":	true
 
@@ -34,26 +34,26 @@ var (
 	UserCreateJSON = `{
 
 
-    "tenant_id":	"1nm1awrrrch8rixruyxo",
+    "tenant_id":	"uuidz60mzoacmohetfsk",
 
-    "email":	"8Alvarez@Vinder.mil",
+    "email":	"laudantium@Demimbu.biz",
 
-    "username":	"et_ratione_ut",
+    "username":	"RubyRay",
 
-    "password":	"he058p6xdrv28ad4r1ls",
+    "password":	"msszvfmugzqg15j82391",
 
-    "password_confirm":	"a9fhmzkos0gjni7guzp4"
+    "password_confirm":	"idnxkzlp26q9p90ra2f2"
 
 }`
 
 	UserUpdateJSON = `{
 
 
-    "email":	"fugiat_et@Wikibox.mil",
+    "email":	"LauraAustin@Realblab.biz",
 
-    "password":	"bst707dthxk7c0lvb3ea",
+    "password":	"84mvn85dcz1uvwzo481t",
 
-    "password_confirm":	"ulsxcgooelzjbt958auc"
+    "password_confirm":	"yyqwki958qfufeqmdp0k"
 
 }`
 )

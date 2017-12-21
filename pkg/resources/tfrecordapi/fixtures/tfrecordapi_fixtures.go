@@ -11,59 +11,59 @@ var (
 	TFRecordJSON = `{
 
 
-    "code_length":	18,
+    "domain":	"Photojam.gov",
 
-    "domain":	"Linkbuzz.info",
+    "user_id":	"efgo7jxdjih7b6k58rmp",
 
-    "user_id":	"8zbgwwehmo14na6hnq9r",
+    "public_id":	"d9cyz61edqnis5gnrse11ejwb77q7l",
 
-    "totp":	"rbqbxf4f3f6km3pjo2pn",
+    "tenant_id":	"6s1u4s8mgfwp0lo7epsc",
 
-    "public_id":	"s31qwix0j2ih8ubzmkebsd7dp82y6g",
+    "code_length":	13,
 
-    "key":	"6ny9ljug0o09agfi6odq",
+    "key":	"56rqtg4udylazt3y0mpd",
 
-    "tenant_id":	"51kpmrrcaaw8byaw1tj0",
+    "totp":	"et0th8nfbqgyp44bf2pk",
 
-    "created_at":	"2017-12-21 13:02:17.608105 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:27.948135 +0000 UTC",
 
-    "updated_at":	"2017-12-21 13:02:17.608113 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:27.948146 +0000 UTC"
 
 }`
 
 	TFRecordCreateJSON = `{
 
 
+    "max_length":	16,
+
     "tenant":	null,
 
     "user":	null,
 
-    "domain":	"Divanoodle.gov",
-
-    "max_length":	8
+    "domain":	"Leenti.org"
 
 }`
 
 	TFRecordUpdateJSON = `{
 
 
-    "key":	"gnc6iafh0j3b5hs70ly2",
+    "user_id":	"x3m581jzokf50kebyhu4",
 
-    "totp":	"qpbzhpurv2v0vkrvl6ss",
+    "tenant_id":	"evvhr4fko7j2t02zsmvc",
 
-    "code_length":	16,
+    "code_length":	11,
 
-    "created_at":	"2017-12-21 13:02:17.608865 +0000 UTC",
+    "created_at":	"2017-12-21 15:13:27.948842 +0000 UTC",
 
-    "domain":	"Skinder.net",
+    "key":	"pfz8m57s4rdyyt8oypwi",
 
-    "user_id":	"fxnwlffime05eb24f8ky",
+    "domain":	"Aimbo.biz",
 
-    "public_id":	"v1b99dpkaa60gfo113xrlx6n28xbgv",
+    "totp":	"3y0ck5g0aoz1vickh5yc",
 
-    "tenant_id":	"by86sk9eocnu9bca2s6d",
+    "public_id":	"52adkgture50zt7sbfo0jcxe0kunvj",
 
-    "updated_at":	"2017-12-21 13:02:17.60887 +0000 UTC"
+    "updated_at":	"2017-12-21 15:13:27.948847 +0000 UTC"
 
 }`
 )

@@ -19,6 +19,9 @@ func TokenSetBackend() types.TokenDBBackend {
 
 	db := make(map[string]pkg.Token)
 
+	mocker.CountFunc = func(ctx context.Context) (int, error) {
+		return len(db), nil
+	}
 	mocker.CreateFunc = func(ctx context.Context, elem pkg.Token) error {
 		if _, exist := db[elem.PublicID]; exist {
 			return errors.New("record already exists")

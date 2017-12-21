@@ -1,14 +1,16 @@
 package usersessiondbbackendimpl
 
 import (
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // UserSessionDBBackendImpl defines a concrete struct which implements the methods for the
 // UserSessionDBBackend interface. All methods will panic, so add necessary internal logic.
 type UserSessionDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.UserSession) error
@@ -22,6 +24,14 @@ type UserSessionDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.UserSession, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.UserSession, int, error)
+}
+
+// Count implements the UserSessionDBBackend.Count() method for UserSessionDBBackendImpl.
+func (impl UserSessionDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the UserSessionDBBackend.Delete() method for UserSessionDBBackendImpl.

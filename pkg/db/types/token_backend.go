@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type Token.
 // @implement
 type TokenDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.Token) error
 	Get(ctx context.Context, publicID string) (pkg.Token, error)

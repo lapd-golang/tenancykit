@@ -10,6 +10,7 @@ import (
 // methods exposed by the DB implementation for the giving type TwoFactorSession.
 // @implement
 type TwoFactorSessionDBBackend interface {
+	Count(ctx context.Context) (int, error)
 	Delete(ctx context.Context, publicID string) error
 	Create(ctx context.Context, elem pkg.TwoFactorSession) error
 	Get(ctx context.Context, publicID string) (pkg.TwoFactorSession, error)

@@ -53,6 +53,7 @@ func TestUserAPI(t *testing.T) {
 	tests.Passed("Should have successfully created tenants")
 
 	testUserCreate(t, tenantRecord, users, userdb)
+	testUserCount(t, users, userdb)
 	testUserGetAll(t, tenantRecord, users, userdb)
 	testUserGet(t, tenantRecord, users, userdb)
 	testUserUpdate(t, tenantRecord, users, userdb)
@@ -60,6 +61,38 @@ func TestUserAPI(t *testing.T) {
 	os.RemoveAll("./keys")
 }
 
+func testUserCount(t *testing.T, users tenancykit.UserAPI, db types.UserDBBackend) {
+	tests.Header("When getting info on records using the UserAPI")
+	{
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/tenants", nil, infoResponse)
+		if err := users.Info(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully made info request")
+		}
+		tests.Passed("Should have successfully created record")
+
+		if infoResponse.Code != http.StatusOK {
+			tests.Failed("Should have received Status 200")
+		}
+		tests.Passed("Should have received Status 200")
+
+		if infoResponse.Body == nil {
+			tests.Failed("Should have received body response")
+		}
+		tests.Passed("Should have received body response")
+
+		var info userapi.UserInfo
+		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
+			tests.FailedWithError(err, "Should have successfully collected record info")
+		}
+		tests.Passed("Should have successfully collected record info")
+
+		if info.Total == 0 {
+			tests.Failed("Should have atleast one record in backend")
+		}
+		tests.Passed("Should have atleast one record in backend")
+	}
+}
 func testUserCreate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
 	tests.Header("When creating new user with User API")
 	{

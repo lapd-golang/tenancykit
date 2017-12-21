@@ -9,6 +9,8 @@ import (
 // TFRecordDBBackendImpl defines a concrete struct which implements the methods for the
 // TFRecordDBBackend interface. All methods will panic, so add necessary internal logic.
 type TFRecordDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.TFRecord) error
@@ -22,6 +24,14 @@ type TFRecordDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.TFRecord, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TFRecord, int, error)
+}
+
+// Count implements the TFRecordDBBackend.Count() method for TFRecordDBBackendImpl.
+func (impl TFRecordDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the TFRecordDBBackend.Delete() method for TFRecordDBBackendImpl.

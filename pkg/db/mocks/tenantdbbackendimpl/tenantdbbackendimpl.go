@@ -1,14 +1,16 @@
 package tenantdbbackendimpl
 
 import (
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // TenantDBBackendImpl defines a concrete struct which implements the methods for the
 // TenantDBBackend interface. All methods will panic, so add necessary internal logic.
 type TenantDBBackendImpl struct {
+	CountFunc func(ctx context.Context) (int, error)
+
 	DeleteFunc func(ctx context.Context, publicID string) error
 
 	CreateFunc func(ctx context.Context, elem pkg.Tenant) error
@@ -22,6 +24,14 @@ type TenantDBBackendImpl struct {
 	GetByFieldFunc func(ctx context.Context, key string, value interface{}) (pkg.Tenant, error)
 
 	GetAllFunc func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Tenant, int, error)
+}
+
+// Count implements the TenantDBBackend.Count() method for TenantDBBackendImpl.
+func (impl TenantDBBackendImpl) Count(ctx context.Context) (int, error) {
+
+	ret1, ret2 := impl.CountFunc(ctx)
+	return ret1, ret2
+
 }
 
 // Delete implements the TenantDBBackend.Delete() method for TenantDBBackendImpl.
