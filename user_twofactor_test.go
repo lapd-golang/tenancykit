@@ -11,6 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/influx6/faux/httputil"
+
 	"github.com/influx6/faux/httputil/httptesting"
 
 	"github.com/gokit/tenancykit"
@@ -29,6 +31,7 @@ func TestTwoFactorAuth(t *testing.T) {
 	tfdb := mock.TFRecordBackend()
 	ttdb := mock.TenantDBBackend()
 	tfsdb := mock.TFSessionBackend()
+	tsetdb := mock.TokenSetBackend()
 	ufsdb := mock.UserSessionBackend()
 	udb := mock.UserBackend()
 
@@ -64,12 +67,24 @@ func TestTwoFactorAuth(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded user record")
 
-	testUserLogin(t, userRecord, userCreateBody, tenantRecord, tf, ufsdb)
+	tfrecord := backends.TFBackend{TFRecordDBBackend: tfdb}
+	if _, err := tfrecord.Create(context.Background(), pkg.NewTF{
+		MaxLength: 6,
+		Tenant:    tenantRecord,
+		User:      userRecord,
+		Domain:    "bob.com",
+	}); err != nil {
+		tests.FailedWithError(err, "Should have succesfully created user token record")
+	}
+	tests.Passed("Should have succesfully created user token record")
+
+	tokenSessionAPI := tenancykit.NewTwoFactorSessionAPI(m, backends.TokenBackend{tsetdb}, tfsdb)
+	testUserLogin(t, userRecord, userCreateBody, tokenSessionAPI, tf, ufsdb)
 
 	os.RemoveAll("./keys")
 }
 
-func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
+func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tsession tenancykit.TwoFactorSessionAPI, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When login and logging out using the UserSessionAPI")
 	{
 		var login pkg.CreateUserSession
@@ -128,5 +143,68 @@ func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenan
 		}
 		tests.Passed("Should have succesfully valiated that current user has twofactor record")
 
+		userCode, err := currentUser.TwoFactor.OTP()
+		if err != nil {
+			tests.FailedWithError(err, "Should have generated new user code")
+		}
+		tests.Passed("Should have generated new user code")
+
+		tokenValidateResponse := httptest.NewRecorder()
+		tokenValidReq := httptesting.Post("/tokens/login?user_code="+userCode, nil, tokenValidateResponse)
+		httputil.SetValueBag(logginUser.Bag())(tokenValidReq)
+		tokenValidReq.Set("user_code", userCode)
+
+		if err := tsession.ValidateUserToken(tokenValidReq); err != nil {
+			tests.FailedWithError(err, "Should have successfully validated user token")
+		}
+		tests.Passed("Should have successfully validated user token")
+
+		if tokenValidateResponse.Code != http.StatusNoContent {
+			tests.Failed("Should have received Status 204")
+		}
+		tests.Passed("Should have received Status 204")
+
+		ncurrentUser, err := pkg.GetCurrentUser(tokenValidReq)
+		if err != nil {
+			tests.FailedWithError(err, "Should have successfully retrieved current user")
+		}
+		tests.Passed("Should have successfully retrieved current user")
+
+		if ncurrentUser.TFSession != nil {
+			tests.Failed("Should not have a twofactor sesion attached")
+		}
+		tests.Passed("Should not have a twofactor sesion attached")
+
+		nuserCode, err := currentUser.TwoFactor.OTP()
+		if err != nil {
+			tests.FailedWithError(err, "Should have generated new user code")
+		}
+		tests.Passed("Should have generated new user code")
+
+		ntokenValidateResponse := httptest.NewRecorder()
+		ntokenValidReq := httptesting.Post("/tokens/login?user_code="+nuserCode, nil, ntokenValidateResponse)
+		httputil.SetValueBag(logginUser.Bag())(ntokenValidReq)
+		ntokenValidReq.Set("user_code", nuserCode)
+
+		if err := tsession.NewSession(ntokenValidReq); err != nil {
+			tests.FailedWithError(err, "Should have successfully create token session validation")
+		}
+		tests.Passed("Should have successfully create token session validation")
+
+		if ntokenValidateResponse.Code != http.StatusNoContent {
+			tests.Failed("Should have received Status 204")
+		}
+		tests.Passed("Should have received Status 204")
+
+		nwcurrentUser, err := pkg.GetCurrentUser(ntokenValidReq)
+		if err != nil {
+			tests.FailedWithError(err, "Should have successfully retrieved current user")
+		}
+		tests.Passed("Should have successfully retrieved current user")
+
+		if nwcurrentUser.TFSession == nil {
+			tests.Failed("Should have a twofactor sesion attached")
+		}
+		tests.Passed("Should have a twofactor sesion attached")
 	}
 }

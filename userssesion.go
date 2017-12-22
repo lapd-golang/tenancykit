@@ -134,7 +134,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	}
 
 	if user.TwoFactorAuth {
-		tfrecord, err := us.TFBackend.Get(ctx.Context(), user.PublicID)
+		tfrecord, err := us.TFBackend.GetByField(ctx.Context(), "user_id", user.PublicID)
 		if err != nil {
 			if !us.isNotFoundError(err) {
 				return httputil.HTTPError{

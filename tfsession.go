@@ -4,6 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gokit/tenancykit/pkg/db"
+
 	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
@@ -16,8 +18,9 @@ import (
 // methods that expose more functionality.
 type TwoFactorSessionAPI struct {
 	twofactorsessionapi.TwoFactorSessionHTTP
-	Backend  types.TwoFactorSessionDBBackend
-	TokenSet pkg.TokenSet
+	Backend             types.TwoFactorSessionDBBackend
+	TokenSet            pkg.TokenSet
+	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewTwoFactorSessionAPI returns a new instance of TwoFactorSessionAPI.
@@ -25,6 +28,7 @@ func NewTwoFactorSessionAPI(m metrics.Metrics, tokenset pkg.TokenSet, tfsession 
 	var api TwoFactorSessionAPI
 	api.Backend = tfsession
 	api.TokenSet = tokenset
+	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TwoFactorSessionHTTP = twofactorsessionapi.New(m, backends.TwoFactorSessionBackend{
 		TwoFactorSessionDBBackend: tfsession,
 	})
@@ -50,6 +54,7 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 
 	// if user does not require twofactor auth, then skip this.
 	if !currentUser.User.TwoFactorAuth {
+		ctx.Status(http.StatusNoContent)
 		return nil
 	}
 
@@ -70,7 +75,7 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 	}
 
 	used, err := tfs.TokenSet.Has(ctx.Context(), currentUser.User.PublicID, userCode)
-	if err != nil {
+	if err != nil && !tfs.isNotFoundError(err) {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
@@ -98,6 +103,8 @@ func (tfs TwoFactorSessionAPI) ValidateUserToken(ctx *httputil.Context) error {
 		}
 	}
 
+	ctx.Status(http.StatusNoContent)
+
 	return nil
 }
 
@@ -121,11 +128,13 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 
 	// If user already has twofactor session locked in, then skip.
 	if currentUser.TFSession != nil {
+		ctx.Status(http.StatusNoContent)
 		return nil
 	}
 
 	// if user does not require twofactor auth, then skip this.
 	if !currentUser.User.TwoFactorAuth {
+		ctx.Status(http.StatusNoContent)
 		return nil
 	}
 
@@ -146,7 +155,7 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 	}
 
 	used, err := tfs.TokenSet.Has(ctx.Context(), currentUser.User.PublicID, userCode)
-	if err != nil {
+	if err != nil && !tfs.isNotFoundError(err) {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
@@ -173,6 +182,9 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 		}
 
 		currentUser.TFSession = &tfSession
+		ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
+
+		ctx.Status(http.StatusNoContent)
 		return nil
 	}
 
@@ -201,6 +213,18 @@ func (tfs TwoFactorSessionAPI) NewSession(ctx *httputil.Context) error {
 
 	currentUser.TFSession = &newTFSession
 	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
+	ctx.Status(http.StatusNoContent)
 
 	return nil
+}
+
+// isNotFoundError returns true/false if the giving error matches
+// an expected ErrNotFound error. It helps detach us
+// from code smell and import pollution.
+func (tfs TwoFactorSessionAPI) isNotFoundError(err error) bool {
+	if tfs.IsNotFoundErrorFunc == nil {
+		return false
+	}
+
+	return tfs.IsNotFoundErrorFunc(err)
 }
