@@ -22,6 +22,7 @@ import (
 	"github.com/gokit/tenancykit/pkg/mock"
 	tenantFixtures "github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
 	userFixtures "github.com/gokit/tenancykit/pkg/resources/userapi/fixtures"
+	tokenmock "github.com/gokit/tokens/db/mocks"
 	"github.com/influx6/faux/metrics"
 	"github.com/influx6/faux/tests"
 )
@@ -31,7 +32,7 @@ func TestTwoFactorAuth(t *testing.T) {
 	tfdb := mock.TFRecordBackend()
 	ttdb := mock.TenantDBBackend()
 	tfsdb := mock.TFSessionBackend()
-	tsetdb := mock.TokenSetBackend()
+	tsetdb := tokenmock.TokenSetBackend()
 	ufsdb := mock.UserSessionBackend()
 	udb := mock.UserBackend()
 
@@ -78,7 +79,7 @@ func TestTwoFactorAuth(t *testing.T) {
 	}
 	tests.Passed("Should have succesfully created user token record")
 
-	tokenSessionAPI := tenancykit.NewTwoFactorSessionAPI(m, backends.TokenBackend{tsetdb}, tfsdb)
+	tokenSessionAPI := tenancykit.NewTwoFactorSessionAPI(m, tsetdb, tfsdb)
 	testUserLogin(t, userRecord, userCreateBody, tokenSessionAPI, tf, ufsdb)
 
 	os.RemoveAll("./keys")

@@ -7,16 +7,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// CurrentUser embodies a struct with 3 distinct fields representing
-// the current user, it's tenant and twofactor record if enabled.
-type CurrentUser struct {
-	User      User
-	Tenant    Tenant
-	TwoFactor *TFRecord
-	TFSession *TwoFactorSession
-	Session   *UserSession
-}
-
 // CreateTenant embodies the expected data used to create
 // a Tenant.
 type CreateTenant struct {

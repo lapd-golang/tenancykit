@@ -157,6 +157,13 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 
 	authValue := fmt.Sprintf("Bearer %s", newSession.UserSessionToken())
 
+	//ctx.SetCookie(&http.Cookie{
+	//	Name:    "session-token",
+	//	Expires: newSession.Expires,
+	//	Value:   base64.StdEncoding.EncodeToString(authValue),
+	//	Path:    "/",
+	//})
+
 	ctx.SetHeader("Authorization", authValue)
 
 	return ctx.JSON(200, pkg.UserAuthorization{Token: newSession.UserSessionToken()})
@@ -356,7 +363,7 @@ func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error)
 	}
 
 	for _, cookie := range ctx.Cookies() {
-		if strings.ToLower(cookie.Name) == "authorization" {
+		if strings.ToLower(cookie.Name) == "session-token" {
 			if val, err := base64.StdEncoding.DecodeString(cookie.Value); err == nil {
 				return string(val), nil
 			}

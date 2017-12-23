@@ -16,9 +16,9 @@ import (
 	"github.com/influx6/faux/httputil/httptesting"
 
 	"github.com/gokit/tenancykit"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
+	tokenmock "github.com/gokit/tokens/db/mocks"
 	"github.com/influx6/faux/metrics"
 	"github.com/influx6/faux/tests"
 )
@@ -26,7 +26,7 @@ import (
 func TestTwoFactorSessionAPI(t *testing.T) {
 	m := metrics.New()
 	tfdb := mock.TFSessionBackend()
-	tfset := backends.TokenBackend{TokenDBBackend: mock.TokenSetBackend()}
+	tfset := tokenmock.TokenSetBackend()
 	tf := tenancykit.NewTwoFactorSessionAPI(m, tfset, tfdb)
 
 	testTwoFactorSessionCreate(t, tf, tfdb)

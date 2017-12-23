@@ -11,37 +11,37 @@ var (
 	UserSessionJSON = `{
 
 
-    "user_id":	"eu42zd82od4fcyuif5hd",
+    "user_id":	"yzo28l51oeb38rsgrlv7",
 
-    "public_id":	"xtfmbuc0lw1t66hris662elh452dy7",
+    "public_id":	"0a7zmzgfutk5d3wcyitl6lshnco5hs",
 
-    "token":	"11gwrtz3qy4hnqqk05bt",
+    "token":	"o0iglz559jgppa7uzoeq",
 
-    "expires":	"2017-12-21 15:13:27.714976 +0000 UTC"
+    "expires":	"2017-12-23 12:42:41.08402 +0000 UTC"
 
 }`
 
 	UserSessionCreateJSON = `{
 
 
-    "expiration":	null,
+    "email":	"eos_sapiente@Avamba.org",
 
-    "email":	"0Stephens@Jetwire.org",
+    "password":	"biet0n3e0s328j1elkh0",
 
-    "password":	"w09fjgo2tr6tukqkeqtr"
+    "expiration":	null
 
 }`
 
 	UserSessionUpdateJSON = `{
 
 
-    "public_id":	"lgd1o5cg3nhrpl58tlrl1917er1pab",
+    "user_id":	"e6kutrngtzm075frcomq",
 
-    "token":	"jzv04vd3xfp8qsmus12s",
+    "public_id":	"1pajin78ln87cebqldn1rohxwi9uav",
 
-    "expires":	"2017-12-21 15:13:27.715615 +0000 UTC",
+    "token":	"jot4rx51nfc9x6lg979g",
 
-    "user_id":	"hxq8qva6p3pyybexcpke"
+    "expires":	"2017-12-23 12:42:41.084635 +0000 UTC"
 
 }`
 )

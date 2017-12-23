@@ -6,8 +6,6 @@ import (
 	"time"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/db/tokenmgo"
-	"github.com/gokit/tenancykit/pkg/db/tokensql"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/influx6/faux/httputil"
 )
@@ -152,37 +150,4 @@ func (u UserBackend) Update(ctx context.Context, id string, updater pkg.UpdateUs
 	}
 
 	return u.UserDBBackend.Update(ctx, id, user)
-}
-
-// TokenBackend implements tokenapi.TokenBackend.
-type TokenBackend struct {
-	types.TokenDBBackend
-}
-
-// Create attempts to save provided token into db and returning token once done.
-// It implements tokenapi.TokenBackend interface.
-func (tf TokenBackend) Create(ctx context.Context, elem pkg.Token) (pkg.Token, error) {
-	return elem, tf.TokenDBBackend.Create(ctx, elem)
-}
-
-// Has returns true/false if giving token exists or not within underline
-// db. Returns an error if call to db failed.
-func (tf TokenBackend) Has(ctx context.Context, targetID string, token string) (bool, error) {
-	_, err := tf.TokenDBBackend.GetByField(ctx, "target_id", token)
-	if err != nil && (err == tokensql.ErrNotFound || err == tokenmgo.ErrNotFound) {
-		return false, nil
-	}
-
-	if err != nil {
-		return false, err
-	}
-
-	return true, nil
-}
-
-// Add adds giving underline tokendb into db, returning error if
-// it fails to do so, or call to db errors out.
-func (tf TokenBackend) Add(ctx context.Context, targetID string, token string) (pkg.Token, error) {
-	newtoken := pkg.NewToken(targetID, token)
-	return tf.Create(ctx, newtoken)
 }

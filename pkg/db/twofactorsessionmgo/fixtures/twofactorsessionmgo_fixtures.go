@@ -1,21 +1,24 @@
 package fixtures
 
 import (
-	"encoding/json"
+     "encoding/json"
 
-	"github.com/gokit/tenancykit/pkg"
+
+     "github.com/gokit/tenancykit/pkg"
+
 )
+
 
 // json fixtures ...
 var (
-	TwoFactorSessionJSON = `{
+ TwoFactorSessionJSON = `{
 
 
-    "user_id":	"1numoconb63ke0sjtjfm",
+    "bool":	true,
 
-    "public_id":	"u5w7rojwn2026raca1v62v1mh6khmr",
+    "user_id":	"aix2fen9arfz9s8y4bf1",
 
-    "bool":	true
+    "public_id":	"buv3rjksbh528ni9y9vod8hin9d0o8"
 
 }`
 )
@@ -30,3 +33,4 @@ func LoadTwoFactorSessionJSON(content string) (pkg.TwoFactorSession, error) {
 
 	return elem, nil
 }
+
