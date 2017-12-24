@@ -79,10 +79,6 @@ func TFRecordBackend() types.TFRecordDBBackend {
 				if record.UserID == val {
 					return record, nil
 				}
-			case "tenant_id":
-				if record.TenantID == val {
-					return record, nil
-				}
 			}
 		}
 

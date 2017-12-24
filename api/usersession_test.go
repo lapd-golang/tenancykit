@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -76,8 +75,6 @@ func TestUserSessionAPI(t *testing.T) {
 	testUserSessionGet(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionUpdate(t, userRecord, tenantRecord, tf, ufsdb)
 	testUserSessionDelete(t, userRecord, tenantRecord, tf, ufsdb)
-
-	os.RemoveAll("./keys")
 }
 
 func testUserSessionCount(t *testing.T, us api.UserSessionAPI, db types.UserSessionDBBackend) {

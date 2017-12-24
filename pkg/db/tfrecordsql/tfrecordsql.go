@@ -221,7 +221,7 @@ func (mdb *TFRecordDB) Get(ctx context.Context, publicID string) (pkg.TFRecord, 
 
 	var elem pkg.TFRecord
 
-	if err := mdb.dx.Get(mdb.table, &elem, "public_id", publicID); err != nil {
+	if err := mdb.dx.Get(mdb.table, &elem, "tenant_id", publicID); err != nil {
 		mdb.metrics.Emit(metrics.Errorf("Failed to retrieve all records of TFRecord type from db"),
 			metrics.With("table", mdb.col),
 			metrics.With("error", err.Error()))
@@ -248,15 +248,15 @@ func (mdb *TFRecordDB) Update(ctx context.Context, publicID string, elem pkg.TFR
 		return err
 	}
 
-	if err := mdb.dx.Update(mdb.table, elem, "public_id", publicID); err != nil {
-		mdb.metrics.Emit(metrics.Errorf("Failed to update TFRecord record"), metrics.With("query", elem), metrics.With("table", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
+	if err := mdb.dx.Update(mdb.table, elem, "tenant_id", publicID); err != nil {
+		mdb.metrics.Emit(metrics.Errorf("Failed to update TFRecord record"), metrics.With("query", elem), metrics.With("table", mdb.col), metrics.With("tenant_id", publicID), metrics.With("error", err.Error()))
 		if err == dsql.ErrNoRows {
 			return ErrNotFound
 		}
 		return err
 	}
 
-	mdb.metrics.Emit(metrics.Info("Update record"), metrics.With("table", mdb.col), metrics.With("public_id", publicID), metrics.With("query", elem))
+	mdb.metrics.Emit(metrics.Info("Update record"), metrics.With("table", mdb.col), metrics.With("tenant_id", publicID), metrics.With("query", elem))
 
 	return nil
 }

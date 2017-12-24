@@ -19,10 +19,10 @@ Tenancykit provides the following subpackages which can be used as desired:
 
 - User API
 - Tenant API
-- Tranditional Session API
 - JWT Identity API
 - TwoFactor Record API
 - TwoFactor Session API
+- Session API (SingleUsers and MultiTenant Users)
 
 ### Vendoring
 

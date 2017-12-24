@@ -134,6 +134,30 @@ func (u MultiUserBackend) Create(ctx context.Context, nt pkg.CreateUser) (pkg.Us
 	return newUser, u.UserDBBackend.Create(ctx, newUser)
 }
 
+// Update attempts to update user password retrieved from underline types.UserBackend.
+// It implements api.userapi.Backend.Update interface method.
+func (u MultiUserBackend) Update(ctx context.Context, id string, updater pkg.UpdateUser) error {
+	if err := updater.Validate(); err != nil {
+		return err
+	}
+
+	user, err := u.UserDBBackend.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	user.Email = updater.Email
+	if !updater.IsPassWordUpdate() {
+		return u.UserDBBackend.Update(ctx, id, user)
+	}
+
+	if err = user.ChangePassword(updater.Password); err != nil {
+		return err
+	}
+
+	return u.UserDBBackend.Update(ctx, id, user)
+}
+
 // UserBackend is a wrapper to implement userapi.Backend interface methods for
 // types.UserBackend.
 type UserBackend struct {

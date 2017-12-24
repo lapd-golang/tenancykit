@@ -39,11 +39,11 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "email":	"pFranklin@Skyba.net",
+    "password":	"3tnk5v42e5r39n0uoddg",
 
-    "password":	"n3mmj27nldk8mskdopyi",
+    "expiration":	null,
 
-    "expiration":	null
+    "email":	"maiores_eum_qui@Quaxo.com"
 
 }
 ```

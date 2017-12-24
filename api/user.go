@@ -35,7 +35,20 @@ func NewUserAPI(m metrics.Metrics, multitenant bool, domain string, tfCodeLen in
 	api.TwoFactorCodeLength = tfCodeLen
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
-	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users, MultiTenant: multitenant})
+	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users})
+	return api
+}
+
+// NewMultiTenantUserAPI returns a new instance of UserAPI.
+func NewMultiTenantUserAPI(m metrics.Metrics, multitenant bool, domain string, tfCodeLen int, users types.UserDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserAPI {
+	var api UserAPI
+	api.Domain = domain
+	api.Backend = users
+	api.TFDBBackend = tf
+	api.TwoFactorCodeLength = tfCodeLen
+	api.IsNotFoundErrorFunc = db.IsNotFoundError
+	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
+	api.UserHTTP = userapi.New(m, backends.MultiUserBackend{UserDBBackend: users, Tenants: tenants})
 	return api
 }
 

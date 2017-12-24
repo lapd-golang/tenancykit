@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -38,7 +37,7 @@ func TestMultiTenantUserSessionAPI(t *testing.T) {
 	ufsdb := mock.UserSessionBackend()
 	udb := mock.UserBackend()
 
-	tf := api.NewUserSessionAPI(m, udb, ufsdb, tfsdb, ttdb, tfdb)
+	tf := api.NewMultiTenantUserSessionAPI(m, udb, ufsdb, tfsdb, ttdb, tfdb)
 
 	createTenant, err := tenantFixtures.LoadCreateJSON(tenantFixtures.TenantCreateJSON)
 	if err != nil {
@@ -76,11 +75,9 @@ func TestMultiTenantUserSessionAPI(t *testing.T) {
 	testMultiTenantSessionGet(t, userRecord, tenantRecord, tf, ufsdb)
 	testMultiTenantSessionUpdate(t, userRecord, tenantRecord, tf, ufsdb)
 	testMultiTenantSessionDelete(t, userRecord, tenantRecord, tf, ufsdb)
-
-	os.RemoveAll("./keys")
 }
 
-func testMultiTenantSessionCount(t *testing.T, us api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionCount(t *testing.T, us api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When getting info on records using the UserSessionAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -113,7 +110,7 @@ func testMultiTenantSessionCount(t *testing.T, us api.UserSessionAPI, db types.U
 	}
 }
 
-func testMultiTenantSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When login and logging out using the UserSessionAPI")
 	{
 		var login pkg.CreateUserSession
@@ -197,7 +194,7 @@ func testMultiTenantSessionLoginAndLogout(t *testing.T, user pkg.User, usercreat
 	}
 }
 
-func testMultiTenantSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionCreate(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When creating a two factor record using the UserSessionAPI")
 	{
 		createBody, err := fixtures.LoadCreateJSON(fixtures.UserSessionCreateJSON)
@@ -240,7 +237,7 @@ func testMultiTenantSessionCreate(t *testing.T, user pkg.User, usercreate pkg.Cr
 	}
 }
 
-func testMultiTenantSessionGetAll(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionGetAll(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When retrieving all two factor records using the UserSessionAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -285,7 +282,7 @@ func testMultiTenantSessionGetAll(t *testing.T, user pkg.User, tenant pkg.Tenant
 	}
 }
 
-func testMultiTenantSessionGet(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionGet(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When retrieving a two factor record using the UserSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -328,7 +325,7 @@ func testMultiTenantSessionGet(t *testing.T, user pkg.User, tenant pkg.Tenant, t
 	}
 }
 
-func testMultiTenantSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When updating a two factor record using the UserSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -385,7 +382,7 @@ func testMultiTenantSessionUpdate(t *testing.T, user pkg.User, tenant pkg.Tenant
 	}
 }
 
-func testMultiTenantSessionDelete(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
+func testMultiTenantSessionDelete(t *testing.T, user pkg.User, tenant pkg.Tenant, tf api.MultiTenantUserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When deleting a two factor record using the UserSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)

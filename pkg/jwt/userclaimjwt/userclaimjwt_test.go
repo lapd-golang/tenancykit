@@ -33,11 +33,11 @@ var (
 	contractDataJSON = `{
 
 
-    "expiration":	null,
+    "email":	"JeremyLawson@Babbleopia.mil",
 
-    "email":	"MichaelNichols@Camimbo.name",
+    "password":	"ku2ikso0bji55bjiilb6",
 
-    "password":	"qgntfk6cjzbo5ptbng70"
+    "expiration":	null
 
 }`
 	userClaim = userclaimjwt.Testimony{

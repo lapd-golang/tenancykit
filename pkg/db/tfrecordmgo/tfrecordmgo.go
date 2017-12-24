@@ -521,7 +521,7 @@ func (mdb *TFRecordDB) Update(ctx context.Context, publicID string, elem pkg.TFR
 
 	defer session.Close()
 
-	query := bson.M{"public_id": publicID}
+	query := bson.M{"tenant_id": publicID}
 
 	fields, err := elem.Fields()
 	if err != nil {
