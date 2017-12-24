@@ -4,7 +4,7 @@ package pkg
 // the current user, it's tenant and twofactor record if enabled.
 type CurrentUser struct {
 	User      User
-	Tenant    Tenant
+	Tenant    *Tenant
 	TwoFactor *TFRecord
 	TFSession *TwoFactorSession
 	Session   *UserSession

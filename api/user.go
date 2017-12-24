@@ -1,4 +1,4 @@
-package tenancykit
+package api
 
 import (
 	"bytes"
@@ -18,24 +18,24 @@ import (
 // UserAPI implements the http api for the user request-response api.
 type UserAPI struct {
 	userapi.UserHTTP
+	Domain              string
 	TwoFactorCodeLength int
 	Backend             types.UserDBBackend
-	TenantBackend       types.TenantDBBackend
 	TFBackend           tfrecordapi.TFRecordBackend
 	TFDBBackend         types.TFRecordDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewUserAPI returns a new instance of UserAPI.
-func NewUserAPI(tfCodeLen int, m metrics.Metrics, users types.UserDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserAPI {
+func NewUserAPI(m metrics.Metrics, multitenant bool, domain string, tfCodeLen int, users types.UserDBBackend, tf types.TFRecordDBBackend) UserAPI {
 	var api UserAPI
+	api.Domain = domain
 	api.Backend = users
 	api.TFDBBackend = tf
-	api.TenantBackend = tenants
 	api.TwoFactorCodeLength = tfCodeLen
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TFBackend = backends.TFBackend{TFRecordDBBackend: tf}
-	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users})
+	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users, MultiTenant: multitenant})
 	return api
 }
 
@@ -69,26 +69,8 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 		}
 	}
 
-	var err error
-	var currentUser pkg.CurrentUser
-
-	// Retreive user from db.
-	currentUser.User, err = u.Backend.Get(ctx.Context(), id)
-	if err != nil {
-		if !u.isNotFoundError(err) {
-			return httputil.HTTPError{
-				Err:  err,
-				Code: http.StatusInternalServerError,
-			}
-		}
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusNotFound,
-		}
-	}
-
-	// Rerieve user's tenant.
-	currentUser.Tenant, err = u.TenantBackend.Get(ctx.Context(), currentUser.User.TenantID)
+	// Retrieve user from db.
+	user, err := u.Backend.Get(ctx.Context(), id)
 	if err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -103,12 +85,12 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	}
 
 	// Attempt to retrieve twofactor user record if user has one.
-	if tf, err := u.TFDBBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID); err == nil {
-		currentUser.TwoFactor = &tf
+	if tf, err := u.TFDBBackend.GetByField(ctx.Context(), "user_id", user.PublicID); err == nil {
+		ctx.Bag().Set(pkg.ContextKeyTFRecord, tf)
 	}
 
 	// set current user into context.
-	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
+	ctx.Bag().Set(pkg.ContextKeyUser, user)
 	return nil
 }
 
@@ -119,43 +101,39 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 // Params: :public_id
 //
 func (u UserAPI) TwoFactorQRImage(ctx *httputil.Context) error {
-	var err error
-	var currentUser pkg.CurrentUser
-
-	if currentUser, err = pkg.GetCurrentUser(ctx); err != nil {
-		if rerr := u.RetrieveUser(ctx); rerr != nil {
-			return rerr
-		}
-
-		// Attempt to retreive current user once again.
-		currentUser, err = pkg.GetCurrentUser(ctx)
-		if err != nil {
-			return httputil.HTTPError{
-				Err:  err,
-				Code: http.StatusInternalServerError,
-			}
-		}
+	if err := u.RetrieveUser(ctx); err != nil {
+		return err
 	}
 
-	if !currentUser.User.TwoFactorAuth {
-		err = errors.New("User must first enable twofactor authentication")
-		return httputil.HTTPError{
-			Err:  err,
-			Code: http.StatusBadRequest,
-		}
-	}
-
-	if currentUser.User.TwoFactorAuth && currentUser.TwoFactor == nil {
-		err = errors.New("User TwoFactorRecord failed to be loaded")
+	user, err := pkg.GetUser(ctx)
+	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
 		}
 	}
 
-	qr, err := currentUser.TwoFactor.QR()
+	if !user.TwoFactorAuth {
+		return httputil.HTTPError{
+			Err:  errors.New("user has not enabled twofactor auth"),
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	twofactor, err := pkg.GetTwoFactorRecord(ctx)
 	if err != nil {
-		return err
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	qr, err := twofactor.QR()
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
 	}
 
 	return ctx.Stream(http.StatusOK, "image/png", bytes.NewBuffer(qr))
@@ -168,30 +146,32 @@ func (u UserAPI) TwoFactorQRImage(ctx *httputil.Context) error {
 // Params: :public_id
 //
 func (u UserAPI) DisableTwoFactor(ctx *httputil.Context) error {
-	var err error
-	var currentUser pkg.CurrentUser
+	if err := u.RetrieveUser(ctx); err != nil {
+		return err
+	}
 
-	if currentUser, err = pkg.GetCurrentUser(ctx); err != nil {
-		if rerr := u.RetrieveUser(ctx); rerr != nil {
-			return rerr
-		}
-
-		// Attempt to retreive current user once again.
-		currentUser, err = pkg.GetCurrentUser(ctx)
-		if err != nil {
-			return httputil.HTTPError{
-				Err:  err,
-				Code: http.StatusInternalServerError,
-			}
+	user, err := pkg.GetUser(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
 		}
 	}
 
-	if !currentUser.User.TwoFactorAuth && currentUser.TwoFactor == nil {
+	if !user.TwoFactorAuth {
 		return nil
 	}
 
+	twofactor, err := pkg.GetTwoFactorRecord(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
 	// Delete user's twofactor record from db.
-	if err := u.TFBackend.Delete(ctx.Context(), currentUser.TwoFactor.PublicID); err != nil {
+	if err := u.TFBackend.Delete(ctx.Context(), twofactor.PublicID); err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
 				Err:  err,
@@ -204,8 +184,8 @@ func (u UserAPI) DisableTwoFactor(ctx *httputil.Context) error {
 		}
 	}
 
-	currentUser.User.TwoFactorAuth = false
-	if err := u.Backend.Update(ctx.Context(), currentUser.User.PublicID, currentUser.User); err != nil {
+	user.TwoFactorAuth = false
+	if err := u.Backend.Update(ctx.Context(), user.PublicID, user); err != nil {
 		if !u.isNotFoundError(err) {
 			return httputil.HTTPError{
 				Err:  err,
@@ -228,36 +208,28 @@ func (u UserAPI) DisableTwoFactor(ctx *httputil.Context) error {
 // Params: :public_id
 //
 func (u UserAPI) EnableTwoFactor(ctx *httputil.Context) error {
-	var err error
-	var currentUser pkg.CurrentUser
+	if err := u.RetrieveUser(ctx); err != nil {
+		return err
+	}
 
-	if currentUser, err = pkg.GetCurrentUser(ctx); err != nil {
-		if rerr := u.RetrieveUser(ctx); rerr != nil {
-			return rerr
-		}
-		currentUser, err = pkg.GetCurrentUser(ctx)
-		if err != nil {
-			return httputil.HTTPError{
-				Err:  err,
-				Code: http.StatusInternalServerError,
-			}
+	user, err := pkg.GetUser(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
 		}
 	}
 
-	domainURL := ctx.Request().URL
-	domain := domainURL.Host
-
-	if currentUser.User.TwoFactorAuth && currentUser.TwoFactor != nil {
+	if user.TwoFactorAuth {
 		return nil
 	}
 
-	currentUser.User.TwoFactorAuth = true
+	user.TwoFactorAuth = true
 
 	// Create new twofactor record for user.
 	var newTF pkg.NewTF
-	newTF.Domain = domain
-	newTF.User = currentUser.User
-	newTF.Tenant = currentUser.Tenant
+	newTF.User = user
+	newTF.Domain = u.Domain
 	newTF.MaxLength = u.TwoFactorCodeLength
 
 	ntwRecord, err := u.TFBackend.Create(ctx.Context(), newTF)
@@ -268,8 +240,6 @@ func (u UserAPI) EnableTwoFactor(ctx *httputil.Context) error {
 		}
 	}
 
-	currentUser.TwoFactor = &ntwRecord
-	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
-
+	ctx.Bag().Set(pkg.ContextKeyTFRecord, ntwRecord)
 	return nil
 }

@@ -40,8 +40,8 @@ type JWTAPI struct {
 
 // New returns a new JWTAPI instance using the provided operator and
 // metric.
-func New(m metrics.Metrics, backend IdentityBackend) *JWTAPI {
-	return &JWTAPI{
+func New(m metrics.Metrics, backend IdentityBackend) JWTAPI {
+	return JWTAPI{
 		metrics:  m,
 		operator: backend,
 	}
@@ -52,7 +52,7 @@ func New(m metrics.Metrics, backend IdentityBackend) *JWTAPI {
 // Route: /{Route}/info
 // Method: INFO
 // RESPONSE-BODY: JSON
-func (api *JWTAPI) Info(ctx *httputil.Context) error {
+func (api JWTAPI) Info(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Info"), metrics.WithTrace(m.End()))
 
@@ -95,7 +95,7 @@ func (api *JWTAPI) Info(ctx *httputil.Context) error {
 // Method: PUT
 // BODY: JSON
 //
-func (api *JWTAPI) Update(ctx *httputil.Context) error {
+func (api JWTAPI) Update(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Update"), metrics.WithTrace(m.End()))
 
@@ -156,7 +156,7 @@ func (api *JWTAPI) Update(ctx *httputil.Context) error {
 // Route: /{Route}/:public_id
 // Method: DELETE
 //
-func (api *JWTAPI) Delete(ctx *httputil.Context) error {
+func (api JWTAPI) Delete(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Delete"), metrics.WithTrace(m.End()))
 
@@ -202,7 +202,7 @@ func (api *JWTAPI) Delete(ctx *httputil.Context) error {
 // Route: /{Route}/:public_id
 // Method: GET
 // RESPONSE-BODY: JSON
-func (api *JWTAPI) Get(ctx *httputil.Context) error {
+func (api JWTAPI) Get(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Get"), metrics.WithTrace(m.End()))
 
@@ -256,7 +256,7 @@ func (api *JWTAPI) Get(ctx *httputil.Context) error {
 // Route: /{Route}/
 // Method: GET
 // RESPONSE-BODY: JSON
-func (api *JWTAPI) GetAll(ctx *httputil.Context) error {
+func (api JWTAPI) GetAll(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.GetAll"), metrics.WithTrace(m.End()))
 
@@ -348,7 +348,7 @@ func (api *JWTAPI) GetAll(ctx *httputil.Context) error {
 // Method: POST
 // BODY: JSON
 //
-func (api *JWTAPI) Grant(ctx *httputil.Context) error {
+func (api JWTAPI) Grant(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Grant"), metrics.WithTrace(m.End()))
 
@@ -393,23 +393,23 @@ func (api *JWTAPI) Grant(ctx *httputil.Context) error {
 	return ctx.JSON(http.StatusOK, res)
 }
 
-// Refresh receives an http request to refresh a existing jwt access token using
+// Revoke receives an http request to revoke a existing jwt access token using
 // provided refresh token.
 //
 // Route: /{Route}/refresh
 // Method: POST
-// BODY: JSON (JSON String)
+// BODY: JSON
 //
-func (api *JWTAPI) Refresh(ctx *httputil.Context) error {
+func (api JWTAPI) Revoke(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Refresh"), metrics.WithTrace(m.End()))
+	defer api.metrics.Emit(metrics.Info("JWTAPI.Revoke"), metrics.WithTrace(m.End()))
 
 	ctx.Header().Set("Content-Type", "application/json")
 	api.metrics.Emit(metrics.Info("Refresh request received"), metrics.WithFields(metrics.Field{
 		"url": ctx.Request().URL.String(),
 	}))
 
-	var incoming string
+	var incoming IdentityToken
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
 			"url": ctx.Request().URL.String(),
@@ -423,7 +423,56 @@ func (api *JWTAPI) Refresh(ctx *httputil.Context) error {
 		"url":  ctx.Request().URL.String(),
 	}))
 
-	res, err := api.operator.Refresh(ctx.Context(), incoming)
+	res, err := api.operator.Refresh(ctx.Context(), incoming.RefreshToken)
+	if err != nil {
+		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
+			"url": ctx.Request().URL.String(),
+		}))
+
+		return err
+	}
+
+	api.metrics.Emit(metrics.Info("Response Delivered"), metrics.WithFields(metrics.Field{
+		"res":    res,
+		"url":    ctx.Request().URL.String(),
+		"status": http.StatusNoContent,
+	}))
+
+	ctx.Status(http.StatusNoContent)
+	return nil
+}
+
+// Refresh receives an http request to refresh a existing jwt access token using
+// provided refresh token.
+//
+// Route: /{Route}/refresh
+// Method: POST
+// BODY: JSON
+//
+func (api JWTAPI) Refresh(ctx *httputil.Context) error {
+	m := metrics.NewTrace()
+	defer api.metrics.Emit(metrics.Info("JWTAPI.Refresh"), metrics.WithTrace(m.End()))
+
+	ctx.Header().Set("Content-Type", "application/json")
+	api.metrics.Emit(metrics.Info("Refresh request received"), metrics.WithFields(metrics.Field{
+		"url": ctx.Request().URL.String(),
+	}))
+
+	var incoming IdentityToken
+	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
+		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
+			"url": ctx.Request().URL.String(),
+		}))
+
+		return err
+	}
+
+	api.metrics.Emit(metrics.Info("JSON received"), metrics.WithFields(metrics.Field{
+		"data": incoming,
+		"url":  ctx.Request().URL.String(),
+	}))
+
+	res, err := api.operator.Refresh(ctx.Context(), incoming.RefreshToken)
 	if err != nil {
 		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
 			"url": ctx.Request().URL.String(),
@@ -446,7 +495,7 @@ func (api *JWTAPI) Refresh(ctx *httputil.Context) error {
 // Route: /{Route}/Authenticate
 // Method: GET
 //
-func (api *JWTAPI) Authenticate(ctx *httputil.Context) error {
+func (api JWTAPI) Authenticate(ctx *httputil.Context) error {
 	m := metrics.NewTrace()
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Authenticate"), metrics.WithTrace(m.End()))
 
@@ -500,5 +549,60 @@ func (api *JWTAPI) Authenticate(ctx *httputil.Context) error {
 
 	ctx.Status(http.StatusNoContent)
 	ctx.Set(ContextKeyJWTAuthClaim, res)
+	return nil
+}
+
+// AuthenticateJSON receives an http request to authenticate user request json containing access code.
+//
+// Route: /{Route}/Authenticate
+// Method: POST
+// Body: JSON
+//
+func (api JWTAPI) AuthenticateJSON(ctx *httputil.Context) error {
+	m := metrics.NewTrace()
+	defer api.metrics.Emit(metrics.Info("JWTAPI.AuthenticateJSON"), metrics.WithTrace(m.End()))
+
+	var incoming IdentityAccess
+	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
+		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
+			"url": ctx.Request().URL.String(),
+		}))
+
+		return err
+	}
+
+	api.metrics.Emit(metrics.Info("AuthenticateJSON request received"), metrics.WithFields(metrics.Field{
+		"authorization": incoming,
+		"url":           ctx.Request().URL.String(),
+	}))
+
+	if incoming.Type != "Bearer" {
+		return errors.New("only 'Bearer' authorization type allowed")
+	}
+
+	api.metrics.Emit(metrics.Info("JSON received"), metrics.WithFields(metrics.Field{
+		"authorization": incoming,
+		"url":           ctx.Request().URL.String(),
+	}))
+
+	res, err := api.operator.Authenticate(ctx.Context(), incoming.AccessToken)
+	if err != nil {
+		api.metrics.Emit(metrics.Error(err), metrics.WithFields(metrics.Field{
+			"error":         err,
+			"url":           ctx.Request().URL.String(),
+			"authorization": incoming,
+		}))
+
+		return err
+	}
+
+	api.metrics.Emit(metrics.Info("Response Delivered"), metrics.WithFields(metrics.Field{
+		"authorization": incoming,
+		"url":           ctx.Request().URL.String(),
+		"status":        http.StatusNoContent,
+	}))
+
+	ctx.Set(ContextKeyJWTAuthClaim, res)
+	ctx.Status(http.StatusNoContent)
 	return nil
 }

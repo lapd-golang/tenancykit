@@ -35,13 +35,13 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "max_length":	10,
-
     "tenant":	null,
 
     "user":	null,
 
-    "domain":	"Skimia.biz"
+    "domain":	"Digitube.org",
+
+    "max_length":	10
 
 }
 ```
@@ -63,23 +63,23 @@ Success: 201
 {
 
 
-    "public_id":	"6mzpcqc67dr51l0s2ljpj68biu2jlm",
+    "key":	"un11to4u5x0qkjniltiv",
+
+    "user_id":	"amevuot9mm8bn2dtmdjt",
+
+    "totp":	"p623bgn44sgjwcwsoka7",
+
+    "tenant_id":	"x1c7we0ov1cn5l41fdrj",
+
+    "updated_at":	"2017-12-24 17:21:03.642525 +0000 UTC",
+
+    "domain":	"Shuffletag.edu",
+
+    "public_id":	"kylrib30otuzm2cidsa1gqvakvxf17",
 
     "code_length":	11,
 
-    "created_at":	"2017-12-24 06:38:45.185956 +0000 UTC",
-
-    "key":	"3mvmnh3ukvgtamt7idtr",
-
-    "user_id":	"evlak8b5tvofd92ic0ry",
-
-    "totp":	"quubhsvuo30utxkca1xo",
-
-    "domain":	"Wordware.com",
-
-    "tenant_id":	"2w3hr2xqhizj98gkd6b2",
-
-    "updated_at":	"2017-12-24 06:38:45.185965 +0000 UTC"
+    "created_at":	"2017-12-24 17:21:03.642516 +0000 UTC"
 
 }
 ```
@@ -137,23 +137,23 @@ Success: 200
 {
 
 
-    "key":	"ft0eb59egk20i5815tuu",
+    "key":	"ojecf4em7hgtpe749mpl",
 
-    "tenant_id":	"86bg7y38nliol3hqpled",
+    "domain":	"Gabtune.biz",
 
-    "created_at":	"2017-12-24 06:38:45.186644 +0000 UTC",
+    "user_id":	"xs6ne3s8frkir9pbado6",
 
-    "updated_at":	"2017-12-24 06:38:45.18665 +0000 UTC",
+    "public_id":	"rj7r8lvmenxjfr0ujj30pr6x0urbxk",
 
-    "domain":	"Livetube.org",
+    "tenant_id":	"yi0uduln001ssvqld9xv",
 
-    "user_id":	"55p8pz9b7j85g7169kp5",
+    "created_at":	"2017-12-24 17:21:03.643235 +0000 UTC",
 
-    "totp":	"lj7v6lzbqmaozhll1kt4",
+    "totp":	"obbgt1oinncay40rbr4p",
 
-    "public_id":	"scrcdxvdep943nt4hefjk4twlisboj",
+    "code_length":	1,
 
-    "code_length":	1
+    "updated_at":	"2017-12-24 17:21:03.643241 +0000 UTC"
 
 }
 ```
@@ -180,44 +180,44 @@ Success: 200
 [{
 
 
-    "domain":	"Buzzster.info",
+    "user_id":	"ev13u0ytpk0cshcd16vd",
 
-    "public_id":	"idimqbq6o77ao2q3pp1y5ws6gt6lhz",
+    "public_id":	"oxupb4wpyrsv48iqu1sxa4mbcglq08",
 
-    "key":	"dc1znteqfxnldfmtxed3",
-
-    "user_id":	"azr5s08fni3k0i9rkryf",
-
-    "totp":	"ve0j8muby38al2gtpxxm",
-
-    "tenant_id":	"pqmcicwih60fm87b48rl",
+    "tenant_id":	"q61clwgc1zmrtmohj35o",
 
     "code_length":	11,
 
-    "created_at":	"2017-12-24 06:38:45.187225 +0000 UTC",
+    "created_at":	"2017-12-24 17:21:03.643809 +0000 UTC",
 
-    "updated_at":	"2017-12-24 06:38:45.18723 +0000 UTC"
+    "key":	"ka3v4zqefd3ycdpi2ihb",
+
+    "domain":	"Skaboo.edu",
+
+    "totp":	"4nhz53aa33x8nr02aay8",
+
+    "updated_at":	"2017-12-24 17:21:03.643815 +0000 UTC"
 
 },{
 
 
-    "updated_at":	"2017-12-24 06:38:45.187656 +0000 UTC",
+    "key":	"tut3sbp58yoncujzc1m7",
 
-    "key":	"cje5ndqm14r7rngfds60",
+    "user_id":	"paxatuab1bjaj0shkinv",
 
-    "domain":	"Oba.biz",
+    "totp":	"tiq79m4x7tndce55j749",
 
-    "public_id":	"1vq92jwm6lxisk1lyicqg9tdhtgcsk",
+    "public_id":	"vtoozls9ntjy1aien7xzdbh4mvhzew",
+
+    "domain":	"Abata.org",
+
+    "tenant_id":	"050wgdr86v6ux50yte90",
 
     "code_length":	17,
 
-    "created_at":	"2017-12-24 06:38:45.187651 +0000 UTC",
+    "created_at":	"2017-12-24 17:21:03.64424 +0000 UTC",
 
-    "user_id":	"f0cyb6czn08rld2n38v7",
-
-    "totp":	"nx5hqdaz91uud9bq5aiv",
-
-    "tenant_id":	"o138hzbc0n1m2eh3j05p"
+    "updated_at":	"2017-12-24 17:21:03.644244 +0000 UTC"
 
 }]
 ```
@@ -244,23 +244,23 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"jk1vwxrnrg03pv71h1xs",
+    "created_at":	"2017-12-24 17:21:03.644777 +0000 UTC",
 
-    "public_id":	"egsjn3wol4185m4j0xvo3rmsw8shjb",
+    "domain":	"Mynte.name",
 
-    "created_at":	"2017-12-24 06:38:45.188141 +0000 UTC",
+    "public_id":	"vym3rnirlire4rqb68sa6kltp30wqh",
 
-    "key":	"hetgwjvfj41hzjudrl1b",
-
-    "domain":	"Brightdog.gov",
+    "tenant_id":	"rx5mvmn0mmlo7i52555o",
 
     "code_length":	0,
 
-    "updated_at":	"2017-12-24 06:38:45.188146 +0000 UTC",
+    "key":	"lo7dtzp9b9dska4l8yev",
 
-    "totp":	"2qv6ka4mj8sem4qlcq4c",
+    "user_id":	"i92true0minywtsq9j0b",
 
-    "tenant_id":	"wnm9gnshoq6afw7fccys"
+    "totp":	"3le3ms5dqgytwewn8iyt",
+
+    "updated_at":	"2017-12-24 17:21:03.644782 +0000 UTC"
 
 }
 ```

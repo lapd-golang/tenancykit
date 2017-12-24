@@ -33,11 +33,11 @@ var (
 	contractDataJSON = `{
 
 
-    "email":	"HelenRobinson@Innojam.edu",
+    "expiration":	null,
 
-    "password":	"41hb14cgcz31rza3oiqw",
+    "email":	"MichaelNichols@Camimbo.name",
 
-    "expiration":	null
+    "password":	"qgntfk6cjzbo5ptbng70"
 
 }`
 	userClaim = userclaimjwt.Testimony{
@@ -54,6 +54,10 @@ func noSecureUser(ctx context.Context, config userclaimjwt.JWTConfig, cr pkg.Cre
 	return userClaim, nil
 }
 
+func secretFunc(ctx context.Context, config userclaimjwt.JWTConfig, targetID string) ([]byte, error) {
+	return []byte("All we want is to sign this"), nil
+}
+
 func TestUserClaimJWT(t *testing.T) {
 	blacklist := mock.TokenBackend()
 	whitelist := mock.TokenBackend()
@@ -61,7 +65,7 @@ func TestUserClaimJWT(t *testing.T) {
 	jwter := userclaimjwt.NewJWTIdentity(userclaimjwt.JWTConfig{
 		Maker:               noSecureUser,
 		Signer:              "wellington",
-		SigningSecret:       "All we want is to sign this",
+		Secrets:             secretFunc,
 		Method:              jwt.SigningMethodHS256,
 		AccessTokenExpires:  600 * time.Millisecond,
 		RefreshTokenExpires: 1 * time.Second,
@@ -140,7 +144,7 @@ func TestUserClaimJWTExpiration(t *testing.T) {
 	jwter := userclaimjwt.NewJWTIdentity(userclaimjwt.JWTConfig{
 		Maker:               noSecureUser,
 		Signer:              "wellington",
-		SigningSecret:       "All we want is to sign this",
+		Secrets:             secretFunc,
 		Method:              jwt.SigningMethodHS256,
 		AccessTokenExpires:  100 * time.Millisecond,
 		RefreshTokenExpires: 300 * time.Millisecond,
@@ -191,7 +195,7 @@ func TestUserClaimJWTUserFlow(t *testing.T) {
 	jwter := userclaimjwt.NewJWTIdentity(userclaimjwt.JWTConfig{
 		Maker:               noSecureUser,
 		Signer:              "wellington",
-		SigningSecret:       "All we want is to sign this",
+		Secrets:             secretFunc,
 		Method:              jwt.SigningMethodHS256,
 		AccessTokenExpires:  700 * time.Millisecond,
 		RefreshTokenExpires: 4 * time.Second,

@@ -1,4 +1,4 @@
-package tenancykit_test
+package api_test
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg/resources/twofactorsessionapi"
 
 	"context"
@@ -14,7 +15,6 @@ import (
 	"github.com/gokit/tenancykit/pkg/resources/twofactorsessionapi/fixtures"
 	"github.com/influx6/faux/httputil/httptesting"
 
-	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
 	tokenmock "github.com/gokit/tokens/db/mocks"
@@ -26,7 +26,7 @@ func TestTwoFactorSessionAPI(t *testing.T) {
 	m := metrics.New()
 	tfdb := mock.TFSessionBackend()
 	tfset := tokenmock.TokenSetBackend()
-	tf := tenancykit.NewTwoFactorSessionAPI(m, tfset, tfdb)
+	tf := api.NewTwoFactorSessionAPI(m, tfset, tfdb)
 
 	testTwoFactorSessionCreate(t, tf, tfdb)
 	testTwoFactorSessionCount(t, tf, tfdb)
@@ -36,7 +36,7 @@ func TestTwoFactorSessionAPI(t *testing.T) {
 	testTwoFactorSessionDelete(t, tf, tfdb)
 }
 
-func testTwoFactorSessionCount(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionCount(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When getting info on records using the TwoFactorSessionAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -69,7 +69,7 @@ func testTwoFactorSessionCount(t *testing.T, tf tenancykit.TwoFactorSessionAPI, 
 	}
 }
 
-func testTwoFactorSessionCreate(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionCreate(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When creating a twofactor session record using the TwoFactorSessionAPI")
 	{
 		createResponse := httptest.NewRecorder()
@@ -97,7 +97,7 @@ func testTwoFactorSessionCreate(t *testing.T, tf tenancykit.TwoFactorSessionAPI,
 	}
 }
 
-func testTwoFactorSessionGetAll(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionGetAll(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When getting all twofactor session record using the TwoFactorSessionAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -142,7 +142,7 @@ func testTwoFactorSessionGetAll(t *testing.T, tf tenancykit.TwoFactorSessionAPI,
 	}
 }
 
-func testTwoFactorSessionGet(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionGet(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When retrieving a twofactor session record using the TwoFactorSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -185,7 +185,7 @@ func testTwoFactorSessionGet(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db
 	}
 }
 
-func testTwoFactorSessionUpdate(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionUpdate(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When updating a twofactor session record using the TwoFactorSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -242,7 +242,7 @@ func testTwoFactorSessionUpdate(t *testing.T, tf tenancykit.TwoFactorSessionAPI,
 	}
 }
 
-func testTwoFactorSessionDelete(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
+func testTwoFactorSessionDelete(t *testing.T, tf api.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {
 	tests.Header("When deleting a twofactor session record using the TwoFactorSessionAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)

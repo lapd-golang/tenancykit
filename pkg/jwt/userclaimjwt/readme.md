@@ -39,9 +39,9 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "email":	"3Turner@Skinte.edu",
+    "email":	"pFranklin@Skyba.net",
 
-    "password":	"pionh9409qjomavtoq8d",
+    "password":	"n3mmj27nldk8mskdopyi",
 
     "expiration":	null
 
@@ -63,10 +63,10 @@ Success: 200
 ```json
 {
 	"expires": 323231,
-	"refresh_token":"",
-	"access_token":"",
 	"token_type": "Bearer",
 	"refresh_expires": 323231,
+	"refresh_token":"7fd15938c823cf58e78019bea2af142f9449696a",
+	"access_token":"7fd15938c823cf58e78019bea2af142f9449696awe434343d33434343343wcsdvdfvdffvefefvdddfvdvd",
 }
 ```
 
@@ -74,6 +74,16 @@ Success: 200
 ### Method: `func (api *JWTAPI) Revoke(ctx *httputil.Context) error`
 
 Revokes a given JWT refresh token.
+
+- Expected Request Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{"refresh_token":"7fd15938c823cf58e78019bea2af142f9449696a"}
+```
 
 - Expected Status Code
 
@@ -85,29 +95,29 @@ Failure:
 Success: 200
 ```
 
-- Expected Response Body
 
-```http
-Content-Type: application/json
-```
-
-```json
-7fd15938c823cf58e78019bea2af142f9449696a
-```
-
-## GET /UserClaim/refresh
+## POST /UserClaim/refresh
 ### Method: `func (api *JWTAPI) Refresh(ctx *httputil.Context) error`
 
 Refreshes a given JWT access token by sending non-expired refreshed token as json string.
 
+- Expected Request Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{"refresh_token":"7fd15938c823cf58e78019bea2af142f9449696a"}
+```
+
 - Expected Status Code
 
 ```
+Success: 200
 Failure:
 	- 500
 	- 404
-
-Success: 200
 ```
 
 - Expected Response Body
@@ -117,8 +127,60 @@ Content-Type: application/json
 ```
 
 ```json
-7fd15938c823cf58e78019bea2af142f9449696a
+{
+	"expires": 323231,
+	"token_type": "Bearer",
+	"refresh_expires": 323231,
+	"refresh_token":"7fd15938c823cf58e78019bea2af142f9449696a",
+	"access_token":"7fd15938c823cf58e78019bea2af142f9449696awe434343d33434343343wcsdvdfvdffvefefvdddfvdvd",
+}
 ```
+
+## GET /UserClaim/authenticate
+### Method: `func (api *JWTAPI) Authenticate(ctx *httputil.Context) error`
+
+Authenticate provides a method for authenticating users identity by providing a Authorization Header.
+
+- Expected Request Header
+
+```http
+    Authorization: Bearer 7fd15938c823cf58e78019bea2af142f9449696a
+```
+
+- Expected Status Code
+
+```
+Success: 200
+Failure:
+	- 500
+	- 404
+```
+
+## POST /UserClaim/authenticateJSON
+### Method: `func (api *JWTAPI) AuthenticateJSON(ctx *httputil.Context) error`
+
+AuthenticateJSON provides a method for authenticating users identity by providing a json payload,
+containing access token and type.
+
+- Expected Request Body
+
+```http
+    Content-Type: application/json
+```
+
+```json
+{"access_token":"7fd15938c823cf58e78019bea2af142f9449696a", "type":"Bearer"}
+```
+
+- Expected Status Code
+
+```
+Success: 200
+Failure:
+	- 500
+	- 404
+```
+
 
 ## INFO /UserClaim/
 ### Method: `func (api *JWTAPI) Info(ctx *httputil.Context) error`

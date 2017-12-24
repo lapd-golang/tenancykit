@@ -1,4 +1,4 @@
-package tenancykit_test
+package api_test
 
 import (
 	"bytes"
@@ -7,13 +7,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 
 	"context"
 
 	"github.com/influx6/faux/httputil/httptesting"
 
-	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi/fixtures"
@@ -24,7 +24,7 @@ import (
 func TestTwoFactorRecordAPI(t *testing.T) {
 	m := metrics.New()
 	tfdb := mock.TFRecordBackend()
-	tf := tenancykit.NewTwoFactorAPI(m, tfdb)
+	tf := api.NewTwoFactorAPI(m, tfdb)
 
 	testTwoFactorRecordCreate(t, tf, tfdb)
 	testTwoFactorRecordCount(t, tf, tfdb)
@@ -34,7 +34,7 @@ func TestTwoFactorRecordAPI(t *testing.T) {
 	testTwoFactorRecordDelete(t, tf, tfdb)
 }
 
-func testTwoFactorRecordCount(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordCount(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When getting info on records using the TwoFactorRecordAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -67,7 +67,7 @@ func testTwoFactorRecordCount(t *testing.T, tf tenancykit.TwoFactorAPI, db types
 	}
 }
 
-func testTwoFactorRecordCreate(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordCreate(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When creating a twofactor record using the TwoFactorRecordAPI")
 	{
 		createResponse := httptest.NewRecorder()
@@ -95,7 +95,7 @@ func testTwoFactorRecordCreate(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 	}
 }
 
-func testTwoFactorRecordGetAll(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordGetAll(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When retrieving all twofactor records using the TwoFactorRecordAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -140,7 +140,7 @@ func testTwoFactorRecordGetAll(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 	}
 }
 
-func testTwoFactorRecordGet(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordGet(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When retrieving a twofactor record using the TwoFactorRecordAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -183,7 +183,7 @@ func testTwoFactorRecordGet(t *testing.T, tf tenancykit.TwoFactorAPI, db types.T
 	}
 }
 
-func testTwoFactorRecordUpdate(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordUpdate(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When updating a twofactor record using the TwoFactorRecordAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -240,7 +240,7 @@ func testTwoFactorRecordUpdate(t *testing.T, tf tenancykit.TwoFactorAPI, db type
 	}
 }
 
-func testTwoFactorRecordDelete(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {
+func testTwoFactorRecordDelete(t *testing.T, tf api.TwoFactorAPI, db types.TFRecordDBBackend) {
 	tests.Header("When deleting a twofactor record using the TwoFactorRecordAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)

@@ -1,4 +1,4 @@
-package tenancykit
+package api
 
 import (
 	"encoding/base64"
@@ -17,9 +17,9 @@ import (
 	"github.com/influx6/faux/metrics"
 )
 
-// UserSessionAPI augments the existing usersessionapi.TFRecordHTTP with other
+// MultiTenantUserSessionAPI augments the existing usersessionapi.TFRecordHTTP with other
 // methods that expose more functionality.
-type UserSessionAPI struct {
+type MultiTenantUserSessionAPI struct {
 	usersessionapi.UserSessionHTTP
 	Backend             usersessionapi.UserSessionBackend
 	SessionBackend      types.UserSessionDBBackend
@@ -30,9 +30,9 @@ type UserSessionAPI struct {
 	IsNotFoundErrorFunc func(error) bool
 }
 
-// NewUserSessionAPI returns a new instance of UserSessionAPI.
-func NewUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions types.UserSessionDBBackend, tfsessions types.TwoFactorSessionDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) UserSessionAPI {
-	var api UserSessionAPI
+// NewMultiTenantUserSessionAPI returns a new instance of MultiTenantUserSessionAPI.
+func NewMultiTenantUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions types.UserSessionDBBackend, tfsessions types.TwoFactorSessionDBBackend, tenants types.TenantDBBackend, tf types.TFRecordDBBackend) MultiTenantUserSessionAPI {
+	var api MultiTenantUserSessionAPI
 	api.TFBackend = tf
 	api.TenantBackend = tenants
 	api.UserBackend = users
@@ -52,7 +52,7 @@ func NewUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions ty
 // isNotFoundError returns true/false if the giving error matches
 // an expected ErrNotFound error. It helps detach us
 // from code smell and import pollution.
-func (us UserSessionAPI) isNotFoundError(err error) bool {
+func (us MultiTenantUserSessionAPI) isNotFoundError(err error) bool {
 	if us.IsNotFoundErrorFunc == nil {
 		return false
 	}
@@ -63,7 +63,7 @@ func (us UserSessionAPI) isNotFoundError(err error) bool {
 // Login handles the processing of a log in request, creating a new session
 // as needed for user after validation of credentials. It loads validated
 // user into context after is successfully validates credentails.
-func (us UserSessionAPI) Login(ctx *httputil.Context) error {
+func (us MultiTenantUserSessionAPI) Login(ctx *httputil.Context) error {
 	if err := us.GetUser(ctx); err == nil {
 		currentUser, err := pkg.GetCurrentUser(ctx)
 		if err != nil {
@@ -119,7 +119,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	currentUser.Session = &newSession
 
 	// Rerieve user's tenant.
-	currentUser.Tenant, err = us.TenantBackend.Get(ctx.Context(), user.TenantID)
+	tenant, err := us.TenantBackend.Get(ctx.Context(), user.TenantID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -132,6 +132,8 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 			Code: http.StatusNotFound,
 		}
 	}
+
+	currentUser.Tenant = &tenant
 
 	if user.TwoFactorAuth {
 		tfrecord, err := us.TFBackend.GetByField(ctx.Context(), "user_id", user.PublicID)
@@ -180,7 +182,7 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 //
 //		where <TOKEN> = <USERID>:<SESSIONTOKEN>
 //
-func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
+func (us MultiTenantUserSessionAPI) Logout(ctx *httputil.Context) error {
 	if err := us.GetUser(ctx); err != nil {
 		return err
 	}
@@ -249,7 +251,7 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 //
 //		where <TOKEN> = <USERID>:<SESSIONTOKEN>
 //
-func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
+func (us MultiTenantUserSessionAPI) GetUser(ctx *httputil.Context) error {
 	userID, userToken, err := us.GetAuthorizationCredentials(ctx)
 	if err != nil {
 		return err
@@ -331,7 +333,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 	currentUser.Session = &session
 
 	// Rerieve user's tenant.
-	currentUser.Tenant, err = us.TenantBackend.Get(ctx.Context(), user.TenantID)
+	tenant, err := us.TenantBackend.Get(ctx.Context(), user.TenantID)
 	if err != nil {
 		if !us.isNotFoundError(err) {
 			return httputil.HTTPError{
@@ -345,6 +347,8 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 		}
 	}
 
+	currentUser.Tenant = &tenant
+
 	// Attempt to retrieve twofactor user record if user has one.
 	if tf, err := us.TFBackend.GetByField(ctx.Context(), "user_id", currentUser.User.PublicID); err == nil {
 		currentUser.TwoFactor = &tf
@@ -357,7 +361,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 
 // GetAuthorization returns authorization value for giving request from either it's header or
 // cookies if found, else returns an error.
-func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error) {
+func (us MultiTenantUserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error) {
 	if ctx.HasHeader("Authorization", "") {
 		return ctx.GetHeader("Authorization"), nil
 	}
@@ -375,7 +379,7 @@ func (us UserSessionAPI) GetAuthorization(ctx *httputil.Context) (string, error)
 }
 
 // GetAuthorizationCredentials returns the current Authentication User ID and Auth token else an error.
-func (us UserSessionAPI) GetAuthorizationCredentials(ctx *httputil.Context) (string, string, error) {
+func (us MultiTenantUserSessionAPI) GetAuthorizationCredentials(ctx *httputil.Context) (string, string, error) {
 	authorization, err := us.GetAuthorization(ctx)
 	if err != nil {
 		return "", "", httputil.HTTPError{

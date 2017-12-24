@@ -44,7 +44,7 @@ type TFBackend struct {
 
 // Create attempts to create a new TFRecord in the db using the provided pkg.NewTF struct.
 func (tf TFBackend) Create(ctx context.Context, ntf pkg.NewTF) (pkg.TFRecord, error) {
-	newTF, err := pkg.NewTFRecord(ntf.MaxLength, ntf.Domain, ntf.Tenant, ntf.User)
+	newTF, err := pkg.NewTFRecord(ntf.MaxLength, ntf.Domain, ntf.User)
 	if err != nil {
 		return newTF, err
 	}
@@ -107,6 +107,33 @@ func (us UserSessionBackend) Create(ctx context.Context, cus pkg.CreateUserSessi
 	return newSession, nil
 }
 
+// MultiTenantUserBackend is a wrapper to implement userapi.Backend interface methods for
+// types.UserBackend.
+type MultiUserBackend struct {
+	types.UserDBBackend
+	Tenants types.TenantDBBackend
+}
+
+// Create modifies the underline types.TenantBackend.Create method to implement
+// the api.tenantapi.Backend interface.
+func (u MultiUserBackend) Create(ctx context.Context, nt pkg.CreateUser) (pkg.User, error) {
+	if err := nt.Validate(true); err != nil {
+		return pkg.User{}, err
+	}
+
+	// Validate that user's tenant exists.
+	if _, err := u.Tenants.Get(ctx, nt.TenantID); err != nil {
+		return pkg.User{}, err
+	}
+
+	newUser, err := pkg.NewUser(nt)
+	if err != nil {
+		return newUser, err
+	}
+
+	return newUser, u.UserDBBackend.Create(ctx, newUser)
+}
+
 // UserBackend is a wrapper to implement userapi.Backend interface methods for
 // types.UserBackend.
 type UserBackend struct {
@@ -116,7 +143,7 @@ type UserBackend struct {
 // Create modifies the underline types.TenantBackend.Create method to implement
 // the api.tenantapi.Backend interface.
 func (u UserBackend) Create(ctx context.Context, nt pkg.CreateUser) (pkg.User, error) {
-	if err := nt.Validate(); err != nil {
+	if err := nt.Validate(false); err != nil {
 		return pkg.User{}, err
 	}
 

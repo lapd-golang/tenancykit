@@ -1,4 +1,4 @@
-package tenancykit_test
+package api_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 
 	"context"
 
-	"github.com/gokit/tenancykit"
+	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg"
 	"github.com/influx6/faux/httputil/httptesting"
 	"github.com/influx6/faux/tests"
@@ -30,11 +30,12 @@ func TestUserAPI(t *testing.T) {
 	tenantdb := mock.TenantDBBackend()
 	tfdb := mock.TFRecordBackend()
 
-	users := tenancykit.NewUserAPI(
-		pkg.GoogleAuthenticatorUserCodeLength,
+	users := api.NewUserAPI(
 		m,
+		true,
+		"dominos",
+		pkg.GoogleAuthenticatorUserCodeLength,
 		userdb,
-		tenantdb,
 		tfdb,
 	)
 
@@ -57,10 +58,11 @@ func TestUserAPI(t *testing.T) {
 	testUserGet(t, tenantRecord, users, userdb)
 	testUserUpdate(t, tenantRecord, users, userdb)
 	testUserDelete(t, tenantRecord, users, userdb)
+
 	os.RemoveAll("./keys")
 }
 
-func testUserCount(t *testing.T, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserCount(t *testing.T, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When getting info on records using the UserAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -92,7 +94,7 @@ func testUserCount(t *testing.T, users tenancykit.UserAPI, db types.UserDBBacken
 		tests.Passed("Should have atleast one record in backend")
 	}
 }
-func testUserCreate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserCreate(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When creating new user with User API")
 	{
 		createBody, err := fixtures.LoadCreateJSON(fixtures.UserCreateJSON)
@@ -135,7 +137,7 @@ func testUserCreate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 	}
 }
 
-func testUserGetAll(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserGetAll(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When retrieving all users with User API")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -180,7 +182,7 @@ func testUserGetAll(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 	}
 }
 
-func testUserGet(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserGet(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When retrieving user with User API")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -223,7 +225,7 @@ func testUserGet(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db t
 	}
 }
 
-func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When updating user with User API")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -289,7 +291,7 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, d
 	}
 }
 
-func testUserDelete(t *testing.T, tenant pkg.Tenant, users tenancykit.UserAPI, db types.UserDBBackend) {
+func testUserDelete(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types.UserDBBackend) {
 	tests.Header("When deleting user with User API")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)

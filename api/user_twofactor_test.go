@@ -1,4 +1,4 @@
-package tenancykit_test
+package api_test
 
 import (
 	"bytes"
@@ -16,7 +16,7 @@ import (
 
 	"github.com/influx6/faux/httputil/httptesting"
 
-	"github.com/gokit/tenancykit"
+	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
@@ -37,7 +37,7 @@ func TestTwoFactorAuth(t *testing.T) {
 	ufsdb := mock.UserSessionBackend()
 	udb := mock.UserBackend()
 
-	tf := tenancykit.NewUserSessionAPI(m, udb, ufsdb, tfsdb, ttdb, tfdb)
+	tf := api.NewUserSessionAPI(m, udb, ufsdb, tfsdb, ttdb, tfdb)
 
 	createTenant, err := tenantFixtures.LoadCreateJSON(tenantFixtures.TenantCreateJSON)
 	if err != nil {
@@ -80,13 +80,13 @@ func TestTwoFactorAuth(t *testing.T) {
 	}
 	tests.Passed("Should have succesfully created user token record")
 
-	tokenSessionAPI := tenancykit.NewTwoFactorSessionAPI(m, tsetdb, tfsdb)
+	tokenSessionAPI := api.NewTwoFactorSessionAPI(m, tsetdb, tfsdb)
 	testUserLogin(t, userRecord, userCreateBody, tokenSessionAPI, tf, ufsdb)
 
 	os.RemoveAll("./keys")
 }
 
-func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tsession tenancykit.TwoFactorSessionAPI, tf tenancykit.UserSessionAPI, db types.UserSessionDBBackend) {
+func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tsession api.TwoFactorSessionAPI, tf api.UserSessionAPI, db types.UserSessionDBBackend) {
 	tests.Header("When login and logging out using the UserSessionAPI")
 	{
 		var login pkg.CreateUserSession

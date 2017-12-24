@@ -66,8 +66,8 @@ type CreateUser struct {
 }
 
 // Validate returns error if any field does not match requirements.
-func (cu CreateUser) Validate() error {
-	if cu.TenantID == "" {
+func (cu CreateUser) Validate(multitenant bool) error {
+	if cu.TenantID == "" && multitenant {
 		return errors.New("TenantID is required")
 	}
 

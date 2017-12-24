@@ -1,4 +1,4 @@
-package tenancykit_test
+package api_test
 
 import (
 	"bytes"
@@ -7,13 +7,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg/resources/tenantapi"
 
 	"context"
 
 	"github.com/influx6/faux/httputil/httptesting"
 
-	"github.com/gokit/tenancykit"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
 	"github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
@@ -24,7 +24,7 @@ import (
 func TestTenantAPI(t *testing.T) {
 	m := metrics.New()
 	tenantdb := mock.TenantDBBackend()
-	tenants := tenancykit.NewTenantAPI(m, tenantdb)
+	tenants := api.NewTenantAPI(m, tenantdb)
 
 	testTenantCreate(t, tenants, tenantdb)
 	testTenantCount(t, tenants, tenantdb)
@@ -34,7 +34,7 @@ func TestTenantAPI(t *testing.T) {
 	testTenantDelete(t, tenants, tenantdb)
 }
 
-func testTenantCount(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantCount(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When getting info on records using the TenantAPI")
 	{
 		infoResponse := httptest.NewRecorder()
@@ -67,7 +67,7 @@ func testTenantCount(t *testing.T, tenants tenancykit.TenantAPI, db types.Tenant
 	}
 }
 
-func testTenantCreate(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantCreate(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When creating a tenant using the TenantAPI")
 	{
 		createResponse := httptest.NewRecorder()
@@ -95,7 +95,7 @@ func testTenantCreate(t *testing.T, tenants tenancykit.TenantAPI, db types.Tenan
 	}
 }
 
-func testTenantGetAll(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantGetAll(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When retrieving all tenants using the TenantAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -140,7 +140,7 @@ func testTenantGetAll(t *testing.T, tenants tenancykit.TenantAPI, db types.Tenan
 	}
 }
 
-func testTenantGet(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantGet(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When retrieving a tenant using the TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -183,7 +183,7 @@ func testTenantGet(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDB
 	}
 }
 
-func testTenantUpdate(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantUpdate(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When updating a tenant using the TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -240,7 +240,7 @@ func testTenantUpdate(t *testing.T, tenants tenancykit.TenantAPI, db types.Tenan
 	}
 }
 
-func testTenantDelete(t *testing.T, tenants tenancykit.TenantAPI, db types.TenantDBBackend) {
+func testTenantDelete(t *testing.T, tenants api.TenantAPI, db types.TenantDBBackend) {
 	tests.Header("When deleting a tenant using the TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)

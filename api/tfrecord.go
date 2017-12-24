@@ -1,4 +1,4 @@
-package tenancykit
+package api
 
 import (
 	"github.com/gokit/tenancykit/pkg/backends"

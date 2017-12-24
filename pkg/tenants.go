@@ -35,6 +35,7 @@ type Tenant struct {
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
 	PublicID string    `json:"public_id"`
+	SecretID string    `json:"secret_id"`
 	Created  time.Time `json:"created_at"`
 	Updated  time.Time `json:"updated_at"`
 }
@@ -44,9 +45,10 @@ func NewTenant(nt CreateTenant) Tenant {
 	var t Tenant
 	t.Name = nt.Name
 	t.Email = nt.Email
-	t.PublicID = uuid.NewV4().String()
 	t.Created = time.Now()
 	t.Updated = t.Created
+	t.PublicID = uuid.NewV4().String()
+	t.SecretID = uuid.NewV4().String()
 
 	return t
 }

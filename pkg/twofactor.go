@@ -26,7 +26,6 @@ const (
 // needed for the creation of TFRecords.
 type NewTF struct {
 	MaxLength int    `json:"max_length"`
-	Tenant    Tenant `json:"tenant"`
 	User      User   `json:"user"`
 	Domain    string `json:"domain"`
 }
@@ -44,8 +43,7 @@ type TFRecord struct {
 	Domain     string    `json:"domain"`
 	UserID     string    `json:"user_id"`
 	TOTP       string    `json:"totp"`
-	PublicID   string    `json:"public_id"`
-	TenantID   string    `json:"tenant_id"`
+	PublicID   string    `json:"tenant_id"`
 	CodeLength int       `json:"code_length"`
 	Created    time.Time `json:"created_at"`
 	Updated    time.Time `json:"updated_at"`
@@ -54,14 +52,13 @@ type TFRecord struct {
 // NewTFRecord returns a new TFRecord which is created for login authentication using the
 // user's and tenant's record. It requires providing domain name to associated with
 // record as it affects key display on google authenticator.
-func NewTFRecord(codeLen int, domainName string, tenant Tenant, user User) (TFRecord, error) {
+func NewTFRecord(codeLen int, domainName string, user User) (TFRecord, error) {
 	var record TFRecord
 	record.Domain = domainName
 	record.UserID = user.PublicID
 	record.CodeLength = codeLen
-	record.TenantID = tenant.PublicID
 	record.PublicID = uuid.NewV4().String()
-	record.Key = fmt.Sprintf("%s - (%s, %s)", domainName, tenant.Name, user.Email)
+	record.Key = fmt.Sprintf("%s - (%s, %s)", domainName, user.Email)
 	record.Created = time.Now()
 	record.Updated = record.Created
 
