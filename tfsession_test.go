@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/gokit/tenancykit/pkg/resources/twofactorsessionapi"
@@ -35,7 +34,6 @@ func TestTwoFactorSessionAPI(t *testing.T) {
 	testTwoFactorSessionGet(t, tf, tfdb)
 	testTwoFactorSessionUpdate(t, tf, tfdb)
 	testTwoFactorSessionDelete(t, tf, tfdb)
-	os.RemoveAll("./keys")
 }
 
 func testTwoFactorSessionCount(t *testing.T, tf tenancykit.TwoFactorSessionAPI, db types.TwoFactorSessionDBBackend) {

@@ -189,10 +189,11 @@ func testUserSessionLoginAndLogout(t *testing.T, user pkg.User, usercreate pkg.C
 		}
 		tests.Passed("Should have received status no 204")
 
-		if err = tf.GetUser(newLogginUser); err == nil {
+		err = tf.GetUser(newLogginUser)
+		if err == nil {
 			tests.Failed("Should have failed to authenticate user with header")
 		}
-		tests.Passed("Should have failed to authenticate user with header")
+		tests.PassedWithError(err, "Should have failed to authenticate user with header")
 	}
 }
 

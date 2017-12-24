@@ -25,7 +25,6 @@ import (
 )
 
 func TestUserAPI(t *testing.T) {
-
 	m := metrics.New()
 	userdb := mock.UserBackend()
 	tenantdb := mock.TenantDBBackend()

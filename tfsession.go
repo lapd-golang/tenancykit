@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gokit/tenancykit/pkg/db"
+	"github.com/gokit/tokens"
 
 	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/backends"
@@ -19,12 +20,12 @@ import (
 type TwoFactorSessionAPI struct {
 	twofactorsessionapi.TwoFactorSessionHTTP
 	Backend             types.TwoFactorSessionDBBackend
-	TokenSet            pkg.TokenSet
+	TokenSet            tokens.TokenSet
 	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewTwoFactorSessionAPI returns a new instance of TwoFactorSessionAPI.
-func NewTwoFactorSessionAPI(m metrics.Metrics, tokenset pkg.TokenSet, tfsession types.TwoFactorSessionDBBackend) TwoFactorSessionAPI {
+func NewTwoFactorSessionAPI(m metrics.Metrics, tokenset tokens.TokenSet, tfsession types.TwoFactorSessionDBBackend) TwoFactorSessionAPI {
 	var api TwoFactorSessionAPI
 	api.Backend = tfsession
 	api.TokenSet = tokenset

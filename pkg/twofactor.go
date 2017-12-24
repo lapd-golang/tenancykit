@@ -70,7 +70,11 @@ func NewTFRecord(codeLen int, domainName string, tenant Tenant, user User) (TFRe
 		return record, err
 	}
 
-	return record, record.serializeAndUpdateTOTP(totp)
+	if err := record.serializeAndUpdateTOTP(totp); err != nil {
+		return record, err
+	}
+
+	return record, nil
 }
 
 // ValidateOTP validates provided OTP user code from external source.
@@ -100,7 +104,6 @@ func (tf *TFRecord) OTP() (string, error) {
 
 	otp, err := totp.OTP()
 	if err != nil {
-		tf.serializeAndUpdateTOTP(totp)
 		return "", err
 	}
 

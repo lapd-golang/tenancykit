@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
@@ -33,7 +32,6 @@ func TestTwoFactorRecordAPI(t *testing.T) {
 	testTwoFactorRecordGet(t, tf, tfdb)
 	testTwoFactorRecordUpdate(t, tf, tfdb)
 	testTwoFactorRecordDelete(t, tf, tfdb)
-	os.RemoveAll("./keys")
 }
 
 func testTwoFactorRecordCount(t *testing.T, tf tenancykit.TwoFactorAPI, db types.TFRecordDBBackend) {

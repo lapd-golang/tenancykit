@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -150,6 +151,8 @@ func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tsess
 		}
 		tests.Passed("Should have generated new user code")
 
+		tests.Info("Using User Code: %+q", userCode)
+
 		tokenValidateResponse := httptest.NewRecorder()
 		tokenValidReq := httptesting.Post("/tokens/login?user_code="+userCode, nil, tokenValidateResponse)
 		httputil.SetValueBag(logginUser.Bag())(tokenValidReq)
@@ -176,11 +179,20 @@ func testUserLogin(t *testing.T, user pkg.User, usercreate pkg.CreateUser, tsess
 		}
 		tests.Passed("Should not have a twofactor sesion attached")
 
+		time.Sleep(30 * time.Second)
+
 		nuserCode, err := currentUser.TwoFactor.OTP()
 		if err != nil {
 			tests.FailedWithError(err, "Should have generated new user code")
 		}
 		tests.Passed("Should have generated new user code")
+
+		if nuserCode == userCode {
+			nuserCode, err = currentUser.TwoFactor.OTP()
+			fmt.Printf("Regening: %+q -> %+q\n", nuserCode, err)
+		}
+
+		tests.Info("Using User Code: %+q", nuserCode)
 
 		ntokenValidateResponse := httptest.NewRecorder()
 		ntokenValidReq := httptesting.Post("/tokens/login?user_code="+nuserCode, nil, ntokenValidateResponse)
