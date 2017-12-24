@@ -39,9 +39,9 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "email":	"asperiores_ut@Skinder.edu",
+    "email":	"3Turner@Skinte.edu",
 
-    "password":	"91ox3n9qeicihvn9tjyy",
+    "password":	"pionh9409qjomavtoq8d",
 
     "expiration":	null
 

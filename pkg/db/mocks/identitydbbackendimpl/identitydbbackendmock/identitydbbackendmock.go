@@ -1,4 +1,4 @@
-package tfrecorddbbackendmock
+package identitydbbackendmock
 
 import (
 	"errors"
@@ -8,13 +8,13 @@ import (
 
 	"github.com/influx6/faux/reflection"
 
-	pkg "github.com/gokit/tenancykit/pkg"
+	"github.com/gokit/tenancykit/pkg/jwt/userclaimjwt"
 
 	context "context"
 )
 
 // MethodCallForCount defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.Count() method.
+// with the IdentityDBBackend.Count() method.
 type MethodCallForCount struct {
 	When  time.Time
 	Start time.Time
@@ -47,7 +47,7 @@ func (me MethodCallForCount) MatchArguments(other MethodCallForCount) bool {
 }
 
 // MethodCallForDelete defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.Delete() method.
+// with the IdentityDBBackend.Delete() method.
 type MethodCallForDelete struct {
 	When  time.Time
 	Start time.Time
@@ -84,7 +84,7 @@ func (me MethodCallForDelete) MatchArguments(other MethodCallForDelete) bool {
 }
 
 // MethodCallForCreate defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.Create() method.
+// with the IdentityDBBackend.Create() method.
 type MethodCallForCreate struct {
 	When  time.Time
 	Start time.Time
@@ -98,7 +98,7 @@ type MethodCallForCreate struct {
 
 	Ctx context.Context
 
-	Elem pkg.TFRecord
+	Elem userclaimjwt.Identity
 
 	// Return values.
 
@@ -121,7 +121,7 @@ func (me MethodCallForCreate) MatchArguments(other MethodCallForCreate) bool {
 }
 
 // MethodCallForGet defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.Get() method.
+// with the IdentityDBBackend.Get() method.
 type MethodCallForGet struct {
 	When  time.Time
 	Start time.Time
@@ -139,7 +139,7 @@ type MethodCallForGet struct {
 
 	// Return values.
 
-	Ret1 pkg.TFRecord
+	Ret1 userclaimjwt.Identity
 
 	Ret2 error
 }
@@ -160,7 +160,7 @@ func (me MethodCallForGet) MatchArguments(other MethodCallForGet) bool {
 }
 
 // MethodCallForUpdate defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.Update() method.
+// with the IdentityDBBackend.Update() method.
 type MethodCallForUpdate struct {
 	When  time.Time
 	Start time.Time
@@ -176,7 +176,7 @@ type MethodCallForUpdate struct {
 
 	PublicID string
 
-	Elem pkg.TFRecord
+	Elem userclaimjwt.Identity
 
 	// Return values.
 
@@ -203,7 +203,7 @@ func (me MethodCallForUpdate) MatchArguments(other MethodCallForUpdate) bool {
 }
 
 // MethodCallForGetAllByOrder defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.GetAllByOrder() method.
+// with the IdentityDBBackend.GetAllByOrder() method.
 type MethodCallForGetAllByOrder struct {
 	When  time.Time
 	Start time.Time
@@ -223,7 +223,7 @@ type MethodCallForGetAllByOrder struct {
 
 	// Return values.
 
-	Ret1 []pkg.TFRecord
+	Ret1 []userclaimjwt.Identity
 
 	Ret2 error
 }
@@ -248,7 +248,7 @@ func (me MethodCallForGetAllByOrder) MatchArguments(other MethodCallForGetAllByO
 }
 
 // MethodCallForGetByField defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.GetByField() method.
+// with the IdentityDBBackend.GetByField() method.
 type MethodCallForGetByField struct {
 	When  time.Time
 	Start time.Time
@@ -268,7 +268,7 @@ type MethodCallForGetByField struct {
 
 	// Return values.
 
-	Ret1 pkg.TFRecord
+	Ret1 userclaimjwt.Identity
 
 	Ret2 error
 }
@@ -293,7 +293,7 @@ func (me MethodCallForGetByField) MatchArguments(other MethodCallForGetByField) 
 }
 
 // MethodCallForGetAll defines a type which holds meta-details about the giving calls associated
-// with the TFRecordDBBackend.GetAll() method.
+// with the IdentityDBBackend.GetAll() method.
 type MethodCallForGetAll struct {
 	When  time.Time
 	Start time.Time
@@ -317,7 +317,7 @@ type MethodCallForGetAll struct {
 
 	// Return values.
 
-	Ret1 []pkg.TFRecord
+	Ret1 []userclaimjwt.Identity
 
 	Ret2 int
 
@@ -351,10 +351,10 @@ func (me MethodCallForGetAll) MatchArguments(other MethodCallForGetAll) bool {
 	return true
 }
 
-// TFRecordDBBackendMock defines a type which implements a struct with the
-// methods for the TFRecordDBBackend as fields which allows you provide implementations of
+// IdentityDBBackendMock defines a type which implements a struct with the
+// methods for the IdentityDBBackend as fields which allows you provide implementations of
 // these functions to provide flexible testing.
-type TFRecordDBBackendMock struct {
+type IdentityDBBackendMock struct {
 	CountMethodCalls []MethodCallForCount
 
 	DeleteMethodCalls []MethodCallForDelete
@@ -372,8 +372,8 @@ type TFRecordDBBackendMock struct {
 	GetAllMethodCalls []MethodCallForGetAll
 }
 
-// Count implements the TFRecordDBBackend.Count() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) Count(ctx context.Context) (MethodCallForCount, error) {
+// Count implements the IdentityDBBackend.Count() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) Count(ctx context.Context) (MethodCallForCount, error) {
 	var caller MethodCallForCount
 
 	caller.When = time.Now()
@@ -404,8 +404,8 @@ func (impl *TFRecordDBBackendMock) Count(ctx context.Context) (MethodCallForCoun
 	return caller, errors.New("no matching response found")
 }
 
-// Delete implements the TFRecordDBBackend.Delete() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) Delete(ctx context.Context, publicID string) (MethodCallForDelete, error) {
+// Delete implements the IdentityDBBackend.Delete() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) Delete(ctx context.Context, publicID string) (MethodCallForDelete, error) {
 	var caller MethodCallForDelete
 
 	caller.When = time.Now()
@@ -436,8 +436,8 @@ func (impl *TFRecordDBBackendMock) Delete(ctx context.Context, publicID string) 
 	return caller, errors.New("no matching response found")
 }
 
-// Create implements the TFRecordDBBackend.Create() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) Create(ctx context.Context, elem pkg.TFRecord) (MethodCallForCreate, error) {
+// Create implements the IdentityDBBackend.Create() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) Create(ctx context.Context, elem userclaimjwt.Identity) (MethodCallForCreate, error) {
 	var caller MethodCallForCreate
 
 	caller.When = time.Now()
@@ -468,8 +468,8 @@ func (impl *TFRecordDBBackendMock) Create(ctx context.Context, elem pkg.TFRecord
 	return caller, errors.New("no matching response found")
 }
 
-// Get implements the TFRecordDBBackend.Get() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) Get(ctx context.Context, publicID string) (MethodCallForGet, error) {
+// Get implements the IdentityDBBackend.Get() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) Get(ctx context.Context, publicID string) (MethodCallForGet, error) {
 	var caller MethodCallForGet
 
 	caller.When = time.Now()
@@ -502,8 +502,8 @@ func (impl *TFRecordDBBackendMock) Get(ctx context.Context, publicID string) (Me
 	return caller, errors.New("no matching response found")
 }
 
-// Update implements the TFRecordDBBackend.Update() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) Update(ctx context.Context, publicID string, elem pkg.TFRecord) (MethodCallForUpdate, error) {
+// Update implements the IdentityDBBackend.Update() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) Update(ctx context.Context, publicID string, elem userclaimjwt.Identity) (MethodCallForUpdate, error) {
 	var caller MethodCallForUpdate
 
 	caller.When = time.Now()
@@ -536,8 +536,8 @@ func (impl *TFRecordDBBackendMock) Update(ctx context.Context, publicID string, 
 	return caller, errors.New("no matching response found")
 }
 
-// GetAllByOrder implements the TFRecordDBBackend.GetAllByOrder() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
+// GetAllByOrder implements the IdentityDBBackend.GetAllByOrder() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) GetAllByOrder(ctx context.Context, order string, orderBy string) (MethodCallForGetAllByOrder, error) {
 	var caller MethodCallForGetAllByOrder
 
 	caller.When = time.Now()
@@ -572,8 +572,8 @@ func (impl *TFRecordDBBackendMock) GetAllByOrder(ctx context.Context, order stri
 	return caller, errors.New("no matching response found")
 }
 
-// GetByField implements the TFRecordDBBackend.GetByField() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) GetByField(ctx context.Context, key string, value interface{}) (MethodCallForGetByField, error) {
+// GetByField implements the IdentityDBBackend.GetByField() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) GetByField(ctx context.Context, key string, value interface{}) (MethodCallForGetByField, error) {
 	var caller MethodCallForGetByField
 
 	caller.When = time.Now()
@@ -608,8 +608,8 @@ func (impl *TFRecordDBBackendMock) GetByField(ctx context.Context, key string, v
 	return caller, errors.New("no matching response found")
 }
 
-// GetAll implements the TFRecordDBBackend.GetAll() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendMock) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) (MethodCallForGetAll, error) {
+// GetAll implements the IdentityDBBackend.GetAll() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendMock) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) (MethodCallForGetAll, error) {
 	var caller MethodCallForGetAll
 
 	caller.When = time.Now()
@@ -650,10 +650,10 @@ func (impl *TFRecordDBBackendMock) GetAll(ctx context.Context, order string, ord
 	return caller, errors.New("no matching response found")
 }
 
-// TFRecordDBBackendSnitch defines a type which implements a struct with the
-// methods for the TFRecordDBBackend as fields which allows you provide implementations of
+// IdentityDBBackendSnitch defines a type which implements a struct with the
+// methods for the IdentityDBBackend as fields which allows you provide implementations of
 // these functions to provide flexible testing.
-type TFRecordDBBackendSnitch struct {
+type IdentityDBBackendSnitch struct {
 	CountMethodCalls []MethodCallForCount
 	CountFunc        func(ctx context.Context) (int, error)
 
@@ -661,26 +661,26 @@ type TFRecordDBBackendSnitch struct {
 	DeleteFunc        func(ctx context.Context, publicID string) error
 
 	CreateMethodCalls []MethodCallForCreate
-	CreateFunc        func(ctx context.Context, elem pkg.TFRecord) error
+	CreateFunc        func(ctx context.Context, elem userclaimjwt.Identity) error
 
 	GetMethodCalls []MethodCallForGet
-	GetFunc        func(ctx context.Context, publicID string) (pkg.TFRecord, error)
+	GetFunc        func(ctx context.Context, publicID string) (userclaimjwt.Identity, error)
 
 	UpdateMethodCalls []MethodCallForUpdate
-	UpdateFunc        func(ctx context.Context, publicID string, elem pkg.TFRecord) error
+	UpdateFunc        func(ctx context.Context, publicID string, elem userclaimjwt.Identity) error
 
 	GetAllByOrderMethodCalls []MethodCallForGetAllByOrder
-	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]pkg.TFRecord, error)
+	GetAllByOrderFunc        func(ctx context.Context, order string, orderBy string) ([]userclaimjwt.Identity, error)
 
 	GetByFieldMethodCalls []MethodCallForGetByField
-	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (pkg.TFRecord, error)
+	GetByFieldFunc        func(ctx context.Context, key string, value interface{}) (userclaimjwt.Identity, error)
 
 	GetAllMethodCalls []MethodCallForGetAll
-	GetAllFunc        func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TFRecord, int, error)
+	GetAllFunc        func(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]userclaimjwt.Identity, int, error)
 }
 
-// Count implements the TFRecordDBBackend.Count() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) Count(ctx context.Context) (int, error) {
+// Count implements the IdentityDBBackend.Count() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) Count(ctx context.Context) (int, error) {
 	var caller MethodCallForCount
 
 	defer func() {
@@ -710,8 +710,8 @@ func (impl *TFRecordDBBackendSnitch) Count(ctx context.Context) (int, error) {
 	return ret1, ret2
 }
 
-// Delete implements the TFRecordDBBackend.Delete() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) Delete(ctx context.Context, publicID string) error {
+// Delete implements the IdentityDBBackend.Delete() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) Delete(ctx context.Context, publicID string) error {
 	var caller MethodCallForDelete
 
 	defer func() {
@@ -741,8 +741,8 @@ func (impl *TFRecordDBBackendSnitch) Delete(ctx context.Context, publicID string
 	return ret1
 }
 
-// Create implements the TFRecordDBBackend.Create() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) Create(ctx context.Context, elem pkg.TFRecord) error {
+// Create implements the IdentityDBBackend.Create() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) Create(ctx context.Context, elem userclaimjwt.Identity) error {
 	var caller MethodCallForCreate
 
 	defer func() {
@@ -772,8 +772,8 @@ func (impl *TFRecordDBBackendSnitch) Create(ctx context.Context, elem pkg.TFReco
 	return ret1
 }
 
-// Get implements the TFRecordDBBackend.Get() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) Get(ctx context.Context, publicID string) (pkg.TFRecord, error) {
+// Get implements the IdentityDBBackend.Get() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) Get(ctx context.Context, publicID string) (userclaimjwt.Identity, error) {
 	var caller MethodCallForGet
 
 	defer func() {
@@ -805,8 +805,8 @@ func (impl *TFRecordDBBackendSnitch) Get(ctx context.Context, publicID string) (
 	return ret1, ret2
 }
 
-// Update implements the TFRecordDBBackend.Update() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) Update(ctx context.Context, publicID string, elem pkg.TFRecord) error {
+// Update implements the IdentityDBBackend.Update() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) Update(ctx context.Context, publicID string, elem userclaimjwt.Identity) error {
 	var caller MethodCallForUpdate
 
 	defer func() {
@@ -838,8 +838,8 @@ func (impl *TFRecordDBBackendSnitch) Update(ctx context.Context, publicID string
 	return ret1
 }
 
-// GetAllByOrder implements the TFRecordDBBackend.GetAllByOrder() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]pkg.TFRecord, error) {
+// GetAllByOrder implements the IdentityDBBackend.GetAllByOrder() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) GetAllByOrder(ctx context.Context, order string, orderBy string) ([]userclaimjwt.Identity, error) {
 	var caller MethodCallForGetAllByOrder
 
 	defer func() {
@@ -873,8 +873,8 @@ func (impl *TFRecordDBBackendSnitch) GetAllByOrder(ctx context.Context, order st
 	return ret1, ret2
 }
 
-// GetByField implements the TFRecordDBBackend.GetByField() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) GetByField(ctx context.Context, key string, value interface{}) (pkg.TFRecord, error) {
+// GetByField implements the IdentityDBBackend.GetByField() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) GetByField(ctx context.Context, key string, value interface{}) (userclaimjwt.Identity, error) {
 	var caller MethodCallForGetByField
 
 	defer func() {
@@ -908,8 +908,8 @@ func (impl *TFRecordDBBackendSnitch) GetByField(ctx context.Context, key string,
 	return ret1, ret2
 }
 
-// GetAll implements the TFRecordDBBackend.GetAll() method for the TFRecordDBBackend.
-func (impl *TFRecordDBBackendSnitch) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TFRecord, int, error) {
+// GetAll implements the IdentityDBBackend.GetAll() method for the IdentityDBBackend.
+func (impl *IdentityDBBackendSnitch) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]userclaimjwt.Identity, int, error) {
 	var caller MethodCallForGetAll
 
 	defer func() {

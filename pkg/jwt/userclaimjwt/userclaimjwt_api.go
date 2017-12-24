@@ -451,9 +451,12 @@ func (api *JWTAPI) Authenticate(ctx *httputil.Context) error {
 	defer api.metrics.Emit(metrics.Info("JWTAPI.Authenticate"), metrics.WithTrace(m.End()))
 
 	var authHeader string
-
 	if ctx.HasHeader("Authorization", "") {
 		authHeader = ctx.GetHeader("Authorization")
+	}
+
+	if authHeader == "" {
+		return ErrNoJWTAuthorizationToken
 	}
 
 	api.metrics.Emit(metrics.Info("Refresh request received"), metrics.WithFields(metrics.Field{

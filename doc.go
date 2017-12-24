@@ -7,3 +7,4 @@ package tenancykit
 //go:generate mockkit -generate.target=./pkg/db/types -generate.dest=./pkg/db/mocks generate
 //go:generate mockkit -generate.target=./pkg -generate.dest=./pkg/db/mocks generate
 //go:generate jwtkit -generate.target=./pkg -generate.dest=./pkg/jwt generate
+//go:generate mockkit -generate.target=./pkg/jwt/userclaimjwt -generate.dest=./pkg/db/mocks generate
