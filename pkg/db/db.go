@@ -1,6 +1,9 @@
 package db
 
 import (
+	"github.com/gokit/tenancykit/pkg/db/activitymgo"
+	"github.com/gokit/tenancykit/pkg/db/identitymgo"
+	"github.com/gokit/tenancykit/pkg/db/rolemgo"
 	"github.com/gokit/tenancykit/pkg/db/tenantmgo"
 	"github.com/gokit/tenancykit/pkg/db/tfrecordmgo"
 	"github.com/gokit/tenancykit/pkg/db/twofactorsessionmgo"
@@ -24,6 +27,12 @@ func IsNotFoundError(err error) bool {
 	case twofactorsessionmgo.ErrNotFound:
 		return true
 	case pkg.ErrNotFound:
+		return true
+	case activitymgo.ErrNotFound:
+		return true
+	case rolemgo.ErrNotFound:
+		return true
+	case identitymgo.ErrNotFound:
 		return true
 	}
 	return false

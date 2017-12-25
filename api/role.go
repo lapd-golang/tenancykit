@@ -51,27 +51,16 @@ func (r RoleAPI) GetUserRoles(ctx *httputil.Context) error {
 			return nil
 		}
 
-		var roles []pkg.Role
-		for _, id := range currentUser.User.Roles {
-			role, err := r.Backend.Get(ctx.Context(), id)
-			if err != nil {
-				// if role does not exists, then skip.
-				if db.IsNotFoundError(err) {
-					continue
-				}
-
-				return httputil.HTTPError{
-					Err:  err,
-					Code: http.StatusInternalServerError,
-				}
+		roles, err := r.Backend.GetRoles(ctx.Context(), false, currentUser.User.Roles)
+		if err != nil {
+			return httputil.HTTPError{
+				Err:  err,
+				Code: http.StatusInternalServerError,
 			}
-
-			roles = append(roles, role)
 		}
 
-		ctx.Set(pkg.ContextKeyUserRoles, roles)
-
 		currentUser.Roles = roles
+		ctx.Set(pkg.ContextKeyUserRoles, roles)
 		ctx.Set(pkg.ContextKeyCurrentUser, currentUser)
 		return nil
 	}
@@ -84,22 +73,12 @@ func (r RoleAPI) GetUserRoles(ctx *httputil.Context) error {
 			return nil
 		}
 
-		var roles []pkg.Role
-		for _, id := range user.Roles {
-			role, err := r.Backend.Get(ctx.Context(), id)
-			if err != nil {
-				// if role does not exists, then skip.
-				if db.IsNotFoundError(err) {
-					continue
-				}
-
-				return httputil.HTTPError{
-					Err:  err,
-					Code: http.StatusInternalServerError,
-				}
+		roles, err := r.Backend.GetRoles(ctx.Context(), false, user.Roles)
+		if err != nil {
+			return httputil.HTTPError{
+				Err:  err,
+				Code: http.StatusInternalServerError,
 			}
-
-			roles = append(roles, role)
 		}
 
 		ctx.Set(pkg.ContextKeyUserRoles, roles)
@@ -127,7 +106,7 @@ func (r RoleAPI) GetRoleByName(ctx *httputil.Context) error {
 		}
 	}
 
-	role, err := r.Backend.GetRole(ctx.Context(), roleName)
+	role, err := r.Backend.GetRole(ctx.Context(), pkg.RoleName(roleName))
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
@@ -144,6 +123,26 @@ type RoleBackend struct {
 	types.RoleDBBackend
 }
 
+// GetRoles runs through provided string slice of roles public ids and retrieves all roles.
+// Returns error if any role was not found if skipUnfound is false, else skips and checks for others.
+func (u RoleBackend) GetRoles(ctx context.Context, skipUnfound bool, rids []string) ([]pkg.Role, error) {
+	var roles []pkg.Role
+	for _, id := range rids {
+		role, err := u.RoleDBBackend.Get(ctx, id)
+		if err != nil {
+			if skipUnfound && db.IsNotFoundError(err) {
+				continue
+			}
+
+			return nil, err
+		}
+
+		roles = append(roles, role)
+	}
+
+	return roles, nil
+}
+
 // Create modifies the underline types.TenantBackend.Create method to implement
 // the api.tenantapi.Backend interface.
 func (u RoleBackend) Create(ctx context.Context, roleName pkg.RoleName) (pkg.Role, error) {
@@ -152,6 +151,6 @@ func (u RoleBackend) Create(ctx context.Context, roleName pkg.RoleName) (pkg.Rol
 }
 
 // GetRole returns giving role with given name.
-func (u RoleBackend) GetRole(ctx context.Context, name string) (pkg.Role, error) {
-	return u.RoleDBBackend.GetByField(ctx, "name", name)
+func (u RoleBackend) GetRole(ctx context.Context, name pkg.RoleName) (pkg.Role, error) {
+	return u.RoleDBBackend.GetByField(ctx, "name", string(name))
 }
