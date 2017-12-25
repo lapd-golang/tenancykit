@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gokit/tenancykit/pkg/db/mocks"
+	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/db/mocks/identitydbbackendimpl"
 	"github.com/gokit/tenancykit/pkg/jwt/userclaimjwt"
 )
@@ -31,7 +31,7 @@ func IdentityBackend() identitydbbackendimpl.IdentityDBBackendImpl {
 
 	mocker.DeleteFunc = func(ctx context.Context, publicID string) error {
 		if _, exist := db[publicID]; !exist {
-			return mocks.ErrNotFound
+			return pkg.ErrNotFound
 		}
 		delete(db, publicID)
 		return nil
@@ -56,7 +56,7 @@ func IdentityBackend() identitydbbackendimpl.IdentityDBBackendImpl {
 	mocker.GetFunc = func(ctx context.Context, publicID string) (userclaimjwt.Identity, error) {
 		elem, exist := db[publicID]
 		if !exist {
-			return elem, mocks.ErrNotFound
+			return elem, pkg.ErrNotFound
 		}
 		return elem, nil
 	}
@@ -80,12 +80,12 @@ func IdentityBackend() identitydbbackendimpl.IdentityDBBackendImpl {
 			}
 		}
 
-		return userclaimjwt.Identity{}, mocks.ErrNotFound
+		return userclaimjwt.Identity{}, pkg.ErrNotFound
 	}
 
 	mocker.UpdateFunc = func(ctx context.Context, publicID string, elem userclaimjwt.Identity) error {
 		if _, exist := db[publicID]; !exist {
-			return mocks.ErrNotFound
+			return pkg.ErrNotFound
 		}
 
 		db[publicID] = elem

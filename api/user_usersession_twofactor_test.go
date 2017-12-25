@@ -17,7 +17,6 @@ import (
 
 	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
 	tenantFixtures "github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
@@ -44,7 +43,7 @@ func TestTwoFactorAuthWithMultiTenantUserSession(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded tenant record")
 
-	tenants := backends.TenantBackend{TenantDBBackend: ttdb}
+	tenants := api.TenantBackend{TenantDBBackend: ttdb}
 	tenantRecord, err := tenants.Create(context.Background(), createTenant)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created tenant")
@@ -61,14 +60,14 @@ func TestTwoFactorAuthWithMultiTenantUserSession(t *testing.T) {
 	userCreateBody.TenantID = tenantRecord.PublicID
 	userCreateBody.PasswordConfirm = userCreateBody.Password
 
-	users := backends.UserBackend{UserDBBackend: udb}
+	users := api.UserBackend{UserDBBackend: udb}
 	userRecord, err := users.Create(context.Background(), userCreateBody)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully loaded user record")
 	}
 	tests.Passed("Should have successfully loaded user record")
 
-	tfrecord := backends.TFBackend{TFRecordDBBackend: tfdb}
+	tfrecord := api.TFBackend{TFRecordDBBackend: tfdb}
 	if _, err := tfrecord.Create(context.Background(), pkg.NewTF{
 		MaxLength: 6,
 		User:      userRecord,
@@ -99,7 +98,7 @@ func TestTwoFactorAuthWithUserSession(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded tenant record")
 
-	tenants := backends.TenantBackend{TenantDBBackend: ttdb}
+	tenants := api.TenantBackend{TenantDBBackend: ttdb}
 	tenantRecord, err := tenants.Create(context.Background(), createTenant)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created tenant")
@@ -116,14 +115,14 @@ func TestTwoFactorAuthWithUserSession(t *testing.T) {
 	userCreateBody.TenantID = tenantRecord.PublicID
 	userCreateBody.PasswordConfirm = userCreateBody.Password
 
-	users := backends.UserBackend{UserDBBackend: udb}
+	users := api.UserBackend{UserDBBackend: udb}
 	userRecord, err := users.Create(context.Background(), userCreateBody)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully loaded user record")
 	}
 	tests.Passed("Should have successfully loaded user record")
 
-	tfrecord := backends.TFBackend{TFRecordDBBackend: tfdb}
+	tfrecord := api.TFBackend{TFRecordDBBackend: tfdb}
 	if _, err := tfrecord.Create(context.Background(), pkg.NewTF{
 		MaxLength: 6,
 		User:      userRecord,

@@ -17,7 +17,7 @@ var (
 
 // Token defines a specific record with associated id and
 // value.
-// @sqlapi
+//
 // @mongoapi
 // @httpapi
 type Token struct {

@@ -1,11 +1,11 @@
 package api
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/tenantapi"
@@ -25,7 +25,7 @@ type TenantAPI struct {
 func NewTenantAPI(m metrics.Metrics, tenant types.TenantDBBackend) TenantAPI {
 	return TenantAPI{
 		IsNotFoundErrorFunc: db.IsNotFoundError,
-		TenantHTTP: tenantapi.New(m, backends.TenantBackend{
+		TenantHTTP: tenantapi.New(m, TenantBackend{
 			TenantDBBackend: tenant,
 		}),
 	}
@@ -79,4 +79,21 @@ func (t TenantAPI) RetrieveTenant(ctx *httputil.Context) error {
 	// set current user into context.
 	ctx.Bag().Set(pkg.ContextKeyTenant, tenant)
 	return nil
+}
+
+// TenantBackend is a wrapper to implement tenantapi.Backend interface methods for
+// types.TenantBackend.
+type TenantBackend struct {
+	types.TenantDBBackend
+}
+
+// Create modifies the underline types.TenantBackend.Create method to implement
+// the api.tenantapi.Backend interface.
+func (t TenantBackend) Create(ctx context.Context, nt pkg.CreateTenant) (pkg.Tenant, error) {
+	if err := nt.Validate(); err != nil {
+		return pkg.Tenant{}, err
+	}
+
+	newTenant := pkg.NewTenant(nt)
+	return newTenant, t.TenantDBBackend.Create(ctx, newTenant)
 }

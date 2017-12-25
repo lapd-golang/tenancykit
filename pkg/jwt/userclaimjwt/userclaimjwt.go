@@ -44,6 +44,8 @@ var (
 )
 
 // Identity embodies data stored for a user's login credentials.
+// @sqlapi
+// @mongoapi
 type Identity struct {
 	PublicID        string        `json:"public_id"`
 	RefreshToken    string        `json:"refresh_token"`

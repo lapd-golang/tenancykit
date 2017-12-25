@@ -14,23 +14,21 @@ var (
  TFRecordJSON = `{
 
 
-    "updated_at":	"2017-12-23 12:42:40.280287 +0000 UTC",
+    "user_id":	"t316vkm2lvfbzf2xkbyc",
 
-    "domain":	"Skaboo.name",
+    "totp":	"zwzlwqjr0bxh2q3wzws6",
 
-    "user_id":	"c1bizewq19eakea7v29h",
-
-    "totp":	"9wg74r2ghpyp7patgw6l",
-
-    "public_id":	"brd7yf356m63wvh046do47vepicv3u",
-
-    "tenant_id":	"8otb5e5l9e3ey8n0y0d2",
-
-    "key":	"m5qxk8di54uvnq334522",
+    "tenant_id":	"hj4uqwhdczzhl8ehsr5j9cl49l6r65",
 
     "code_length":	10,
 
-    "created_at":	"2017-12-23 12:42:40.280278 +0000 UTC"
+    "created_at":	"2017-12-25 14:26:17.6567 +0000 UTC",
+
+    "updated_at":	"2017-12-25 14:26:17.656709 +0000 UTC",
+
+    "key":	"8ms00oemk6fe4disjwhn",
+
+    "domain":	"LiveZ.edu"
 
 }`
 )

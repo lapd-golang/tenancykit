@@ -14,11 +14,11 @@ var (
  TwoFactorSessionJSON = `{
 
 
+    "public_id":	"b9mjbylxkd1c0c2jnuau0faz77y1hn",
+
     "bool":	true,
 
-    "user_id":	"aix2fen9arfz9s8y4bf1",
-
-    "public_id":	"buv3rjksbh528ni9y9vod8hin9d0o8"
+    "user_id":	"yacmt15vti85nlmfkuob"
 
 }`
 )

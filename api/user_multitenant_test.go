@@ -14,7 +14,6 @@ import (
 	"github.com/influx6/faux/httputil/httptesting"
 	"github.com/influx6/faux/tests"
 
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/mock"
 	tenantFixtures "github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
@@ -40,7 +39,7 @@ func TestMultiTenantUserAPI(t *testing.T) {
 	}
 	tests.Passed("Should have successfully loaded tenant record")
 
-	tenants := backends.TenantBackend{TenantDBBackend: tenantdb}
+	tenants := api.TenantBackend{TenantDBBackend: tenantdb}
 	tenantRecord, err := tenants.Create(context.Background(), createTenant)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully created tenant")
@@ -234,10 +233,7 @@ func testMultiTenantUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAP
 
 		user := records[0]
 
-		var userUpdate pkg.UpdateUser
-
-		beforeUsername := user.Email
-		userUpdate.Email = "djackman201@gmail.com"
+		var userUpdate pkg.UpdateUserPassword
 		userUpdate.Password = "bombabastick"
 		userUpdate.PasswordConfirm = userUpdate.Password
 
@@ -252,7 +248,7 @@ func testMultiTenantUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAP
 		updateUser := httptesting.Put("/users/"+user.PublicID, bytes.NewReader(updateBodyJSON), updateUserResponse)
 		updateUser.Bag().Set("public_id", user.PublicID)
 
-		if err := users.Update(updateUser); err != nil {
+		if err := users.UpdatePassword(updateUser); err != nil {
 			tests.Info("User: %#v", updateBodyJSON)
 			tests.FailedWithError(err, "Should have successfully created user")
 		}
@@ -268,14 +264,6 @@ func testMultiTenantUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAP
 			tests.FailedWithError(err, "Should have succesfully retrieved update record")
 		}
 		tests.Passed("Should have succesfully retrieved update record")
-
-		if updatedRecord.Email != userUpdate.Email {
-			tests.Info("Before: %+q", beforeUsername)
-			tests.Info("After: %+q", updatedRecord.Email)
-			tests.Info("Expected: %+q", userUpdate.Email)
-			tests.Failed("Should have successfully update record field")
-		}
-		tests.Passed("Should have successfully update record field")
 
 		if err := updatedRecord.Authenticate(userUpdate.Password); err != nil {
 			tests.FailedWithError(err, "Should have successfully confirmed password change")

@@ -8,7 +8,6 @@ import (
 	"context"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/db/mocks"
 	"github.com/gokit/tenancykit/pkg/db/mocks/userdbbackendimpl"
 	"github.com/gokit/tenancykit/pkg/db/types"
 )
@@ -33,7 +32,7 @@ func UserBackend() types.UserDBBackend {
 
 	mocker.DeleteFunc = func(ctx context.Context, publicID string) error {
 		if _, exist := db[publicID]; !exist {
-			return mocks.ErrNotFound
+			return pkg.ErrNotFound
 		}
 		delete(db, publicID)
 		return nil
@@ -58,7 +57,7 @@ func UserBackend() types.UserDBBackend {
 	mocker.GetFunc = func(ctx context.Context, publicID string) (pkg.User, error) {
 		elem, exist := db[publicID]
 		if !exist {
-			return elem, mocks.ErrNotFound
+			return elem, pkg.ErrNotFound
 		}
 		return elem, nil
 	}
@@ -86,12 +85,12 @@ func UserBackend() types.UserDBBackend {
 			}
 		}
 
-		return pkg.User{}, mocks.ErrNotFound
+		return pkg.User{}, pkg.ErrNotFound
 	}
 
 	mocker.UpdateFunc = func(ctx context.Context, publicID string, elem pkg.User) error {
 		if _, exist := db[publicID]; !exist {
-			return mocks.ErrNotFound
+			return pkg.ErrNotFound
 		}
 
 		db[publicID] = elem

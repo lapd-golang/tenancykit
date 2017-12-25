@@ -9,6 +9,7 @@ import (
 // variables of context keys for the tenancypackage.
 var (
 	ContextKeyUser              = contextKey("user")
+	ContextKeyUserRoles         = contextKey("user-roles")
 	ContextKeyUserAuthorization = contextKey("user-authorization")
 	ContextKeyTenant            = contextKey("tenant")
 	ContextKeyCurrentUser       = contextKey("current-user")
@@ -23,6 +24,21 @@ type contextKey string
 // String returns string content printable for contextkey.
 func (c contextKey) String() string {
 	return "Tenancykit context key: " + string(c)
+}
+
+// GetUserRoles retrieves currently stored UserSession struct in provided context.
+func GetUserRoles(ctx *httputil.Context) ([]Role, error) {
+	receivedVal, ok := ctx.Get(ContextKeyUserRoles)
+	if !ok {
+		return nil, errors.New("not found")
+	}
+
+	roles, ok := receivedVal.([]Role)
+	if !ok {
+		return nil, errors.New("received value is not CurrentUser")
+	}
+
+	return roles, nil
 }
 
 // GetUserSession retrieves currently stored UserSession struct in provided context.

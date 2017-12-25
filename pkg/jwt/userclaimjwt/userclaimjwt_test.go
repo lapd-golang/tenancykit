@@ -33,9 +33,9 @@ var (
 	contractDataJSON = `{
 
 
-    "email":	"JeremyLawson@Babbleopia.mil",
+    "email":	"LisaFrazier@Buzzster.org",
 
-    "password":	"ku2ikso0bji55bjiilb6",
+    "password":	"m11d5ehz3yq0rth2sc5k",
 
     "expiration":	null
 

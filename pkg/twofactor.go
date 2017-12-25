@@ -36,7 +36,7 @@ type NewTF struct {
 // TwoFactor is enabled if user has associated record in twofactor table or collection.
 //
 // @mongoapi
-// @sqlapi
+//
 // @httpapi(New => NewTF)
 type TFRecord struct {
 	Key        string    `json:"key"`

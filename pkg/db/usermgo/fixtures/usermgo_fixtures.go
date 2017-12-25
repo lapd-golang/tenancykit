@@ -14,23 +14,23 @@ var (
  UserJSON = `{
 
 
-    "username":	"8Diaz",
+    "public_id":	"flb4yf8mcqok6z7anpr25l3ykp5t0a",
+
+    "tenant_id":	"v1fr7xdt7feg7ko3zjlu",
+
+    "hash":	"m36tc6h5ssl27h7xngak",
+
+    "updated_at":	"2017-12-25 14:26:17.843023 +0000 UTC",
+
+    "email":	"illo@Eidel.org",
+
+    "private_id":	"5qbe7c92bmtjrz73e4oa8rh9bw1a9a",
 
     "two_factor_auth":	true,
 
-    "tenant_id":	"40s4yp7el6xz08uv9wuy",
+    "created_at":	"2017-12-25 14:26:17.843014 +0000 UTC",
 
-    "private_id":	"3getznvv33bu0ezfyl7k5vd5cr2vlx",
-
-    "hash":	"a0179i7bk1idsn8srubl",
-
-    "created_at":	"2017-12-23 12:42:40.497337 +0000 UTC",
-
-    "updated_at":	"2017-12-23 12:42:40.497346 +0000 UTC",
-
-    "email":	"uJordan@Rhynyx.net",
-
-    "public_id":	"832xt4fzxrlxjalsu7ryb3s8vfleip"
+    "username":	"MarilynHansen"
 
 }`
 )

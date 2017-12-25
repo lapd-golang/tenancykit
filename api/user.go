@@ -1,11 +1,12 @@
 package api
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/userapi"
@@ -25,7 +26,7 @@ func NewUserAPI(m metrics.Metrics, users types.UserDBBackend) UserAPI {
 	var api UserAPI
 	api.Backend = users
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
-	api.UserHTTP = userapi.New(m, backends.UserBackend{UserDBBackend: users})
+	api.UserHTTP = userapi.New(m, UserBackend{UserDBBackend: users})
 	return api
 }
 
@@ -34,7 +35,7 @@ func NewMultiTenantUserAPI(m metrics.Metrics, users types.UserDBBackend, tenants
 	var api UserAPI
 	api.Backend = users
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
-	api.UserHTTP = userapi.New(m, backends.MultiUserBackend{UserDBBackend: users, Tenants: tenants})
+	api.UserHTTP = userapi.New(m, MultiUserBackend{UserDBBackend: users, Tenants: tenants})
 	return api
 }
 
@@ -47,6 +48,45 @@ func (u UserAPI) isNotFoundError(err error) bool {
 	}
 
 	return u.IsNotFoundErrorFunc(err)
+}
+
+func (u UserAPI) UpdatePassword(ctx *httputil.Context) error {
+	if err := u.RetrieveUser(ctx); err != nil {
+		return err
+	}
+
+	var updater pkg.UpdateUserPassword
+	if err := json.NewDecoder(ctx.Body()).Decode(&updater); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	user, err := pkg.GetUser(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	if err = user.ChangePassword(updater.Password); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusUnauthorized,
+		}
+	}
+
+	if err := u.Backend.Update(ctx.Context(), user.PublicID, user); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	ctx.Status(http.StatusNoContent)
+	return nil
 }
 
 // RetrieveUser attempts to use the provided public id parameter to load
@@ -86,4 +126,52 @@ func (u UserAPI) RetrieveUser(ctx *httputil.Context) error {
 	// set current user into context.
 	ctx.Bag().Set(pkg.ContextKeyUser, user)
 	return nil
+}
+
+// MultiTenantUserBackend is a wrapper to implement userapi.Backend interface methods for
+// types.UserBackend.
+type MultiUserBackend struct {
+	types.UserDBBackend
+	Tenants types.TenantDBBackend
+}
+
+// Create modifies the underline types.TenantBackend.Create method to implement
+// the api.tenantapi.Backend interface.
+func (u MultiUserBackend) Create(ctx context.Context, nt pkg.CreateUser) (pkg.User, error) {
+	if err := nt.Validate(true); err != nil {
+		return pkg.User{}, err
+	}
+
+	// Validate that user's tenant exists.
+	if _, err := u.Tenants.Get(ctx, nt.TenantID); err != nil {
+		return pkg.User{}, err
+	}
+
+	newUser, err := pkg.NewUser(nt)
+	if err != nil {
+		return newUser, err
+	}
+
+	return newUser, u.UserDBBackend.Create(ctx, newUser)
+}
+
+// UserBackend is a wrapper to implement userapi.Backend interface methods for
+// types.UserBackend.
+type UserBackend struct {
+	types.UserDBBackend
+}
+
+// Create modifies the underline types.TenantBackend.Create method to implement
+// the api.tenantapi.Backend interface.
+func (u UserBackend) Create(ctx context.Context, nt pkg.CreateUser) (pkg.User, error) {
+	if err := nt.Validate(false); err != nil {
+		return pkg.User{}, err
+	}
+
+	newUser, err := pkg.NewUser(nt)
+	if err != nil {
+		return newUser, err
+	}
+
+	return newUser, u.UserDBBackend.Create(ctx, newUser)
 }

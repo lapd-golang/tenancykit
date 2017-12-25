@@ -28,7 +28,7 @@ type UserBackend interface {
 	Count(context.Context) (int, error)
 	Delete(context.Context, string) error
 	Get(context.Context, string) (pkg.User, error)
-	Update(context.Context, string, pkg.UpdateUser) error
+	Update(context.Context, string, pkg.User) error
 	GetAll(context.Context, string, string, int, int) ([]pkg.User, int, error)
 	Create(context.Context, pkg.CreateUser) (pkg.User, error)
 }
@@ -199,7 +199,7 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 		return errors.New("publicId parameter not found")
 	}
 
-	var incoming pkg.UpdateUser
+	var incoming pkg.User
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to decode request body"), metrics.WithFields(metrics.Field{

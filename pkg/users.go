@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"errors"
-	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -16,30 +15,14 @@ type UserAuthorization struct {
 }
 
 // UpdateUser defines the set of data sent when updating a users password.
-type UpdateUser struct {
-	Email           string `json:"email"`
+type UpdateUserPassword struct {
 	Password        string `json:"password"`
 	PasswordConfirm string `json:"password_confirm"`
 }
 
-// IsPasswordUpdate returns true/false if the giving update is
-// a password update, basically the password and password confirm
-// fields must not be empty.
-func (u UpdateUser) IsPassWordUpdate() bool {
-	return u.Password != "" && u.PasswordConfirm == u.Password
-}
-
 // Validate returns error if UpdateUser fails to match its value
 // requirements.
-func (u UpdateUser) Validate() error {
-	if !u.IsPassWordUpdate() {
-		if strings.TrimSpace(u.Email) == "" {
-			return errors.New("Email can not be empty")
-		}
-
-		return nil
-	}
-
+func (u UpdateUserPassword) Validate() error {
 	if u.Password == "" {
 		return errors.New("Password can not be empty")
 	}
@@ -96,8 +79,7 @@ func (cu CreateUser) Validate(multitenant bool) error {
 
 // User is a type defining the given user related fields for a given.
 // @mongoapi
-// @sqlapi
-// @httpapi(New => CreateUser, Update => UpdateUser)
+// @httpapi(New => CreateUser)
 type User struct {
 	Username      string    `json:"username"`
 	Email         string    `json:"email"`
@@ -105,6 +87,7 @@ type User struct {
 	TenantID      string    `json:"tenant_id"`
 	PrivateID     string    `json:"private_id"`
 	Hash          string    `json:"hash"`
+	Roles         []string  `json:"user_roles"`
 	TwoFactorAuth bool      `json:"two_factor_auth"`
 	Created       time.Time `json:"created_at"`
 	Updated       time.Time `json:"updated_at"`

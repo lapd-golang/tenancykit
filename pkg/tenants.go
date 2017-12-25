@@ -38,7 +38,6 @@ type ITenant struct {
 
 // Tenant defines a structure to represent a giving tenant.
 // @mongoapi
-// @sqlapi
 // @httpapi(New => CreateTenant)
 type Tenant struct {
 	Name     string    `json:"name"`

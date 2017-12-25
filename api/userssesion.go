@@ -1,15 +1,16 @@
 package api
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/usersessionapi"
@@ -37,7 +38,7 @@ func NewUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, sessions ty
 	api.SessionBackend = sessions
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TFSessionsBackend = tfsessions
-	api.Backend = backends.UserSessionBackend{
+	api.Backend = UserSessionBackend{
 		UserBackend:          users,
 		UserSessionDBBackend: sessions,
 	}
@@ -409,4 +410,59 @@ func (us UserSessionAPI) GetAuthorizationCredentials(ctx *httputil.Context) (str
 
 	userID, userToken := tokens[0], tokens[1]
 	return userID, userToken, nil
+}
+
+// UserSessionBackend wraps types.UserSessionBackend to implement the api.usersessionapi.Backend
+// create method.
+type UserSessionBackend struct {
+	types.UserSessionDBBackend
+	UserBackend types.UserDBBackend
+}
+
+// Create attempts to create a user session for the incoming pkg.CreateUserSession
+// and returns a new pkg.UserSession if successfully as returning error.
+func (us UserSessionBackend) Create(ctx context.Context, cus pkg.CreateUserSession) (pkg.UserSession, error) {
+	if err := cus.Validate(); err != nil {
+		return pkg.UserSession{}, err
+	}
+
+	// If api is not provided a expiration time for session, then set to 24hrs.
+	if cus.Expiration <= 0 {
+		cus.Expiration = 24 * time.Hour
+	}
+
+	// Attempt to retrieve user from user backend.
+	user, err := us.UserBackend.GetByField(ctx, "email", cus.Email)
+	if err != nil {
+		return pkg.UserSession{}, httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusNotFound,
+		}
+	}
+
+	// Attempt to validate user password.
+	if err := user.Authenticate(cus.Password); err != nil {
+		return pkg.UserSession{}, httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusUnauthorized,
+		}
+	}
+
+	// Check if old session exist and if not expired, then return that, else delete it.
+	if oldSession, err := us.UserSessionDBBackend.GetByField(ctx, "user_id", user.PublicID); err == nil {
+		if !oldSession.Expired() {
+			return oldSession, nil
+		}
+
+		if err := us.UserSessionDBBackend.Delete(ctx, oldSession.PublicID); err != nil {
+			return pkg.UserSession{}, err
+		}
+	}
+
+	newSession := pkg.NewUserSession(user.PublicID, time.Now().Add(cus.Expiration))
+	if err := us.UserSessionDBBackend.Create(ctx, newSession); err != nil {
+		return pkg.UserSession{}, err
+	}
+
+	return newSession, nil
 }

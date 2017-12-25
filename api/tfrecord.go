@@ -2,11 +2,11 @@ package api
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"net/http"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
@@ -18,14 +18,14 @@ import (
 // for the database linked in.
 type TwoFactorAPI struct {
 	tfrecordapi.TFRecordHTTP
-	Backend             backends.TFBackend
+	Backend             TFBackend
 	UserBackend         types.UserDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewTwoFactorAPI returns a new instance of TwoFactorAPI.
 func NewTwoFactorAPI(m metrics.Metrics, tdb types.TFRecordDBBackend, users types.UserDBBackend) TwoFactorAPI {
-	backend := backends.TFBackend{TFRecordDBBackend: tdb}
+	backend := TFBackend{TFRecordDBBackend: tdb}
 	return TwoFactorAPI{
 		Backend:             backend,
 		UserBackend:         users,
@@ -315,4 +315,19 @@ func (t TwoFactorAPI) EnableTwoFactor(ctx *httputil.Context) error {
 	ctx.Set(pkg.ContextKeyUser, user)
 	ctx.Set(pkg.ContextKeyTFRecord, ntwRecord)
 	return nil
+}
+
+// TFBackend implements the api.tfrecordapi.Backend interface and wraps a types.TFRecordBackend.
+type TFBackend struct {
+	types.TFRecordDBBackend
+}
+
+// Create attempts to create a new TFRecord in the db using the provided pkg.NewTF struct.
+func (tf TFBackend) Create(ctx context.Context, ntf pkg.NewTF) (pkg.TFRecord, error) {
+	newTF, err := pkg.NewTFRecord(ntf.MaxLength, ntf.Domain, ntf.User)
+	if err != nil {
+		return newTF, err
+	}
+
+	return newTF, tf.TFRecordDBBackend.Create(ctx, newTF)
 }

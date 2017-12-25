@@ -46,7 +46,7 @@ func (eus EndUserSession) Validate() error {
 
 // UserSession embodies the data which is used to identify a logged in user's session.
 // @mongoapi
-// @sqlapi
+//
 // @httpapi(New => CreateUserSession)
 type UserSession struct {
 	UserID   string    `json:"user_id"`

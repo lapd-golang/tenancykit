@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/gokit/tokens"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/twofactorsessionapi"
 	"github.com/influx6/faux/httputil"
@@ -30,7 +30,7 @@ func NewTwoFactorSessionAPI(m metrics.Metrics, tokenset tokens.TokenSet, tfsessi
 	api.Backend = tfsession
 	api.TokenSet = tokenset
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
-	api.TwoFactorSessionHTTP = twofactorsessionapi.New(m, backends.TwoFactorSessionBackend{
+	api.TwoFactorSessionHTTP = twofactorsessionapi.New(m, TwoFactorSessionBackend{
 		TwoFactorSessionDBBackend: tfsession,
 	})
 
@@ -228,4 +228,14 @@ func (tfs TwoFactorSessionAPI) isNotFoundError(err error) bool {
 	}
 
 	return tfs.IsNotFoundErrorFunc(err)
+}
+
+// TwoFactorSessionBackend implements the api.twofactorsessionapi.Backend interface and wraps a types.TFRecordBackend.
+type TwoFactorSessionBackend struct {
+	types.TwoFactorSessionDBBackend
+}
+
+// Create attempts to create a new TFRecord in the db using the provided pkg.NewTF struct.
+func (tf TwoFactorSessionBackend) Create(ctx context.Context, ntf pkg.TwoFactorSession) (pkg.TwoFactorSession, error) {
+	return ntf, tf.TwoFactorSessionDBBackend.Create(ctx, ntf)
 }

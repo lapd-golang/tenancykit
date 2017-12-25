@@ -39,11 +39,11 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "password":	"3tnk5v42e5r39n0uoddg",
+    "email":	"quis_in_officiis@Zoonoodle.org",
 
-    "expiration":	null,
+    "password":	"4o9s962mvw09krxu3zwk",
 
-    "email":	"maiores_eum_qui@Quaxo.com"
+    "expiration":	null
 
 }
 ```

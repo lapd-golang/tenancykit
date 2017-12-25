@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/db"
 	"github.com/gokit/tenancykit/pkg/db/types"
 	"github.com/gokit/tenancykit/pkg/resources/usersessionapi"
@@ -39,7 +38,7 @@ func NewMultiTenantUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, 
 	api.SessionBackend = sessions
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TFSessionsBackend = tfsessions
-	api.Backend = backends.UserSessionBackend{
+	api.Backend = api.UserSessionBackend{
 		UserBackend:          users,
 		UserSessionDBBackend: sessions,
 	}

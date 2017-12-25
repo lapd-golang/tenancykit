@@ -9,7 +9,6 @@ import uuid "github.com/satori/go.uuid"
 // from db after user logout or immediately after api requests
 // for apis.
 // @mongoapi
-// @sqlapi
 // @httpapi
 type TwoFactorSession struct {
 	UserID   string `json:"user_id"`

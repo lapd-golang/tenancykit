@@ -14,13 +14,13 @@ var (
  UserSessionJSON = `{
 
 
-    "user_id":	"tw6hzwlh9acyust8n53p",
+    "user_id":	"sp2zikgj0g4wripiiltd",
 
-    "public_id":	"1bz7pguhlh2kzizlwhw93p1hzg7txj",
+    "public_id":	"nsiy4vblize2864mqciw6xq9acknr9",
 
-    "token":	"snl7bqg5il9e30ctscd1",
+    "token":	"r5dr5ye4zvk8w0rnizw2",
 
-    "expires":	"2017-12-23 12:42:40.425298 +0000 UTC"
+    "expires":	"2017-12-25 14:26:17.496349 +0000 UTC"
 
 }`
 )

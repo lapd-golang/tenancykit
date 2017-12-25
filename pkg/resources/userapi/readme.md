@@ -11,7 +11,7 @@ The API expects the user to implement and provide the backend interface to provi
 type Backend interface{
     Delete(context.Context, string) error
     Get(context.Context, string) (pkg.User, error)
-    Update(context.Context, string, pkg.UpdateUser) error
+    Update(context.Context, string, pkg.User) error
     GetAll(context.Context, string, string, int, int) ([]pkg.User, int, error)
     Create(context.Context, pkg.CreateUser) (pkg.User, error)
 }
@@ -35,17 +35,17 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "twofactor_auth":	true,
+    "tenant_id":	"5uth9dpedw99wlqoo0ti",
 
-    "tenant_id":	"0ptt8ptfc1hg4x4kbxbb",
+    "email":	"StevenPhillips@Abatz.edu",
 
-    "email":	"MarieMiller@Edgeify.com",
+    "username":	"at_sed_minus",
 
-    "username":	"MarieBurke",
+    "password":	"8jpfff27iyk1j8d74hq2",
 
-    "password":	"fatc0icrd99wb4c70mti",
+    "password_confirm":	"0ws8usxpigcvuyxmd51n",
 
-    "password_confirm":	"g21d1l6ecn8gux01q32o"
+    "twofactor_auth":	true
 
 }
 ```
@@ -67,23 +67,25 @@ Success: 201
 {
 
 
-    "username":	"tempore",
+    "created_at":	"2017-12-25 16:32:45.880277 +0000 UTC",
 
-    "public_id":	"7g06ubflozya077l2w462khk3c8r8b",
+    "updated_at":	"2017-12-25 16:32:45.880312 +0000 UTC",
 
-    "created_at":	"2017-12-24 18:16:09.286537 +0000 UTC",
+    "username":	"WalterPatterson",
 
-    "email":	"AshleyMedina@Lazz.mil",
+    "public_id":	"un2vl7s4dmhgosty5o9z89t6w2zho9",
 
-    "tenant_id":	"ffuduniyvs8ojcbnc8qr",
+    "tenant_id":	"q2t7ee5x97wgtc03pu38",
 
-    "private_id":	"wbkoc3pub6i9dpgd1gvid9vtid5pye",
+    "hash":	"qgcyig3obxui1ycgj49z",
 
-    "hash":	"hrgdz4agncxafcyqwk5l",
+    "email":	"IreneTucker@Realbridge.mil",
 
-    "two_factor_auth":	true,
+    "private_id":	"j453ukn6oorie9oq0bd6tbw36tvfcf",
 
-    "updated_at":	"2017-12-24 18:16:09.286545 +0000 UTC"
+    "user_roles":	null,
+
+    "two_factor_auth":	true
 
 }
 ```
@@ -141,23 +143,25 @@ Success: 200
 {
 
 
-    "public_id":	"5gjsrmj59shw6z3ez07ymkxoxqnyc3",
+    "created_at":	"2017-12-25 16:32:45.881088 +0000 UTC",
 
-    "private_id":	"qb7b704iidmntqdcs24apspjyvn0zk",
+    "username":	"dolor_rerum_sit",
+
+    "hash":	"jhj57omwuunadf9xtrzf",
+
+    "user_roles":	null,
+
+    "private_id":	"owzgqc13bftu95cx630gbv6zzclpn8",
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-24 18:16:09.287025 +0000 UTC",
+    "updated_at":	"2017-12-25 16:32:45.881097 +0000 UTC",
 
-    "updated_at":	"2017-12-24 18:16:09.28703 +0000 UTC",
+    "email":	"bParker@Gabcube.com",
 
-    "username":	"JonathanWest",
+    "public_id":	"veyma831l2qwjit7id7k2g8jf1941v",
 
-    "email":	"JohnnyLittle@Teklist.mil",
-
-    "tenant_id":	"9gk4y5ccnnh9mvu9lqd8",
-
-    "hash":	"ych91twbsjrds569x7s9"
+    "tenant_id":	"b7fj7exsoo5d6ic5lzdc"
 
 }
 ```
@@ -184,44 +188,48 @@ Success: 200
 [{
 
 
-    "email":	"CarlosWatkins@Katz.name",
+    "username":	"tGarcia",
 
-    "public_id":	"ci1r2opo36my27kojc21g4t2ugkwzm",
+    "public_id":	"dr0riwf2hpylulm3fyvh6tt0ls2mbt",
 
-    "hash":	"gyoxxwi24j8b7q5839zx",
+    "tenant_id":	"f43sevxaqwolm5k91wpz",
 
-    "updated_at":	"2017-12-24 18:16:09.287633 +0000 UTC",
+    "private_id":	"207ppbma7yifjotpm2emfaszofmsst",
 
-    "username":	"dolorem",
+    "hash":	"vsvauwbd4t5ippfh1gm1",
 
-    "tenant_id":	"ydtegfrblg8ls0wnbxdq",
+    "created_at":	"2017-12-25 16:32:45.88184 +0000 UTC",
 
-    "private_id":	"73yzh3pss4s6craqdswa3xks61z6ma",
+    "email":	"EmilySanders@Divape.edu",
+
+    "user_roles":	null,
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-24 18:16:09.287627 +0000 UTC"
+    "updated_at":	"2017-12-25 16:32:45.881854 +0000 UTC"
 
 },{
 
 
-    "email":	"LillianButler@Photojam.org",
+    "username":	"yCarter",
 
-    "created_at":	"2017-12-24 18:16:09.288047 +0000 UTC",
+    "email":	"JonathanGomez@Zoonder.name",
 
-    "username":	"et_vero_perspiciatis",
+    "public_id":	"h7ttlfg82nujzkxbsqf33qev2z8dmd",
 
-    "public_id":	"p8zmhx29gxi00995xw6e56ggf65zlf",
+    "tenant_id":	"bhglgzfidby35uhqa8au",
 
-    "tenant_id":	"13olr9gl536ffe30p2qk",
+    "private_id":	"917baj32txyzwfbx0ztt58auup89q9",
 
-    "private_id":	"cnjxbm4s2d31uvfq23ozvcroxv42e7",
+    "hash":	"40gq1gp7oy1tkrxognlf",
 
-    "hash":	"9qlhquejyrs0zvyyqyvi",
+    "user_roles":	null,
 
     "two_factor_auth":	true,
 
-    "updated_at":	"2017-12-24 18:16:09.288052 +0000 UTC"
+    "created_at":	"2017-12-25 16:32:45.882783 +0000 UTC",
+
+    "updated_at":	"2017-12-25 16:32:45.882798 +0000 UTC"
 
 }]
 ```
@@ -248,11 +256,25 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "email":	"uMatthews@JumpXS.net",
+    "private_id":	"q4wjp4c0g67601q7arwro7zhlcm4r4",
 
-    "password":	"pnus7c970udwtowli1r3",
+    "hash":	"e49q4m0ezcvaznk9w1ng",
 
-    "password_confirm":	"l324g6cb1h5hn8webs5z"
+    "user_roles":	null,
+
+    "created_at":	"2017-12-25 16:32:45.883921 +0000 UTC",
+
+    "updated_at":	"2017-12-25 16:32:45.88394 +0000 UTC",
+
+    "username":	"LarryAllen",
+
+    "email":	"ScottRamos@Mymm.info",
+
+    "tenant_id":	"dq7qi63v3ozfey6z4ghk",
+
+    "public_id":	"1duzp44o3czo94aktfg0xdl80wocw6",
+
+    "two_factor_auth":	true
 
 }
 ```

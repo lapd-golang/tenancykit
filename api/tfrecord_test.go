@@ -9,7 +9,6 @@ import (
 
 	"github.com/gokit/tenancykit/api"
 	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/backends"
 	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
 	userFixtures "github.com/gokit/tenancykit/pkg/resources/userapi/fixtures"
 
@@ -39,7 +38,7 @@ func TestTwoFactorRecordAPI(t *testing.T) {
 	userCreateBody.TwoFactorAuth = false
 	userCreateBody.PasswordConfirm = userCreateBody.Password
 
-	users := backends.UserBackend{UserDBBackend: userdb}
+	users := api.UserBackend{UserDBBackend: userdb}
 	userRecord, err := users.Create(context.Background(), userCreateBody)
 	if err != nil {
 		tests.FailedWithError(err, "Should have successfully loaded user record")

@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"errors"
 	"reflect"
 	"time"
 
@@ -18,6 +19,9 @@ const (
 )
 
 var (
+	// ErrNotFound identifies giving item has an error not found. Useful has a generic not found error.
+	ErrNotFound = errors.New("not found")
+
 	mapper          *reflection.StructMapper
 	timeReflectType = reflect.TypeOf((*time.Time)(nil))
 )
