@@ -30,6 +30,7 @@ Tenancykit provides the following subpackages which can be used as desired:
 - JWT Identity API
 - TwoFactor Record API
 - TwoFactor Session API
+- Activity based Roles Authorization
 - Session API (SingleUsers and MultiTenant Users)
 
 ### Vendoring
