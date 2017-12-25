@@ -13,7 +13,7 @@ type Backend interface{
     Get(context.Context, string) (pkg.Activity, error)
     Update(context.Context, string, pkg.Activity) error
     GetAll(context.Context, string, string, int, int) ([]pkg.Activity, int, error)
-    Create(context.Context, pkg.Activity) (pkg.Activity, error)
+    Create(context.Context, pkg.ActivityName) (pkg.Activity, error)
 }
 ```
 
@@ -22,7 +22,7 @@ It exposes the following methods for each endpoint:
 ## Create { POST /Activity/ }
 ### Method: `func (api *HTTPAPI) Create(ctx *httputil.Context) error`
 
-Create receives the provided record of the Activity type which is delieved the 
+Create receives the provided record of the ActivityName type which is delieved the 
 JSON content to the HTTP API. This will in turn return a respective status code.
 
 - Expected Request Body
@@ -32,18 +32,7 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 ```
 
 ```json
-{
-
-
-    "name":	"Shirley Allen",
-
-    "public_id":	"8x8vjpwj7poheoa887z3fjqxdppm1s",
-
-    "created_at":	"2017-12-25 16:32:45.961329 +0000 UTC",
-
-    "updated_at":	"2017-12-25 16:32:45.961337 +0000 UTC"
-
-}
+pkg.ActivityName
 ```
 
 - Expected Status Code
@@ -63,13 +52,13 @@ Success: 201
 {
 
 
-    "created_at":	"2017-12-25 16:32:45.961833 +0000 UTC",
+    "name":	"Gary Hunt",
 
-    "updated_at":	"2017-12-25 16:32:45.961839 +0000 UTC",
+    "public_id":	"shfw3c347cm1uhnodkb2xst7cu9whz",
 
-    "name":	"Arthur Ramirez",
+    "created_at":	"2017-12-25 20:33:45.372311 +0000 UTC",
 
-    "public_id":	"awv7ptorqfmps6c5cxtj4uoo2pyu6e"
+    "updated_at":	"2017-12-25 20:33:45.37234 +0000 UTC"
 
 }
 ```
@@ -127,13 +116,13 @@ Success: 200
 {
 
 
-    "public_id":	"yev67cubuqhjwcblwa6skqwdu0dknp",
+    "name":	"Mrs. Ms. Miss Elizabeth Daniels",
 
-    "created_at":	"2017-12-25 16:32:45.962345 +0000 UTC",
+    "public_id":	"x4az0jx27vr1iwt75prayvu7m3t34x",
 
-    "updated_at":	"2017-12-25 16:32:45.962351 +0000 UTC",
+    "created_at":	"2017-12-25 20:33:45.373127 +0000 UTC",
 
-    "name":	"Elizabeth Morales"
+    "updated_at":	"2017-12-25 20:33:45.373136 +0000 UTC"
 
 }
 ```
@@ -160,24 +149,24 @@ Success: 200
 [{
 
 
-    "name":	"Amanda Wheeler",
+    "name":	"Carolyn Wallace I II III IV V MD DDS PhD DVM",
 
-    "public_id":	"g1t0h5f30wm6t3t6tcet3fdfwza8ka",
+    "public_id":	"uzo2oyha3zzil3nuh5op3cgvp791df",
 
-    "created_at":	"2017-12-25 16:32:45.962807 +0000 UTC",
+    "created_at":	"2017-12-25 20:33:45.373621 +0000 UTC",
 
-    "updated_at":	"2017-12-25 16:32:45.962815 +0000 UTC"
+    "updated_at":	"2017-12-25 20:33:45.373631 +0000 UTC"
 
 },{
 
 
-    "created_at":	"2017-12-25 16:32:45.963131 +0000 UTC",
+    "name":	"Carolyn Murray",
 
-    "updated_at":	"2017-12-25 16:32:45.963135 +0000 UTC",
+    "public_id":	"mib93isclcm1qv5zwnc9333yiinjvc",
 
-    "name":	"Joshua Watkins",
+    "created_at":	"2017-12-25 20:33:45.374008 +0000 UTC",
 
-    "public_id":	"9rf7lxd3kyuitix40ocyavaq6plm1x"
+    "updated_at":	"2017-12-25 20:33:45.374016 +0000 UTC"
 
 }]
 ```
@@ -204,13 +193,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "updated_at":	"2017-12-25 16:32:45.963503 +0000 UTC",
+    "name":	"Alan Dean Jr. Sr. I II III IV V MD DDS PhD DVM",
 
-    "name":	"Sharon Hill",
+    "public_id":	"4bzmzoepqf25fw42cbro4k4m52cv86",
 
-    "public_id":	"o7hap9gkqtg1w7n3ngdlgjysimliec",
+    "created_at":	"2017-12-25 20:33:45.374781 +0000 UTC",
 
-    "created_at":	"2017-12-25 16:32:45.963498 +0000 UTC"
+    "updated_at":	"2017-12-25 20:33:45.374794 +0000 UTC"
 
 }
 ```

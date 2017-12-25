@@ -35,7 +35,7 @@ func GetUserRoles(ctx *httputil.Context) ([]Role, error) {
 
 	roles, ok := receivedVal.([]Role)
 	if !ok {
-		return nil, errors.New("received value is not CurrentUser")
+		return nil, errors.New("received value is not users []Role")
 	}
 
 	return roles, nil
@@ -50,7 +50,7 @@ func GetUserSession(ctx *httputil.Context) (UserSession, error) {
 
 	userSession, ok := receivedVal.(UserSession)
 	if !ok {
-		return UserSession{}, errors.New("received value is not CurrentUser")
+		return UserSession{}, errors.New("received value is not UserSession")
 	}
 
 	return userSession, nil
@@ -65,7 +65,7 @@ func GetUserAuthorization(ctx *httputil.Context) (UserAuthorization, error) {
 
 	auth, ok := receivedVal.(UserAuthorization)
 	if !ok {
-		return UserAuthorization{}, errors.New("received value is not CurrentUser")
+		return UserAuthorization{}, errors.New("received value is not UserAuthorization")
 	}
 
 	return auth, nil

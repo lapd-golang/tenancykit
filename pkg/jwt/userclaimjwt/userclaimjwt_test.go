@@ -27,15 +27,17 @@ var (
 
     "user":	null,
 
-    "tenant":	null
+    "tenant":	null,
+
+    "roles":	null
 
 }`
 	contractDataJSON = `{
 
 
-    "email":	"LisaFrazier@Buzzster.org",
+    "email":	"saepe_est@Bubblebox.biz",
 
-    "password":	"m11d5ehz3yq0rth2sc5k",
+    "password":	"879rp7ljtb4bb2dlhtk2",
 
     "expiration":	null
 

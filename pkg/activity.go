@@ -6,9 +6,12 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// ActivityName defines a giving activity name used for creating an activty.
+type ActivityName string
+
 // Activity embodies data which defines a giving activity of any sort.
 // @mongoapi
-// @httpapi
+// @httpapi(New => ActivityName)
 type Activity struct {
 	Name     string    `json:"name"`
 	PublicID string    `json:"public_id"`
@@ -17,10 +20,10 @@ type Activity struct {
 }
 
 // NewActivity returns a new Activity with giving name.
-func NewActivity(name string) Activity {
+func NewActivity(name ActivityName) Activity {
 	created := time.Now()
 	return Activity{
-		Name:     name,
+		Name:     string(name),
 		PublicID: uuid.NewV4().String(),
 		Created:  created,
 		Updated:  created,

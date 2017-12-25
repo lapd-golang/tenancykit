@@ -30,7 +30,7 @@ type ActivityBackend interface {
 	Get(context.Context, string) (pkg.Activity, error)
 	Update(context.Context, string, pkg.Activity) error
 	GetAll(context.Context, string, string, int, int) ([]pkg.Activity, int, error)
-	Create(context.Context, pkg.Activity) (pkg.Activity, error)
+	Create(context.Context, pkg.ActivityName) (pkg.Activity, error)
 }
 
 // ActivityHTTP defines an interface which expose the methods provided by the http backend.
@@ -132,7 +132,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"url": ctx.Request().URL.String(),
 	}))
 
-	var incoming pkg.Activity
+	var incoming pkg.ActivityName
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{

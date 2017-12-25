@@ -30,7 +30,7 @@ type RoleBackend interface {
 	Get(context.Context, string) (pkg.Role, error)
 	Update(context.Context, string, pkg.Role) error
 	GetAll(context.Context, string, string, int, int) ([]pkg.Role, int, error)
-	Create(context.Context, pkg.Role) (pkg.Role, error)
+	Create(context.Context, pkg.RoleName) (pkg.Role, error)
 }
 
 // RoleHTTP defines an interface which expose the methods provided by the http backend.
@@ -132,7 +132,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"url": ctx.Request().URL.String(),
 	}))
 
-	var incoming pkg.Role
+	var incoming pkg.RoleName
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{

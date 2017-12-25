@@ -6,10 +6,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// RoleName defines a giving role name used for creating an Role.
+type RoleName string
+
 // Role embodies data which describes permission based on roles able to perform giving
 // activities.
 // @mongoapi
-// @httpapi
+// @httpapi(New => RoleName)
 type Role struct {
 	Name       string    `json:"name"`
 	PublicID   string    `json:"public_id"`
@@ -19,14 +22,44 @@ type Role struct {
 }
 
 // NewRole returns a giving Role with provided name and auto-assigned uuid.
-func NewRole(name string) Role {
+func NewRole(name RoleName) Role {
 	created := time.Now()
 	return Role{
-		Name:     name,
+		Name:     string(name),
 		PublicID: uuid.NewV4().String(),
 		Created:  created,
 		Updated:  created,
 	}
+}
+
+// hasID returns true/false if giving id exists in role's Activities.
+func (r Role) hasID(id string) bool {
+	for _, id := range r.Activities {
+		if id == id {
+			return true
+		}
+	}
+	return false
+}
+
+// CanPerformAny returns true for all provided activities can by performed by the role.
+func (r Role) CanPerformAll(activities ...Activity) bool {
+	for _, act := range activities {
+		if !r.hasID(act.PublicID) {
+			return false
+		}
+	}
+	return true
+}
+
+// CanPerformAny returns true for any provided activities can by performed by the role.
+func (r Role) CanPerformAny(activities ...Activity) bool {
+	for _, act := range activities {
+		if r.hasID(act.PublicID) {
+			return true
+		}
+	}
+	return false
 }
 
 // AddActivity adds the Activity public id into the giving role activity list.

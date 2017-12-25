@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"fRomero@Meemm.net",
+    "expiration":	null,
 
-    "password":	"0enuiq9ck9qf0956o45f",
+    "email":	"quis@Skalith.edu",
 
-    "expiration":	null
+    "password":	"57tpnyjub9zmxr06j8m5"
 
 }
 ```
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "public_id":	"fzobrb461upw2p6m444y8vfyweb1v4",
+    "user_id":	"dg7pzkve0039wmansc9x",
 
-    "token":	"n62uhuuzcqv9h6sfs0gh",
+    "public_id":	"e5qe1pm6b24p6rnyy8t7uz7rqju8gn",
 
-    "expires":	"2017-12-25 16:32:46.271204 +0000 UTC",
+    "token":	"eq2lr9vqwbe7ug4d3qba",
 
-    "user_id":	"hw5s8m624m44vq5xglh9"
+    "expires":	"2017-12-25 20:33:45.88593 +0000 UTC"
 
 }
 ```
@@ -125,13 +125,13 @@ Success: 200
 {
 
 
-    "token":	"v5fy4zochd56iibzmfqv",
+    "user_id":	"8ddkdsuoj1h5be21jtit",
 
-    "expires":	"2017-12-25 16:32:46.271742 +0000 UTC",
+    "public_id":	"95ksw6oo0wn9zkutlp8y6ep3y2nfic",
 
-    "user_id":	"gxgpualzgpeo8lw6fcje",
+    "token":	"3u810tjb1fqk4yclj8gy",
 
-    "public_id":	"1cirzcig1bud90yw1juhy3wnp02x4l"
+    "expires":	"2017-12-25 20:33:45.886558 +0000 UTC"
 
 }
 ```
@@ -158,24 +158,24 @@ Success: 200
 [{
 
 
-    "user_id":	"fb2z29vk29bpo7duhq27",
+    "user_id":	"782uctypq9o56mjjsh0w",
 
-    "public_id":	"rutkf753oauwq10ouy9qk8msfu77ci",
+    "public_id":	"1ywny6srjlu08srnhqwdbd0a9nwa53",
 
-    "token":	"o7lz83a34459o40do1io",
+    "token":	"mozlafy4k1hseopwcu97",
 
-    "expires":	"2017-12-25 16:32:46.2722 +0000 UTC"
+    "expires":	"2017-12-25 20:33:45.887084 +0000 UTC"
 
 },{
 
 
-    "public_id":	"aa1n15czus3jakdb7j2c79qpfx0zx7",
+    "user_id":	"nfepjn49jejdveyvlslb",
 
-    "token":	"b1hc522k76ha08fmofmy",
+    "public_id":	"mo93m9rcxhd387r2zpv6sfc5wdxvk1",
 
-    "expires":	"2017-12-25 16:32:46.272544 +0000 UTC",
+    "token":	"3prhkkfhihhpgt434m0e",
 
-    "user_id":	"83l1zgkz3y1o6fn1fe8k"
+    "expires":	"2017-12-25 20:33:45.887564 +0000 UTC"
 
 }]
 ```
@@ -202,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"6pjq4tqhlpn21rqji3ba",
+    "expires":	"2017-12-25 20:33:45.888103 +0000 UTC",
 
-    "public_id":	"nxzu3ivffkf8qf1d187bz4xut2vq1n",
+    "user_id":	"2aop5b9ndp800j1qoxp2",
 
-    "token":	"fzw9v7swo7gayx61w5se",
+    "public_id":	"l2vyx9m39qy0hqacep7tsxm2x3eu7l",
 
-    "expires":	"2017-12-25 16:32:46.272944 +0000 UTC"
+    "token":	"knc5izwq9odhgafpcebi"
 
 }
 ```

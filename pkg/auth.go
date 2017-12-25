@@ -4,6 +4,7 @@ package pkg
 // the current user, it's tenant and twofactor record if enabled.
 type CurrentUser struct {
 	User      User
+	Roles     []Role
 	Tenant    *Tenant
 	TwoFactor *TFRecord
 	TFSession *TwoFactorSession
@@ -16,4 +17,5 @@ type CurrentUser struct {
 type UserClaim struct {
 	User   User    `json:"user"`
 	Tenant ITenant `json:"tenant"`
+	Roles  []Role  `json:"roles"`
 }
