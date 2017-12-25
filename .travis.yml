@@ -6,3 +6,6 @@ go:
   - 1.8
   - 1.9
 
+script:
+    - go test ./api/...
+    - go test ./pkg/jwt/...
