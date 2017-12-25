@@ -14,6 +14,6 @@ type CurrentUser struct {
 // when using jwt as session handler for SSO Login.
 // @jwt(Contract => CreateUserSession)
 type UserClaim struct {
-	User   User   `json:"user"`
-	Tenant Tenant `json:"tenant"`
+	User   User    `json:"user"`
+	Tenant ITenant `json:"tenant"`
 }

@@ -27,6 +27,15 @@ func (cu CreateTenant) Validate() error {
 	return nil
 }
 
+// ITenant defines a tenant copy version with security details removed.
+type ITenant struct {
+	Name     string    `json:"name"`
+	Email    string    `json:"email"`
+	PublicID string    `json:"public_id"`
+	Created  time.Time `json:"created_at"`
+	Updated  time.Time `json:"updated_at"`
+}
+
 // Tenant defines a structure to represent a giving tenant.
 // @mongoapi
 // @sqlapi
@@ -51,6 +60,18 @@ func NewTenant(nt CreateTenant) Tenant {
 	t.SecretID = uuid.NewV4().String()
 
 	return t
+}
+
+// ITenant returns a ITenant instance which contains public fields of
+// a tenant record.
+func (t Tenant) ITenant() ITenant {
+	return ITenant{
+		Name:     t.Name,
+		Email:    t.Email,
+		PublicID: t.PublicID,
+		Created:  t.Created,
+		Updated:  t.Updated,
+	}
 }
 
 // Consume consumes data from map into instance fields.
