@@ -46,6 +46,11 @@ func (r RoleAPI) GetUserRoles(ctx *httputil.Context) error {
 			return nil
 		}
 
+		// User has no roles, so skip.
+		if len(currentUser.User.Roles) == 0 {
+			return nil
+		}
+
 		var roles []pkg.Role
 		for _, id := range currentUser.User.Roles {
 			role, err := r.Backend.Get(ctx.Context(), id)
@@ -73,6 +78,12 @@ func (r RoleAPI) GetUserRoles(ctx *httputil.Context) error {
 
 	// Attempt to get user struct to load roles.
 	if user, err := pkg.GetUser(ctx); err == nil {
+
+		// User has no roles, so skip.
+		if len(user.Roles) == 0 {
+			return nil
+		}
+
 		var roles []pkg.Role
 		for _, id := range user.Roles {
 			role, err := r.Backend.Get(ctx.Context(), id)
