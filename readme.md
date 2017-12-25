@@ -7,6 +7,12 @@ TenancyKit applies [Solid Design Principles](https://dave.cheney.net/2016/08/20/
 and validated as to it's individal unit parts. It's purpose is to provided combination of different packages which provides that can be used 
 to build applications requiring tenancy/user management.
 
+TenancyKit is rather opinionate and is not for everyone has it has specific opinions about things that would not be changable due to the cohesiveness
+of the code. In such cases, building a custom tenant package that fits your need is most suited than using tenancyKit.
+
+*In the future, I hope to extract as much repeatable parts of tenancykit into small code generators that can be used 
+to code generate different areas of projects to better allow extensability for users.*
+
 ## Install
 
 ```
