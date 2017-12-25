@@ -9,11 +9,13 @@ import (
 // types.TenantBackend.
 type IdentityAPI struct {
 	userclaimjwt.IdentityHTTP
+	Backend userclaimjwt.IdentityBackend
 }
 
 // NewIdentityAPI returns a new instance of IdentityAPI.
 func NewIdentityAPI(m metrics.Metrics, id userclaimjwt.IdentityBackend) IdentityAPI {
 	return IdentityAPI{
+		Backend:      id,
 		IdentityHTTP: userclaimjwt.New(m, id),
 	}
 }
