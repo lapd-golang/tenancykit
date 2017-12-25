@@ -18,19 +18,15 @@ import (
 // for the database linked in.
 type TwoFactorAPI struct {
 	tfrecordapi.TFRecordHTTP
-	Domain              string
-	CodeLength          int
 	Backend             backends.TFBackend
 	UserBackend         types.UserDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
 
 // NewTwoFactorAPI returns a new instance of TwoFactorAPI.
-func NewTwoFactorAPI(m metrics.Metrics, codeln int, domain string, tdb types.TFRecordDBBackend, users types.UserDBBackend) TwoFactorAPI {
+func NewTwoFactorAPI(m metrics.Metrics, tdb types.TFRecordDBBackend, users types.UserDBBackend) TwoFactorAPI {
 	backend := backends.TFBackend{TFRecordDBBackend: tdb}
 	return TwoFactorAPI{
-		Domain:              domain,
-		CodeLength:          codeln,
 		Backend:             backend,
 		UserBackend:         users,
 		IsNotFoundErrorFunc: db.IsNotFoundError,
@@ -91,6 +87,51 @@ func (t TwoFactorAPI) RetrieveUser(ctx *httputil.Context) error {
 	// set current user into context.
 	ctx.Set(pkg.ContextKeyUser, user)
 	return nil
+}
+
+// TwoFactorQRCode requests a user's twofactor secret code which contains the necessary
+// data needed to activate code generation on user's device if device is unable to scan qr.
+//
+// Method: GET
+// Params: :public_id
+//
+func (t TwoFactorAPI) TwoFactorQRCode(ctx *httputil.Context) error {
+	if err := t.RetrieveUser(ctx); err != nil {
+		return err
+	}
+
+	user, err := pkg.GetUser(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	if !user.TwoFactorAuth {
+		return httputil.HTTPError{
+			Err:  errors.New("user has not enabled twofactor auth"),
+			Code: http.StatusBadRequest,
+		}
+	}
+
+	twofactor, err := pkg.GetTwoFactorRecord(ctx)
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	secret, err := twofactor.SecetCode()
+	if err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusInternalServerError,
+		}
+	}
+
+	return ctx.Stream(http.StatusOK, "text/plain", bytes.NewBufferString(secret))
 }
 
 // TwoFactorQRImage requests a user's twofactor png image which contains the necessary
@@ -205,9 +246,12 @@ func (t TwoFactorAPI) DisableTwoFactor(ctx *httputil.Context) error {
 
 // EnableTwoFactor requests the enabling of twofactor authentication for a giving
 // user, it expects to have the user's public id as a parameter.
+// It allows providing custom length of generated code
 //
 // Method: GET
 // Params: :public_id
+// Params: :code_length (Default: 6, Minimum Length: 6, Maximum Length: 8)
+// Params: :domain_name
 //
 func (t TwoFactorAPI) EnableTwoFactor(ctx *httputil.Context) error {
 	if err := t.RetrieveUser(ctx); err != nil {
@@ -228,11 +272,23 @@ func (t TwoFactorAPI) EnableTwoFactor(ctx *httputil.Context) error {
 
 	user.TwoFactorAuth = true
 
+	var ok bool
+	var codelength int
+	var domainName string
+
+	if codelength, ok = ctx.GetInt("code_length"); !ok || codelength < 6 {
+		codelength = pkg.GoogleAuthenticatorUserCodeLength
+	}
+
+	if domainName, ok = ctx.GetString("domain_name"); !ok {
+		domainName = ctx.Request().URL.Host
+	}
+
 	// Create new twofactor record for user.
 	var newTF pkg.NewTF
 	newTF.User = user
-	newTF.Domain = t.Domain
-	newTF.MaxLength = t.CodeLength
+	newTF.Domain = domainName
+	newTF.MaxLength = codelength
 
 	ntwRecord, err := t.Backend.Create(ctx.Context(), newTF)
 	if err != nil {

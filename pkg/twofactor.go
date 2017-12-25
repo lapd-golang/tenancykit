@@ -107,6 +107,16 @@ func (tf *TFRecord) OTP() (string, error) {
 	return otp, tf.serializeAndUpdateTOTP(totp)
 }
 
+// SecretCode returns QR secret code for TFRecord.
+func (tf *TFRecord) SecetCode() (string, error) {
+	totp, err := tf.deserializeTOTP()
+	if err != nil {
+		return "", err
+	}
+
+	return totp.Secret(), nil
+}
+
 // QR returns QR png byte slice for TFRecord.
 func (tf *TFRecord) QR() ([]byte, error) {
 	totp, err := tf.deserializeTOTP()
