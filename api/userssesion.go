@@ -220,6 +220,29 @@ func (us UserSessionAPI) Logout(ctx *httputil.Context) error {
 	return nil
 }
 
+// Authenticate attempts to authorize giving Authorization header as
+// a valid session, it returns 200 if the Authorization header
+// is valid and is still unexpired.
+//
+// Params: None
+//
+// Headers:
+//		Authorization: Bearer <TOKEN>
+//
+//		where <TOKEN> = <USERID>:<SESSIONTOKEN>
+//
+// Response:
+//         Success: 200
+//         Failure: 501/404
+func (us UserSessionAPI) Authenticate(ctx *httputil.Context) error {
+	if err := us.GetUser(ctx); err != nil {
+		return err
+	}
+
+	ctx.Status(http.StatusOK)
+	return nil
+}
+
 // GetUser attempts to retrieve user details from provided Authorization header
 // if not is available, then request is rejected. Once user is assert to
 // valdate, then users tenant and twofactor records are pulled also and
