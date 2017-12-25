@@ -240,7 +240,7 @@ func (us UserSessionAPI) GetUser(ctx *httputil.Context) error {
 
 	// If we are already logged in and user's token is valid and session is not
 	// expired, then go ahead.
-	if lastCurrentUser, err := pkg.GetCurrentUser(ctx); err == nil {
+	if lastCurrentUser, err := pkg.GetCurrentUser(ctx); err == nil && lastCurrentUser.User.PublicID == userID {
 		ctx.Bag().Set(pkg.ContextKeyUser, lastCurrentUser.User)
 		if lastCurrentUser.Session != nil && !lastCurrentUser.Session.Expired() {
 			if lastCurrentUser.Session.ValidateToken(userToken) {

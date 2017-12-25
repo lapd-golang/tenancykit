@@ -58,7 +58,7 @@ func NewTFRecord(codeLen int, domainName string, user User) (TFRecord, error) {
 	record.UserID = user.PublicID
 	record.CodeLength = codeLen
 	record.PublicID = uuid.NewV4().String()
-	record.Key = fmt.Sprintf("%s - (%s, %s)", domainName, user.Email)
+	record.Key = fmt.Sprintf("%s - (%s)", domainName, user.Email)
 	record.Created = time.Now()
 	record.Updated = record.Created
 

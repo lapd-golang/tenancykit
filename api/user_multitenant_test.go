@@ -27,16 +27,11 @@ func TestMultiTenantUserAPI(t *testing.T) {
 	m := metrics.New()
 	userdb := mock.UserBackend()
 	tenantdb := mock.TenantDBBackend()
-	tfdb := mock.TFRecordBackend()
 
 	users := api.NewMultiTenantUserAPI(
 		m,
-		true,
-		"dominos",
-		pkg.GoogleAuthenticatorUserCodeLength,
 		userdb,
 		tenantdb,
-		tfdb,
 	)
 
 	createTenant, err := tenantFixtures.LoadCreateJSON(tenantFixtures.TenantCreateJSON)
