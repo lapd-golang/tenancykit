@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/gokit/tenancykit/pkg/resources/roleapi"
 
@@ -47,20 +46,43 @@ func TestRoleAPI(t *testing.T) {
 
 	testRoleCreate(t, userRecord, tf, tfdb)
 	testRoleUserRoles(t, userRecord, tf, tfdb)
-	testRoleGetAll(t, userRecord, tf, tfdb)
-	testRoleGet(t, userRecord, tf, tfdb)
-	testRoleUpdate(t, userRecord, tf, tfdb)
-	testRoleDelete(t, userRecord, tf, tfdb)
 }
 
 func testRoleUserRoles(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
 	tests.Header("When we create roles for a user with RoleAPI")
 	{
-		roles, err := db.GetAll(context.Background(), "", "", 0, 0)
+		recs, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all roles in db")
 		}
 		tests.FailedWithError(err, "Should have retrieved all roles in db")
+
+		if total == 0 {
+			tests.Failed("Should have existing records in db")
+		}
+		tests.Passed("Should have existing records in db")
+
+		roleRecord := recs[0]
+		user.Roles = append(user.Roles, roleRecord.PublicID)
+
+		infoResponse := httptest.NewRecorder()
+		infoResource := httptesting.NewRequest("INFO", "/roles"+user.PublicID, nil, infoResponse)
+		infoResource.Set(pkg.ContextKeyUser, user)
+		if err := roles.GetUserRoles(infoResource); err != nil {
+			tests.FailedWithError(err, "Should have successfully retrieved user roles")
+		}
+		tests.Passed("Should have successfully retrieved user roles")
+
+		userRoles, err := pkg.GetUserRoles(infoResource)
+		if err != nil {
+			tests.FailedWithError(err, "Should have user roles set in context")
+		}
+		tests.Passed("Should have user roles set in context")
+
+		if len(userRoles) != len(user.Roles) {
+			tests.Failed("Should have length match for user roles and provided roles")
+		}
+		tests.Passed("Should have length match for user roles and provided roles")
 	}
 }
 
@@ -122,184 +144,5 @@ func testRoleCreate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 			tests.FailedWithError(err, "Should have successfully received new record response")
 		}
 		tests.Passed("Should have successfully received new record response")
-	}
-}
-func testRoleGetAll(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we get all Roles with RoleAPI")
-	{
-		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
-		if err != nil {
-			tests.FailedWithError(err, "Should have retrieved all results from backend")
-		}
-		tests.Passed("Should have retrieved all results from backend")
-
-		if total == 0 {
-			tests.Failed("Should have received atleast one record from backend")
-		}
-		tests.Passed("Should have received atleast one record from backend")
-
-		getResponse := httptest.NewRecorder()
-		getAll := httptesting.Get("/roles/", nil, getResponse)
-		if err := roles.GetAll(getAll); err != nil {
-			tests.FailedWithError(err, "Should have successfully created record")
-		}
-		tests.Passed("Should have successfully created record")
-
-		if getResponse.Code != http.StatusOK {
-			tests.Failed("Should have received Status 202")
-		}
-		tests.Passed("Should have received Status 202")
-
-		if getResponse.Body == nil {
-			tests.Failed("Should have received body response")
-		}
-		tests.Passed("Should have received body response")
-
-		var records roleapi.RoleRecords
-		if err = json.Unmarshal(getResponse.Body.Bytes(), &records); err != nil {
-			tests.Info("Records: %+q", getResponse.Body.String())
-			tests.FailedWithError(err, "Should have successfully received records response")
-		}
-		tests.Passed("Should have successfully received new records")
-
-		if records.TotalRecords != total {
-			tests.Failed("Should have retrieved same number of records from db")
-		}
-		tests.Passed("Should have retrieved same number of records from db")
-	}
-}
-func testRoleGet(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we get a Role with RoleAPI")
-	{
-		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
-		if err != nil {
-			tests.FailedWithError(err, "Should have retrieved all results from backend")
-		}
-		tests.Passed("Should have retrieved all results from backend")
-
-		if total == 0 {
-			tests.Failed("Should have received atleast one record from backend")
-		}
-		tests.Passed("Should have received atleast one record from backend")
-
-		record := records[0]
-
-		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Post("/roles/"+record.PublicID, nil, getResponse)
-		getRecord.Bag().Set("public_id", record.PublicID)
-
-		if err := roles.Get(getRecord); err != nil {
-			tests.Info("Record: %#v", record)
-			tests.FailedWithError(err, "Should have successfully created record")
-		}
-		tests.Passed("Should have successfully created record")
-
-		if getResponse.Code != http.StatusOK {
-			tests.Failed("Should have received Status 202")
-		}
-		tests.Passed("Should have received Status 202")
-
-		if getResponse.Body == nil {
-			tests.Failed("Should have received body response")
-		}
-		tests.Passed("Should have received body response")
-
-		if _, err = fixtures.LoadRoleJSON(getResponse.Body.String()); err != nil {
-			tests.FailedWithError(err, "Should have successfully received new record response")
-		}
-		tests.Passed("Should have successfully received new record response")
-	}
-}
-func testRoleUpdate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we update Role with RoleAPI")
-	{
-		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
-		if err != nil {
-			tests.FailedWithError(err, "Should have retrieved all results from backend")
-		}
-		tests.Passed("Should have retrieved all results from backend")
-
-		if total == 0 {
-			tests.Failed("Should have received atleast one record from backend")
-		}
-		tests.Passed("Should have received atleast one record from backend")
-
-		record := records[0]
-
-		beforeDomain := record.Updated
-		record.Updated = time.Now()
-
-		recordJSON, err := json.Marshal(record)
-		if err != nil {
-			tests.Info("JSON: %#v", record)
-			tests.FailedWithError(err, "Should successfully marshal user record")
-		}
-		tests.Passed("Should successfully marshal user record")
-
-		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Put("/roles/"+record.PublicID, bytes.NewBuffer(recordJSON), getResponse)
-		getRecord.Bag().Set("public_id", record.PublicID)
-
-		if err := roles.Update(getRecord); err != nil {
-			tests.Info("Record: %#v", record)
-			tests.FailedWithError(err, "Should have successfully created record")
-		}
-		tests.Passed("Should have successfully created record")
-
-		if getResponse.Code != http.StatusNoContent {
-			tests.Failed("Should have received Status 202")
-		}
-		tests.Passed("Should have received Status 202")
-
-		updatedRecord, err := db.Get(context.Background(), record.PublicID)
-		if err != nil {
-			tests.FailedWithError(err, "Should have succesfully retrieved update record")
-		}
-		tests.Passed("Should have succesfully retrieved update record")
-
-		if updatedRecord.Updated.Unix() != record.Updated.Unix() {
-			tests.Info("Before: %+q", beforeDomain)
-			tests.Info("After: %+q", updatedRecord.Updated)
-			tests.Info("Expected: %+q", record.Updated)
-			tests.Failed("Should have successfully update record field")
-		}
-		tests.Passed("Should have successfully update record field")
-	}
-}
-func testRoleDelete(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we delete Role with RoleAPI")
-	{
-		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
-		if err != nil {
-			tests.FailedWithError(err, "Should have retrieved all results from backend")
-		}
-		tests.Passed("Should have retrieved all results from backend")
-
-		if total == 0 {
-			tests.Failed("Should have received atleast one record from backend")
-		}
-		tests.Passed("Should have received atleast one record from backend")
-
-		record := records[0]
-
-		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Delete("/roles/"+record.PublicID, nil, getResponse)
-		getRecord.Bag().Set("public_id", record.PublicID)
-
-		if err := roles.Delete(getRecord); err != nil {
-			tests.Info("Record: %#v", record)
-			tests.FailedWithError(err, "Should have successfully created record")
-		}
-		tests.Passed("Should have successfully created record")
-
-		if getResponse.Code != http.StatusNoContent {
-			tests.Failed("Should have received Status 202")
-		}
-		tests.Passed("Should have received Status 202")
-
-		if _, err := db.Get(context.Background(), record.PublicID); err == nil {
-			tests.Failed("Should have succesfully failed to get deleted record")
-		}
-		tests.Passed("Should have succesfully failed to get deleted record")
 	}
 }
