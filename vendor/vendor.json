@@ -15,6 +15,18 @@
 			"revisionTime": "2017-08-02T18:26:40Z"
 		},
 		{
+			"checksumSHA1": "jt2qfJxo7XsMCo6RerjgcoaGZPM=",
+			"path": "github.com/fatih/color",
+			"revision": "67c513e5729f918f5e69786686770c27141a4490",
+			"revisionTime": "2017-08-04T15:04:06Z"
+		},
+		{
+			"checksumSHA1": "rAnxK4LbUVYQh6VwXkq/89JaroY=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "cd4cb909ce1a31435164be29bf3682031f61539a",
+			"revisionTime": "2017-11-17T11:51:24Z"
+		},
+		{
 			"checksumSHA1": "j4HhyAkrA2EK9TC7lwoCfQZQq2A=",
 			"path": "github.com/gokit/tokens",
 			"revision": "897a45cc407336593d5394c5bb89ebd4ca28fac6",
@@ -99,6 +111,12 @@
 			"revisionTime": "2017-12-25T21:50:28Z"
 		},
 		{
+			"checksumSHA1": "HnfSGH0VYmW+/q73y2MjgLa62ko=",
+			"path": "github.com/influx6/faux/metrics/custom",
+			"revision": "20254ed4c7e361949e1ee02d8e71046a361e4077",
+			"revisionTime": "2017-12-25T21:50:28Z"
+		},
+		{
 			"checksumSHA1": "SPZmL8I0gXLZlYLasxzq2yYadg4=",
 			"path": "github.com/influx6/faux/netutils",
 			"revision": "20254ed4c7e361949e1ee02d8e71046a361e4077",
@@ -127,6 +145,20 @@
 			"path": "github.com/jmoiron/sqlx/reflectx",
 			"revision": "d9bd385d68c068f1fabb5057e3dedcbcbb039d0f",
 			"revisionTime": "2017-04-30T19:46:03Z"
+		},
+		{
+			"checksumSHA1": "sGC8yzCmU7CO6/Uy6TTWRgHpgLI=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-colorable",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "67c513e5729f918f5e69786686770c27141a4490",
+			"revisionTime": "2017-08-04T15:04:06Z"
+		},
+		{
+			"checksumSHA1": "w8LTR7SnKYaJgDdhvC5qTjYJ5s8=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-isatty",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "67c513e5729f918f5e69786686770c27141a4490",
+			"revisionTime": "2017-08-04T15:04:06Z"
 		},
 		{
 			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
@@ -254,6 +286,13 @@
 			"path": "golang.org/x/crypto/salsa20/salsa",
 			"revision": "d22311dbf16eee1f70cf1342345cf36e976a70b7",
 			"revisionTime": "2017-12-13T13:57:54Z"
+		},
+		{
+			"checksumSHA1": "jBzWOmKY4vGfgD+DVRzzFul+VP8=",
+			"origin": "github.com/fatih/color/vendor/golang.org/x/sys/unix",
+			"path": "golang.org/x/sys/unix",
+			"revision": "67c513e5729f918f5e69786686770c27141a4490",
+			"revisionTime": "2017-08-04T15:04:06Z"
 		},
 		{
 			"checksumSHA1": "1D8GzeoFGUs5FZOoyC2DpQg8c5Y=",
