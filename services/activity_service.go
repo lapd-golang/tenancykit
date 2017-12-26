@@ -73,7 +73,7 @@ func (as ActivityService) EnsureAuthorized(ctx *httputil.Context, name pkg.Activ
 			if db.IsNotFoundError(err) {
 				return httputil.HTTPError{
 					Err:  err,
-					Code: http.StatusBadRequest,
+					Code: http.StatusUnauthorized,
 				}
 			}
 			return httputil.HTTPError{
@@ -83,6 +83,7 @@ func (as ActivityService) EnsureAuthorized(ctx *httputil.Context, name pkg.Activ
 		}
 
 		currentUser.Roles = roles
+		ctx.Set(pkg.ContextKeyUserRoles, roles)
 		ctx.Set(pkg.ContextKeyCurrentUser, currentUser)
 		return as.checkRoles(ctx, currentUser.User, activity, currentUser.Roles, afterFind)
 	}
@@ -135,6 +136,8 @@ func (as ActivityService) checkRoles(ctx *httputil.Context, user pkg.User, activ
 					Code: http.StatusBadRequest,
 				}
 			}
+
+			return nil
 		}
 	}
 

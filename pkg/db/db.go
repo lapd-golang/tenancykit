@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/gokit/tenancykit/pkg"
 	"github.com/gokit/tenancykit/pkg/db/activitymgo"
 	"github.com/gokit/tenancykit/pkg/db/identitymgo"
 	"github.com/gokit/tenancykit/pkg/db/rolemgo"
@@ -9,7 +10,6 @@ import (
 	"github.com/gokit/tenancykit/pkg/db/twofactorsessionmgo"
 	"github.com/gokit/tenancykit/pkg/db/usermgo"
 	"github.com/gokit/tenancykit/pkg/db/usersessionmgo"
-	"github.com/ory/hydra/pkg"
 )
 
 // IsNotFoundError returns true/false if the giving err is a not found error

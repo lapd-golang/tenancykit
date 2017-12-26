@@ -110,6 +110,42 @@ func NewUser(nw CreateUser) (User, error) {
 	return u, nil
 }
 
+// HasAllRole returns true/false if giving user has all provided roles.
+func (u User) HasAllRole(roles ...Role) bool {
+	for _, role := range roles {
+		if !u.hasRole(role) {
+			return false
+		}
+	}
+	return true
+}
+
+// HasAnyrole returns true/false if giving user has any of provided roles.
+func (u User) HasAnyRole(roles ...Role) bool {
+	for _, role := range roles {
+		if u.hasRole(role) {
+			return true
+		}
+	}
+	return false
+}
+
+// AddRole adds provided role public_id to user instance.
+// Granting user all powers related to giving role.
+func (u *User) AddRole(role Role) {
+	u.Roles = append(u.Roles, role.PublicID)
+}
+
+// hasRole returns true/false if user has provided role.
+func (u User) hasRole(r Role) bool {
+	for _, role := range u.Roles {
+		if role == r.PublicID {
+			return true
+		}
+	}
+	return false
+}
+
 // Authenticate attempts to authenticate the giving password to the provided user.
 func (u User) Authenticate(password string) error {
 	pass := []byte(u.PrivateID + ":" + password)

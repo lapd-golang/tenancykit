@@ -38,7 +38,7 @@ func NewMultiTenantUserSessionAPI(m metrics.Metrics, users types.UserDBBackend, 
 	api.SessionBackend = sessions
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.TFSessionsBackend = tfsessions
-	api.Backend = api.UserSessionBackend{
+	api.Backend = UserSessionBackend{
 		UserBackend:          users,
 		UserSessionDBBackend: sessions,
 	}
