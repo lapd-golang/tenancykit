@@ -11,23 +11,21 @@ var (
 	TFRecordJSON = `{
 
 
-    "public_id":	"1c4lszq0gvb0oymtf9zd8z6urlronr",
+    "updated_at":	"2017-12-26T18:57:10+01:00",
 
-    "tenant_id":	"gx6zaudtmm0kc6qlrn47",
+    "key":	"nsd6lhcyvfy5yrol1ma3",
 
-    "created_at":	"2017-12-23 12:42:40.891807 +0000 UTC",
+    "domain":	"Twitterwire.edu",
 
-    "updated_at":	"2017-12-23 12:42:40.891816 +0000 UTC",
+    "user_id":	"0fmttoo2e5z5wkgaeuuy",
 
-    "domain":	"Quimm.info",
+    "totp":	"jl75lzow7qp39ccvpv84",
 
-    "user_id":	"rk8hx0z6ytoq4dwwbyc4",
+    "tenant_id":	"yl23qke276cqhzw93jxes89a8tsa49",
 
-    "totp":	"cmk9w71r9vljgen2ihcl",
+    "code_length":	13,
 
-    "code_length":	18,
-
-    "key":	"xtbfdzhosy0wk7ru37hc"
+    "created_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 
@@ -36,34 +34,30 @@ var (
 
     "max_length":	8,
 
-    "tenant":	null,
-
     "user":	null,
 
-    "domain":	"Feednation.name"
+    "domain":	"Ozu.name"
 
 }`
 
 	TFRecordUpdateJSON = `{
 
 
-    "user_id":	"7okn4uet1l8z980c9n9h",
+    "user_id":	"0ay9kuakbwij8vkihrhf",
 
-    "totp":	"1ivdaocy9p4fufgwnk5u",
+    "totp":	"howjqyo4kx4ltvht2qr4",
 
-    "code_length":	16,
+    "tenant_id":	"1hluc42g0h3ximykp0sjumljepzvig",
 
-    "created_at":	"2017-12-23 12:42:40.892377 +0000 UTC",
+    "code_length":	11,
 
-    "updated_at":	"2017-12-23 12:42:40.892383 +0000 UTC",
+    "created_at":	"2017-12-26T18:57:10+01:00",
 
-    "key":	"zda5qluhmne6o7xvyxe2",
+    "updated_at":	"2017-12-26T18:57:10+01:00",
 
-    "domain":	"Feedbug.gov",
+    "key":	"sw5uhnr0rff9408wc3lr",
 
-    "public_id":	"al1p7eckanl6pgv7j2088764rfwz3l",
-
-    "tenant_id":	"bn9ap7vniside6nox244"
+    "domain":	"Roomm.name"
 
 }`
 )
@@ -73,7 +67,9 @@ func LoadCreateJSON(content string) (pkg.NewTF, error) {
 	var elem pkg.NewTF
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.NewTF{}, err
+
 	}
 
 	return elem, nil
@@ -84,7 +80,9 @@ func LoadUpdateJSON(content string) (pkg.TFRecord, error) {
 	var elem pkg.TFRecord
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.TFRecord{}, err
+
 	}
 
 	return elem, nil

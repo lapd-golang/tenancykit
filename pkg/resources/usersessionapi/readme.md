@@ -35,9 +35,9 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "email":	"2Andrews@Trupe.mil",
+    "email":	"1Coleman@Babbleopia.gov",
 
-    "password":	"khq4hlin5gk0jvqwmfbz",
+    "password":	"cshvuw9aax2l91hcaqz5",
 
     "expiration":	null
 
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "user_id":	"0vxi1ov470iqx6zax0zn",
+    "token":	"9w4fnjd0gh8h8yznphdu",
 
-    "public_id":	"uw2s3m6rnd76o5drbf0lo33kk7jztg",
+    "expires":	"2017-12-26T18:57:10+01:00",
 
-    "token":	"nfig5px7jp0upzsruvsy",
+    "user_id":	"fatqw2gi73z3f6l0qlht",
 
-    "expires":	"2017-12-26 15:18:04.71729 +0000 UTC"
+    "public_id":	"ocj21639v4s1d5huzsvwu8c3gr56a1"
 
 }
 ```
@@ -125,13 +125,13 @@ Success: 200
 {
 
 
-    "expires":	"2017-12-26 15:18:04.718119 +0000 UTC",
+    "user_id":	"w85fh4krizo1l5pio8i8",
 
-    "user_id":	"bgatt05q43a0jvfqajy1",
+    "public_id":	"3n6uij5wwebhpvxly1a76clma9bomj",
 
-    "public_id":	"c6rc9ua1brw8o5kbhxmnpnve7ho9s0",
+    "token":	"szjhvenhf68jkz4ejfhf",
 
-    "token":	"369ocfxozvas4bl929sn"
+    "expires":	"2017-12-26T18:57:10+01:00"
 
 }
 ```
@@ -158,24 +158,24 @@ Success: 200
 [{
 
 
-    "user_id":	"bxffsk7flu7auoz4jt1i",
+    "user_id":	"0t1bic1w92f67k0qs7my",
 
-    "public_id":	"vrsyu5mslp05pbb0hfj3bb1892b572",
+    "public_id":	"1s2xlny4c76i91d31lfhddgvfgzcfg",
 
-    "token":	"gcyded0t2wbw7zvynk0f",
+    "token":	"2ikh8nuzespzysmfa5po",
 
-    "expires":	"2017-12-26 15:18:04.718753 +0000 UTC"
+    "expires":	"2017-12-26T18:57:10+01:00"
 
 },{
 
 
-    "public_id":	"gi3lehkhw8sp35hcc8nfptojh7u7i6",
+    "user_id":	"l9c3hgaun0f7qzipkgx3",
 
-    "token":	"7olxatn059e8v0480ok9",
+    "public_id":	"03y9ytjag8ix7w5tgwt8elkgry7fkt",
 
-    "expires":	"2017-12-26 15:18:04.719222 +0000 UTC",
+    "token":	"ccisp0nctrem4rvostk1",
 
-    "user_id":	"3cbeq6cmvqu04ir8vd8t"
+    "expires":	"2017-12-26T18:57:10+01:00"
 
 }]
 ```
@@ -202,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "user_id":	"75tz3badn8kw3tfszq3r",
+    "user_id":	"e07oaviv7bf1i8hdo3mc",
 
-    "public_id":	"f1bsc5o035hhzeb57urix7ixuvycfg",
+    "public_id":	"hemo1v0drt2rs1zjrrqc66kjexq7jj",
 
-    "token":	"z1ke3e7twaymnwjzj1on",
+    "token":	"cxnzfaz1kjksarupbmc2",
 
-    "expires":	"2017-12-26 15:18:04.719834 +0000 UTC"
+    "expires":	"2017-12-26T18:57:10+01:00"
 
 }
 ```

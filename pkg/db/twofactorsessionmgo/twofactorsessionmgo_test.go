@@ -23,8 +23,6 @@ import (
 )
 
 var (
-	events = metrics.New(custom.StackDisplay(os.Stdout))
-
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
 		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
@@ -40,6 +38,11 @@ var (
 // TestGetTwoFactorSession validates the retrieval of a TwoFactorSession
 // record from a mongodb.
 func TestGetTwoFactorSession(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -68,6 +71,11 @@ func TestGetTwoFactorSession(t *testing.T) {
 // TestGetAllTwoFactorSession validates the retrieval of all TwoFactorSession
 // record from a mongodb.
 func TestGetAllTwoFactorSession(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -101,6 +109,10 @@ func TestGetAllTwoFactorSession(t *testing.T) {
 // TestGetAllTwoFactorSessionOrderBy validates the retrieval of all TwoFactorSession
 // record from a mongodb.
 func TestGetAllTwoFactorSessionByOrder(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -134,6 +146,10 @@ func TestGetAllTwoFactorSessionByOrder(t *testing.T) {
 // TestTwoFactorSessionCreate validates the creation of a TwoFactorSession
 // record with a mongodb.
 func TestTwoFactorSessionCreate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -156,6 +172,11 @@ func TestTwoFactorSessionCreate(t *testing.T) {
 // TestTwoFactorSessionUpdate validates the update of a TwoFactorSession
 // record with a mongodb.
 func TestTwoFactorSessionUpdate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -191,6 +212,10 @@ func TestTwoFactorSessionUpdate(t *testing.T) {
 // TestTwoFactorSessionDelete validates the removal of a TwoFactorSession
 // record from a mongodb.
 func TestTwoFactorSessionDelete(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

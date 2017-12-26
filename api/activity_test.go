@@ -7,9 +7,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
-	"github.com/gokit/tenancykit/pkg/resources/tfrecordapi"
-	"github.com/gokit/tenancykit/pkg/resources/usersessionapi/fixtures"
+	"github.com/gokit/tenancykit/pkg/resources/activityapi"
+	"github.com/gokit/tenancykit/pkg/resources/activityapi/fixtures"
+
 	"github.com/influx6/faux/httputil/httptesting"
 
 	"github.com/gokit/tenancykit/api"
@@ -45,19 +47,18 @@ func TestActivityAPI(t *testing.T) {
 
 	testActivityCreate(t, userRecord, tf, tfdb)
 	testActivityInfo(t, userRecord, tf, tfdb)
-	testActivityCount(t, userRecord, tf, tfdb)
 	testActivityGetAll(t, userRecord, tf, tfdb)
 	testActivityGet(t, userRecord, tf, tfdb)
 	testActivityUpdate(t, userRecord, tf, tfdb)
 	testActivityDelete(t, userRecord, tf, tfdb)
 }
 
-func testActivityInfo(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityInfo(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we create a Activity with ActivityAPI")
 	{
 		infoResponse := httptest.NewRecorder()
-		infoResource := httptesting.NewRequest("INFO", "/tfrecords", nil, infoResponse)
-		if err := roles.Info(infoResource); err != nil {
+		infoResource := httptesting.NewRequest("INFO", "/activities", nil, infoResponse)
+		if err := acts.Info(infoResource); err != nil {
 			tests.FailedWithError(err, "Should have successfully made info request")
 		}
 		tests.Passed("Should have successfully created record")
@@ -72,7 +73,7 @@ func testActivityInfo(t *testing.T, user pkg.User, roles api.ActivityAPI, db typ
 		}
 		tests.Passed("Should have received body response")
 
-		var info tfrecordapi.TFRecordInfo
+		var info activityapi.ActivityInfo
 		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
 			tests.FailedWithError(err, "Should have successfully collected record info")
 		}
@@ -85,45 +86,13 @@ func testActivityInfo(t *testing.T, user pkg.User, roles api.ActivityAPI, db typ
 	}
 }
 
-func testActivityCount(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
-	tests.Header("When we create a Activity with ActivityAPI")
-	{
-		infoResponse := httptest.NewRecorder()
-		infoResource := httptesting.NewRequest("INFO", "/tfrecords", nil, infoResponse)
-		if err := roles.Count(infoResource); err != nil {
-			tests.FailedWithError(err, "Should have successfully made info request")
-		}
-		tests.Passed("Should have successfully created record")
-
-		if infoResponse.Code != http.StatusOK {
-			tests.Failed("Should have received Status 200")
-		}
-		tests.Passed("Should have received Status 200")
-
-		if infoResponse.Body == nil {
-			tests.Failed("Should have received body response")
-		}
-		tests.Passed("Should have received body response")
-
-		var info tfrecordapi.TFRecordInfo
-		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
-			tests.FailedWithError(err, "Should have successfully collected record info")
-		}
-		tests.Passed("Should have successfully collected record info")
-
-		if info.Total == 0 {
-			tests.Failed("Should have atleast one record in backend")
-		}
-		tests.Passed("Should have atleast one record in backend")
-	}
-}
-func testActivityCreate(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityCreate(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we count all Activitys with ActivityAPI")
 	{
 		createResponse := httptest.NewRecorder()
-		createResource := httptesting.Post("/tfrecords", bytes.NewBufferString(fixtures.TFRecordCreateJSON), createResponse)
-		if err := roles.Create(createResource); err != nil {
-			tests.Info("JSON: %+s", fixtures.TFRecordCreateJSON)
+		createResource := httptesting.Post("/activities", bytes.NewBufferString(fixtures.ActivityCreateJSON), createResponse)
+		if err := acts.Create(createResource); err != nil {
+			tests.Info("JSON: %+s", fixtures.ActivityCreateJSON)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
 		tests.Passed("Should have successfully created record")
@@ -138,13 +107,13 @@ func testActivityCreate(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		}
 		tests.Passed("Should have received body response")
 
-		if _, err := fixtures.LoadTFRecordJSON(createResponse.Body.String()); err != nil {
+		if _, err := fixtures.LoadActivityJSON(createResponse.Body.String()); err != nil {
 			tests.FailedWithError(err, "Should have successfully received new record response")
 		}
 		tests.Passed("Should have successfully received new record response")
 	}
 }
-func testActivityGetAll(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityGetAll(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we get all Activitys with ActivityAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -159,8 +128,8 @@ func testActivityGetAll(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		tests.Passed("Should have received atleast one record from backend")
 
 		getResponse := httptest.NewRecorder()
-		getAll := httptesting.Get("/tfrecords/", nil, getResponse)
-		if err := tf.GetAll(getAll); err != nil {
+		getAll := httptesting.Get("/activities/", nil, getResponse)
+		if err := acts.GetAll(getAll); err != nil {
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
 		tests.Passed("Should have successfully created record")
@@ -175,7 +144,7 @@ func testActivityGetAll(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		}
 		tests.Passed("Should have received body response")
 
-		var records tfrecordapi.TFRecordRecords
+		var records activityapi.ActivityRecords
 		if err = json.Unmarshal(getResponse.Body.Bytes(), &records); err != nil {
 			tests.Info("Records: %+q", getResponse.Body.String())
 			tests.FailedWithError(err, "Should have successfully received records response")
@@ -188,7 +157,7 @@ func testActivityGetAll(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		tests.Passed("Should have retrieved same number of records from db")
 	}
 }
-func testActivityGet(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityGet(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we get a Activity with ActivityAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -205,10 +174,10 @@ func testActivityGet(t *testing.T, user pkg.User, roles api.ActivityAPI, db type
 		record := records[0]
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Post("/tfrecords/"+record.PublicID, nil, getResponse)
+		getRecord := httptesting.Post("/activities/"+record.PublicID, nil, getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := tf.Get(getRecord); err != nil {
+		if err := acts.Get(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
@@ -224,13 +193,13 @@ func testActivityGet(t *testing.T, user pkg.User, roles api.ActivityAPI, db type
 		}
 		tests.Passed("Should have received body response")
 
-		if _, err = fixtures.LoadTFRecordJSON(getResponse.Body.String()); err != nil {
+		if _, err = fixtures.LoadActivityJSON(getResponse.Body.String()); err != nil {
 			tests.FailedWithError(err, "Should have successfully received new record response")
 		}
 		tests.Passed("Should have successfully received new record response")
 	}
 }
-func testActivityUpdate(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityUpdate(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we update Activity with ActivityAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -246,8 +215,8 @@ func testActivityUpdate(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 
 		record := records[0]
 
-		beforeDomain := record.Domain
-		record.Domain = "wombat.gmail.com"
+		beforeDomain := record.Updated
+		record.Updated = time.Now()
 
 		recordJSON, err := json.Marshal(record)
 		if err != nil {
@@ -257,10 +226,10 @@ func testActivityUpdate(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		tests.Passed("Should successfully marshal user record")
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Put("/tfrecords/"+record.PublicID, bytes.NewBuffer(recordJSON), getResponse)
+		getRecord := httptesting.Put("/activities/"+record.PublicID, bytes.NewBuffer(recordJSON), getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := tf.Update(getRecord); err != nil {
+		if err := acts.Update(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
@@ -277,16 +246,16 @@ func testActivityUpdate(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		}
 		tests.Passed("Should have succesfully retrieved update record")
 
-		if updatedRecord.Domain != record.Domain {
+		if updatedRecord.Updated.Unix() != record.Updated.Unix() {
 			tests.Info("Before: %+q", beforeDomain)
-			tests.Info("After: %+q", updatedRecord.Domain)
-			tests.Info("Expected: %+q", record.Domain)
+			tests.Info("After: %+q", updatedRecord.Updated)
+			tests.Info("Expected: %+q", record.Updated)
 			tests.Failed("Should have successfully update record field")
 		}
 		tests.Passed("Should have successfully update record field")
 	}
 }
-func testActivityDelete(t *testing.T, user pkg.User, roles api.ActivityAPI, db types.ActivityDBBackend) {
+func testActivityDelete(t *testing.T, user pkg.User, acts api.ActivityAPI, db types.ActivityDBBackend) {
 	tests.Header("When we delete Activity with ActivityAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
@@ -303,10 +272,10 @@ func testActivityDelete(t *testing.T, user pkg.User, roles api.ActivityAPI, db t
 		record := records[0]
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Delete("/tfrecords/"+record.PublicID, nil, getResponse)
+		getRecord := httptesting.Delete("/activities/"+record.PublicID, nil, getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := tf.Delete(getRecord); err != nil {
+		if err := acts.Delete(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}

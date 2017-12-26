@@ -23,8 +23,6 @@ import (
 )
 
 var (
-	events = metrics.New(custom.StackDisplay(os.Stdout))
-
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
 		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
@@ -40,6 +38,11 @@ var (
 // TestGetUserSession validates the retrieval of a UserSession
 // record from a mongodb.
 func TestGetUserSession(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -68,6 +71,11 @@ func TestGetUserSession(t *testing.T) {
 // TestGetAllUserSession validates the retrieval of all UserSession
 // record from a mongodb.
 func TestGetAllUserSession(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -101,6 +109,10 @@ func TestGetAllUserSession(t *testing.T) {
 // TestGetAllUserSessionOrderBy validates the retrieval of all UserSession
 // record from a mongodb.
 func TestGetAllUserSessionByOrder(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -134,6 +146,10 @@ func TestGetAllUserSessionByOrder(t *testing.T) {
 // TestUserSessionCreate validates the creation of a UserSession
 // record with a mongodb.
 func TestUserSessionCreate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -156,6 +172,11 @@ func TestUserSessionCreate(t *testing.T) {
 // TestUserSessionUpdate validates the update of a UserSession
 // record with a mongodb.
 func TestUserSessionUpdate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -191,6 +212,10 @@ func TestUserSessionUpdate(t *testing.T) {
 // TestUserSessionDelete validates the removal of a UserSession
 // record from a mongodb.
 func TestUserSessionDelete(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

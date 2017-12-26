@@ -23,8 +23,6 @@ import (
 )
 
 var (
-	events = metrics.New(custom.StackDisplay(os.Stdout))
-
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
 		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
@@ -40,6 +38,11 @@ var (
 // TestGetUser validates the retrieval of a User
 // record from a mongodb.
 func TestGetUser(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -68,6 +71,11 @@ func TestGetUser(t *testing.T) {
 // TestGetAllUser validates the retrieval of all User
 // record from a mongodb.
 func TestGetAllUser(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -101,6 +109,10 @@ func TestGetAllUser(t *testing.T) {
 // TestGetAllUserOrderBy validates the retrieval of all User
 // record from a mongodb.
 func TestGetAllUserByOrder(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -134,6 +146,10 @@ func TestGetAllUserByOrder(t *testing.T) {
 // TestUserCreate validates the creation of a User
 // record with a mongodb.
 func TestUserCreate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -156,6 +172,11 @@ func TestUserCreate(t *testing.T) {
 // TestUserUpdate validates the update of a User
 // record with a mongodb.
 func TestUserUpdate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -191,6 +212,10 @@ func TestUserUpdate(t *testing.T) {
 // TestUserDelete validates the removal of a User
 // record from a mongodb.
 func TestUserDelete(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

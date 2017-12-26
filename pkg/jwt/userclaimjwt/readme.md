@@ -39,9 +39,9 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "email":	"GeorgeKelly@Quatz.com",
+    "email":	"DeniseCruz@Voonix.mil",
 
-    "password":	"teh666rk20ohw7tr3wvo",
+    "password":	"khkse994c9tp1qgpo8ce",
 
     "expiration":	null
 

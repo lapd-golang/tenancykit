@@ -23,8 +23,6 @@ import (
 )
 
 var (
-	events = metrics.New(custom.StackDisplay(os.Stdout))
-
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
 		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
@@ -40,6 +38,11 @@ var (
 // TestGetTenant validates the retrieval of a Tenant
 // record from a mongodb.
 func TestGetTenant(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -68,6 +71,11 @@ func TestGetTenant(t *testing.T) {
 // TestGetAllTenant validates the retrieval of all Tenant
 // record from a mongodb.
 func TestGetAllTenant(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -101,6 +109,10 @@ func TestGetAllTenant(t *testing.T) {
 // TestGetAllTenantOrderBy validates the retrieval of all Tenant
 // record from a mongodb.
 func TestGetAllTenantByOrder(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -134,6 +146,10 @@ func TestGetAllTenantByOrder(t *testing.T) {
 // TestTenantCreate validates the creation of a Tenant
 // record with a mongodb.
 func TestTenantCreate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -156,6 +172,11 @@ func TestTenantCreate(t *testing.T) {
 // TestTenantUpdate validates the update of a Tenant
 // record with a mongodb.
 func TestTenantUpdate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -191,6 +212,10 @@ func TestTenantUpdate(t *testing.T) {
 // TestTenantDelete validates the removal of a Tenant
 // record from a mongodb.
 func TestTenantDelete(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

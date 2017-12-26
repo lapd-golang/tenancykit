@@ -1,75 +1,52 @@
-package api_test
+package tenantapi_test
 
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+
 	"testing"
-	"time"
 
-	"github.com/gokit/tenancykit/pkg/resources/roleapi"
+	"encoding/json"
 
-	"github.com/gokit/tenancykit/pkg/resources/roleapi/fixtures"
+	"github.com/influx6/faux/tests"
+
+	"github.com/influx6/faux/metrics"
+
 	"github.com/influx6/faux/httputil/httptesting"
 
-	"github.com/gokit/tenancykit/api"
-	"github.com/gokit/tenancykit/pkg"
-	"github.com/gokit/tenancykit/pkg/db/types"
-	"github.com/gokit/tenancykit/pkg/mock"
-	userFixtures "github.com/gokit/tenancykit/pkg/resources/userapi/fixtures"
-	"github.com/influx6/faux/metrics"
-	"github.com/influx6/faux/tests"
+	"github.com/influx6/faux/metrics/custom"
+
+	httpapi "github.com/gokit/tenancykit/pkg/resources/tenantapi"
+
+	"github.com/gokit/tenancykit/pkg/resources/tenantapi/fixtures"
 )
 
-func TestRoleAPI(t *testing.T) {
-	m := metrics.New()
-	tfdb := mock.RoleBackend()
-	userdb := mock.UserBackend()
-	tf := api.NewRoleAPI(m, tfdb)
-
-	userCreateBody, err := userFixtures.LoadCreateJSON(userFixtures.UserCreateJSON)
-	if err != nil {
-		tests.FailedWithError(err, "Should successfully loaded create user fixture")
+func TestTenantAPI(t *testing.T) {
+	logs := metrics.New()
+	if testing.Verbose() {
+		logs = metrics.New(custom.StackDisplay(os.Stdout))
 	}
-	tests.Passed("Should successfully loaded create user fixture")
 
-	userCreateBody.TwoFactorAuth = false
-	userCreateBody.PasswordConfirm = userCreateBody.Password
+	backend := newMocker()
+	api := httpapi.New(logs, backend)
 
-	users := api.UserBackend{UserDBBackend: userdb}
-	userRecord, err := users.Create(context.Background(), userCreateBody)
-	if err != nil {
-		tests.FailedWithError(err, "Should have successfully loaded user record")
-	}
-	tests.Passed("Should have successfully loaded user record")
-
-	testRoleCreate(t, userRecord, tf, tfdb)
-	testRoleUserRoles(t, userRecord, tf, tfdb)
-	testRoleGetAll(t, userRecord, tf, tfdb)
-	testRoleGet(t, userRecord, tf, tfdb)
-	testRoleUpdate(t, userRecord, tf, tfdb)
-	testRoleDelete(t, userRecord, tf, tfdb)
+	testCreate(t, api, backend)
+	testInfo(t, api, backend)
+	testGet(t, api, backend)
+	testGetAll(t, api, backend)
+	testUpdate(t, api, backend)
+	testDelete(t, api, backend)
 }
 
-func testRoleUserRoles(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we create roles for a user with RoleAPI")
-	{
-		roles, err := db.GetAll(context.Background(), "", "", 0, 0)
-		if err != nil {
-			tests.FailedWithError(err, "Should have retrieved all roles in db")
-		}
-		tests.FailedWithError(err, "Should have retrieved all roles in db")
-	}
-}
-
-func testRoleInfo(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we count all Roles with RoleAPI")
+func testInfo(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we create a Tenant with TenantAPI")
 	{
 		infoResponse := httptest.NewRecorder()
-		infoResource := httptesting.NewRequest("INFO", "/roles", nil, infoResponse)
-		if err := roles.Info(infoResource); err != nil {
+		infoResource := httptesting.NewRequest("INFO", "/tenant", nil, infoResponse)
+		if err := api.Info(infoResource); err != nil {
 			tests.FailedWithError(err, "Should have successfully made info request")
 		}
 		tests.Passed("Should have successfully created record")
@@ -84,7 +61,7 @@ func testRoleInfo(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleD
 		}
 		tests.Passed("Should have received body response")
 
-		var info roleapi.RoleInfo
+		var info httpapi.TenantInfo
 		if err := json.Unmarshal(infoResponse.Body.Bytes(), &info); err != nil {
 			tests.FailedWithError(err, "Should have successfully collected record info")
 		}
@@ -97,13 +74,13 @@ func testRoleInfo(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleD
 	}
 }
 
-func testRoleCreate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we create all Roles with RoleAPI")
+func testCreate(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we get info for all Tenant records with TenantAPI")
 	{
 		createResponse := httptest.NewRecorder()
-		createResource := httptesting.Post("/roles", bytes.NewBufferString(fixtures.RoleCreateJSON), createResponse)
-		if err := roles.Create(createResource); err != nil {
-			tests.Info("JSON: %+s", fixtures.RoleCreateJSON)
+		createResource := httptesting.Post("/tenant", bytes.NewBufferString(fixtures.TenantCreateJSON), createResponse)
+		if err := api.Create(createResource); err != nil {
+			tests.Info("JSON: %+s", fixtures.TenantCreateJSON)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
 		tests.Passed("Should have successfully created record")
@@ -118,14 +95,15 @@ func testRoleCreate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		}
 		tests.Passed("Should have received body response")
 
-		if _, err := fixtures.LoadRoleJSON(createResponse.Body.String()); err != nil {
+		if _, err := fixtures.LoadTenantJSON(createResponse.Body.String()); err != nil {
 			tests.FailedWithError(err, "Should have successfully received new record response")
 		}
 		tests.Passed("Should have successfully received new record response")
 	}
 }
-func testRoleGetAll(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we get all Roles with RoleAPI")
+
+func testGetAll(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we get all Tenant records with TenantAPI")
 	{
 		_, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
@@ -139,8 +117,8 @@ func testRoleGetAll(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		tests.Passed("Should have received atleast one record from backend")
 
 		getResponse := httptest.NewRecorder()
-		getAll := httptesting.Get("/roles/", nil, getResponse)
-		if err := roles.GetAll(getAll); err != nil {
+		getAll := httptesting.Get("/tenant/", nil, getResponse)
+		if err := api.GetAll(getAll); err != nil {
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
 		tests.Passed("Should have successfully created record")
@@ -155,7 +133,7 @@ func testRoleGetAll(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		}
 		tests.Passed("Should have received body response")
 
-		var records roleapi.RoleRecords
+		var records httpapi.TenantRecords
 		if err = json.Unmarshal(getResponse.Body.Bytes(), &records); err != nil {
 			tests.Info("Records: %+q", getResponse.Body.String())
 			tests.FailedWithError(err, "Should have successfully received records response")
@@ -168,8 +146,9 @@ func testRoleGetAll(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		tests.Passed("Should have retrieved same number of records from db")
 	}
 }
-func testRoleGet(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we get a Role with RoleAPI")
+
+func testGet(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we get one Tenant record with TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
@@ -185,10 +164,10 @@ func testRoleGet(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDB
 		record := records[0]
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Post("/roles/"+record.PublicID, nil, getResponse)
+		getRecord := httptesting.Post("/tenant/"+record.PublicID, nil, getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := roles.Get(getRecord); err != nil {
+		if err := api.Get(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
@@ -204,14 +183,15 @@ func testRoleGet(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDB
 		}
 		tests.Passed("Should have received body response")
 
-		if _, err = fixtures.LoadRoleJSON(getResponse.Body.String()); err != nil {
+		if _, err = fixtures.LoadTenantJSON(getResponse.Body.String()); err != nil {
 			tests.FailedWithError(err, "Should have successfully received new record response")
 		}
 		tests.Passed("Should have successfully received new record response")
 	}
 }
-func testRoleUpdate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we update Role with RoleAPI")
+
+func testUpdate(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we update one Tenant record with TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
@@ -226,8 +206,13 @@ func testRoleUpdate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 
 		record := records[0]
 
-		beforeDomain := record.Updated
-		record.Updated = time.Now()
+		updateRecord, err := fixtures.LoadUpdateJSON(fixtures.TenantUpdateJSON)
+		if err != nil {
+			tests.FailedWithError(err, "Should have successfully loaded update data")
+		}
+		tests.Passed("Should have successfully loaded update data")
+
+		updateRecord.PublicID = record.PublicID
 
 		recordJSON, err := json.Marshal(record)
 		if err != nil {
@@ -237,10 +222,10 @@ func testRoleUpdate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		tests.Passed("Should successfully marshal user record")
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Put("/roles/"+record.PublicID, bytes.NewBuffer(recordJSON), getResponse)
+		getRecord := httptesting.Put("/tenant/"+record.PublicID, bytes.NewBuffer(recordJSON), getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := roles.Update(getRecord); err != nil {
+		if err := api.Update(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
@@ -251,23 +236,15 @@ func testRoleUpdate(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		}
 		tests.Passed("Should have received Status 202")
 
-		updatedRecord, err := db.Get(context.Background(), record.PublicID)
-		if err != nil {
-			tests.FailedWithError(err, "Should have succesfully retrieved update record")
+		if _, err = db.Get(context.Background(), record.PublicID); err != nil {
+			tests.FailedWithError(err, "Should have successfully retrieved update record")
 		}
-		tests.Passed("Should have succesfully retrieved update record")
-
-		if updatedRecord.Updated.Unix() != record.Updated.Unix() {
-			tests.Info("Before: %+q", beforeDomain)
-			tests.Info("After: %+q", updatedRecord.Updated)
-			tests.Info("Expected: %+q", record.Updated)
-			tests.Failed("Should have successfully update record field")
-		}
-		tests.Passed("Should have successfully update record field")
+		tests.Passed("Should have successfully retrieved update record")
 	}
 }
-func testRoleDelete(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we delete Role with RoleAPI")
+
+func testDelete(t *testing.T, api httpapi.TenantHTTP, db httpapi.TenantBackend) {
+	tests.Header("When we delete one Tenant record with TenantAPI")
 	{
 		records, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
@@ -283,10 +260,10 @@ func testRoleDelete(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		record := records[0]
 
 		getResponse := httptest.NewRecorder()
-		getRecord := httptesting.Delete("/roles/"+record.PublicID, nil, getResponse)
+		getRecord := httptesting.Delete("/tenant/"+record.PublicID, nil, getResponse)
 		getRecord.Bag().Set("public_id", record.PublicID)
 
-		if err := roles.Delete(getRecord); err != nil {
+		if err := api.Delete(getRecord); err != nil {
 			tests.Info("Record: %#v", record)
 			tests.FailedWithError(err, "Should have successfully created record")
 		}
@@ -298,8 +275,8 @@ func testRoleDelete(t *testing.T, user pkg.User, roles api.RoleAPI, db types.Rol
 		tests.Passed("Should have received Status 202")
 
 		if _, err := db.Get(context.Background(), record.PublicID); err == nil {
-			tests.Failed("Should have succesfully failed to get deleted record")
+			tests.Failed("Should have successfully failed to get deleted record")
 		}
-		tests.Passed("Should have succesfully failed to get deleted record")
+		tests.Passed("Should have successfully failed to get deleted record")
 	}
 }

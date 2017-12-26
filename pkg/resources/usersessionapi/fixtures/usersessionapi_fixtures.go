@@ -11,22 +11,22 @@ var (
 	UserSessionJSON = `{
 
 
-    "user_id":	"yzo28l51oeb38rsgrlv7",
+    "token":	"1v1wlt9f1e6av4n2z262",
 
-    "public_id":	"0a7zmzgfutk5d3wcyitl6lshnco5hs",
+    "expires":	"2017-12-26T18:57:10+01:00",
 
-    "token":	"o0iglz559jgppa7uzoeq",
+    "user_id":	"l4fowopofpcas88dlqnf",
 
-    "expires":	"2017-12-23 12:42:41.08402 +0000 UTC"
+    "public_id":	"mw3sm52qxi3m2d23m4n6beoisxchmm"
 
 }`
 
 	UserSessionCreateJSON = `{
 
 
-    "email":	"eos_sapiente@Avamba.org",
+    "email":	"voluptatem@Dabshots.info",
 
-    "password":	"biet0n3e0s328j1elkh0",
+    "password":	"x59i1v4heuztmbveae5m",
 
     "expiration":	null
 
@@ -35,13 +35,13 @@ var (
 	UserSessionUpdateJSON = `{
 
 
-    "user_id":	"e6kutrngtzm075frcomq",
+    "token":	"l7d184dvs1jzevfe9qhv",
 
-    "public_id":	"1pajin78ln87cebqldn1rohxwi9uav",
+    "expires":	"2017-12-26T18:57:10+01:00",
 
-    "token":	"jot4rx51nfc9x6lg979g",
+    "user_id":	"ru12xfn4737onhpv3p7q",
 
-    "expires":	"2017-12-23 12:42:41.084635 +0000 UTC"
+    "public_id":	"jv9rjufbojcxcfgtyhzgzg4ld9duh7"
 
 }`
 )
@@ -51,7 +51,9 @@ func LoadCreateJSON(content string) (pkg.CreateUserSession, error) {
 	var elem pkg.CreateUserSession
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.CreateUserSession{}, err
+
 	}
 
 	return elem, nil
@@ -62,7 +64,9 @@ func LoadUpdateJSON(content string) (pkg.UserSession, error) {
 	var elem pkg.UserSession
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.UserSession{}, err
+
 	}
 
 	return elem, nil

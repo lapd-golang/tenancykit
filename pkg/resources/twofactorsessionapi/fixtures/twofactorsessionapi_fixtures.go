@@ -11,9 +11,9 @@ var (
 	TwoFactorSessionJSON = `{
 
 
-    "user_id":	"dg9of3npxwvscf8x6q2z",
+    "user_id":	"pui5pvs3pimb0dqvde0d",
 
-    "public_id":	"r52qo1wkx2a51p13nvtlyl9u9sf1py",
+    "public_id":	"yxleagdsypxzx3b9tps7v11zradqgk",
 
     "bool":	true
 
@@ -22,9 +22,9 @@ var (
 	TwoFactorSessionCreateJSON = `{
 
 
-    "user_id":	"6axtnaxfnbdqkz5q3qmn",
+    "user_id":	"vjh718ecupx8muxufe15",
 
-    "public_id":	"qouvhm7lzf9xexj10v5mv9hior8k5e",
+    "public_id":	"uhzn174xcypx8hnsg8vjt50mc8j08l",
 
     "bool":	true
 
@@ -33,11 +33,11 @@ var (
 	TwoFactorSessionUpdateJSON = `{
 
 
-    "public_id":	"pjf7i63d7dmihsdvxhptb7t4zw496y",
+    "user_id":	"caho84xlgyktqvubcdra",
 
-    "bool":	true,
+    "public_id":	"8sak8etobeu6g69499jkjkhatrmwmb",
 
-    "user_id":	"jdjtztvhr3pxzh68b2x4"
+    "bool":	true
 
 }`
 )
@@ -47,7 +47,9 @@ func LoadCreateJSON(content string) (pkg.TwoFactorSession, error) {
 	var elem pkg.TwoFactorSession
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.TwoFactorSession{}, err
+
 	}
 
 	return elem, nil
@@ -58,7 +60,9 @@ func LoadUpdateJSON(content string) (pkg.TwoFactorSession, error) {
 	var elem pkg.TwoFactorSession
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.TwoFactorSession{}, err
+
 	}
 
 	return elem, nil

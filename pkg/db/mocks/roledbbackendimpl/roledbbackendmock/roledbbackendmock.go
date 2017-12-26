@@ -8,9 +8,9 @@ import (
 
 	"github.com/influx6/faux/reflection"
 
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // MethodCallForCount defines a type which holds meta-details about the giving calls associated

@@ -11,49 +11,40 @@ var (
 	ActivityJSON = `{
 
 
-    "name":	"Fred Vasquez",
+    "created_at":	"2017-12-26T18:57:10+01:00",
 
-    "public_id":	"38408mxsch2h4jv19z2461ndpezi6a",
+    "updated_at":	"2017-12-26T18:57:10+01:00",
 
-    "created_at":	"2017-12-25 16:32:45.965233 +0000 UTC",
+    "name":	"Mr. Dr. Jimmy Jenkins",
 
-    "updated_at":	"2017-12-25 16:32:45.96524 +0000 UTC"
-
-}`
-
-	ActivityCreateJSON = `{
-
-
-    "name":	"Patricia Kim",
-
-    "public_id":	"f00p3ndzag650nodaapcr7wznda0n2",
-
-    "created_at":	"2017-12-25 16:32:45.965521 +0000 UTC",
-
-    "updated_at":	"2017-12-25 16:32:45.965526 +0000 UTC"
+    "public_id":	"4gfm4i2fxb8chtrubvjsdqfrsr4j6b"
 
 }`
+
+	ActivityCreateJSON = `"ge1nxopbl4m63nojl3jb"`
 
 	ActivityUpdateJSON = `{
 
 
-    "name":	"Annie Olson",
+    "name":	"Sean Franklin",
 
-    "public_id":	"mbkri28apje7f46ybtf7j3ub8pjvb2",
+    "public_id":	"rvhl6af6roh3xzumkjeyeh9levpw1e",
 
-    "created_at":	"2017-12-25 16:32:45.965765 +0000 UTC",
+    "created_at":	"2017-12-26T18:57:10+01:00",
 
-    "updated_at":	"2017-12-25 16:32:45.965769 +0000 UTC"
+    "updated_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 )
 
-// LoadCreateJSON returns a new instance of a pkg.Activity.
-func LoadCreateJSON(content string) (pkg.Activity, error) {
-	var elem pkg.Activity
+// LoadCreateJSON returns a new instance of a pkg.ActivityName.
+func LoadCreateJSON(content string) (pkg.ActivityName, error) {
+	var elem pkg.ActivityName
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
-		return pkg.Activity{}, err
+
+		return (*(*pkg.ActivityName)(nil)), err
+
 	}
 
 	return elem, nil
@@ -64,7 +55,9 @@ func LoadUpdateJSON(content string) (pkg.Activity, error) {
 	var elem pkg.Activity
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.Activity{}, err
+
 	}
 
 	return elem, nil

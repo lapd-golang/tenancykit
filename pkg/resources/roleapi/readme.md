@@ -52,15 +52,15 @@ Success: 201
 {
 
 
-    "name":	"Philip Spencer",
+    "updated_at":	"2017-12-26T18:57:09+01:00",
 
-    "public_id":	"p6l6z27tsw23i8kabcslzek4aepvyy",
+    "name":	"Joseph Peters",
+
+    "public_id":	"58ya451z58dvo7ledqaw1sf4k3tth6",
 
     "activities":	null,
 
-    "created_at":	"2017-12-26 15:18:04.497569 +0000 UTC",
-
-    "updated_at":	"2017-12-26 15:18:04.49758 +0000 UTC"
+    "created_at":	"2017-12-26T18:57:09+01:00"
 
 }
 ```
@@ -118,15 +118,15 @@ Success: 200
 {
 
 
-    "name":	"Kelly Gomez",
+    "name":	"Gloria Welch",
 
-    "public_id":	"1ng07n23tdlxhnamkjin6cbzboul3b",
+    "public_id":	"avj0aoj433uxxm52u6v57t4gzap621",
 
     "activities":	null,
 
-    "created_at":	"2017-12-26 15:18:04.498162 +0000 UTC",
+    "created_at":	"2017-12-26T18:57:09+01:00",
 
-    "updated_at":	"2017-12-26 15:18:04.498167 +0000 UTC"
+    "updated_at":	"2017-12-26T18:57:09+01:00"
 
 }
 ```
@@ -153,28 +153,28 @@ Success: 200
 [{
 
 
+    "updated_at":	"2017-12-26T18:57:09+01:00",
+
+    "name":	"Denise Sims",
+
+    "public_id":	"q1dczczsr78ure2w2plznhwkkk1boq",
+
     "activities":	null,
 
-    "created_at":	"2017-12-26 15:18:04.498561 +0000 UTC",
-
-    "updated_at":	"2017-12-26 15:18:04.498565 +0000 UTC",
-
-    "name":	"Wayne Ryan",
-
-    "public_id":	"6hlhkbdmojzjvndwymg6phlwg535vb"
+    "created_at":	"2017-12-26T18:57:09+01:00"
 
 },{
 
 
-    "updated_at":	"2017-12-26 15:18:04.498889 +0000 UTC",
+    "name":	"Jane Bryant",
 
-    "name":	"Roger Reed",
-
-    "public_id":	"dxo6a45mwp52dhaj191nt9874xdjy5",
+    "public_id":	"kvptfroksigi6e8tfx8s4z8t2q9djj",
 
     "activities":	null,
 
-    "created_at":	"2017-12-26 15:18:04.498884 +0000 UTC"
+    "created_at":	"2017-12-26T18:57:09+01:00",
+
+    "updated_at":	"2017-12-26T18:57:09+01:00"
 
 }]
 ```
@@ -201,15 +201,15 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "name":	"Mrs. Ms. Miss Carol Gonzales",
+    "updated_at":	"2017-12-26T18:57:09+01:00",
 
-    "public_id":	"adihc4wil42m9xfr14kl5fbcbul7dj",
+    "name":	"Matthew Burton Jr. Sr. I II III IV V MD DDS PhD DVM",
+
+    "public_id":	"2tsaj4kpzyvf7tlywksc6gpr5a563u",
 
     "activities":	null,
 
-    "created_at":	"2017-12-26 15:18:04.49933 +0000 UTC",
-
-    "updated_at":	"2017-12-26 15:18:04.499335 +0000 UTC"
+    "created_at":	"2017-12-26T18:57:09+01:00"
 
 }
 ```

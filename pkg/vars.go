@@ -15,7 +15,7 @@ const (
 
 	// TimeLayout is the default layout used for mapping a time.Time object to
 	// a serialized string.
-	TimeLayout = "Mon Jan 2 2006 15:04:05 -0700 MST"
+	TimeLayout = "2006-01-02T15:04:05Z07:00"
 )
 
 var (

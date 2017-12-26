@@ -25,19 +25,19 @@ var (
 	claimDataJSON = `{
 
 
-    "roles":	null,
-
     "user":	null,
 
-    "tenant":	null
+    "tenant":	null,
+
+    "roles":	null
 
 }`
 	contractDataJSON = `{
 
 
-    "email":	"DorothyHoward@Teklist.mil",
+    "email":	"deserunt@Flipbug.com",
 
-    "password":	"msyo5ybd4wy6t6dt458a",
+    "password":	"6vbggkq3lug26olzhwhx",
 
     "expiration":	null
 

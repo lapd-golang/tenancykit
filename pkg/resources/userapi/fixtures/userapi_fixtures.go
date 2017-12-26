@@ -11,38 +11,40 @@ var (
 	UserJSON = `{
 
 
-    "created_at":	"2017-12-23 12:42:41.164561 +0000 UTC",
+    "username":	"itaque",
 
-    "updated_at":	"2017-12-23 12:42:41.16457 +0000 UTC",
+    "email":	"WayneYoung@Nlounge.net",
 
-    "email":	"cMurray@Gabtune.biz",
+    "public_id":	"lqu613ydeigcmmua2ckeui194ossn9",
 
-    "public_id":	"v9zrmguw8j5nyhhwrf33w0shajh25i",
+    "tenant_id":	"oqstt9bln1h7w7rhm2zy",
 
-    "tenant_id":	"p8ty5mewtiqehog4d32o",
+    "user_roles":	null,
+
+    "private_id":	"25wnj40hm3v62jegbk6poqabgy547j",
+
+    "hash":	"8r18rdieis395cz25sn5",
 
     "two_factor_auth":	true,
 
-    "username":	"nLewis",
+    "created_at":	"2017-12-26T18:57:10+01:00",
 
-    "private_id":	"p6lw8bozql6e2v0hifpikid9hyjpf1",
-
-    "hash":	"8p31bqr1z8u80kpfkhgi"
+    "updated_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 
 	UserCreateJSON = `{
 
 
-    "tenant_id":	"9d8vu5g5cmzm0w0txrgy",
+    "tenant_id":	"pcyqj60jf0zksdxl5m71",
 
-    "email":	"itaque_quam@Flashpoint.mil",
+    "email":	"ducimus_iure@Feedspan.net",
 
-    "username":	"itaque_sint",
+    "username":	"MargaretClark",
 
-    "password":	"qa8jv14s90109p8vn1pl",
+    "password":	"vzkv5bcvic22spls2ylw",
 
-    "password_confirm":	"pf82x82k88b80a55c96h",
+    "password_confirm":	"uisiqrui52xza8g10t38",
 
     "twofactor_auth":	true
 
@@ -51,11 +53,25 @@ var (
 	UserUpdateJSON = `{
 
 
-    "email":	"PatrickOlson@Gevee.edu",
+    "hash":	"af8iahbn48icuvm30ph3",
 
-    "password":	"i9lfy6xewuko9kgx3own",
+    "two_factor_auth":	true,
 
-    "password_confirm":	"qdbyl780tt3nj02mvgc5"
+    "created_at":	"2017-12-26T18:57:10+01:00",
+
+    "email":	"vel_dolores@Devify.edu",
+
+    "public_id":	"0hf9cvx8oqtq8evjecvzrfmmhdv1my",
+
+    "tenant_id":	"64f510kphwx6t21617dl",
+
+    "private_id":	"8botl1fnnmhnhb5p7hb642fsdf963h",
+
+    "username":	"sit",
+
+    "user_roles":	null,
+
+    "updated_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 )
@@ -65,18 +81,22 @@ func LoadCreateJSON(content string) (pkg.CreateUser, error) {
 	var elem pkg.CreateUser
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.CreateUser{}, err
+
 	}
 
 	return elem, nil
 }
 
-// LoadUpdateJSON returns a new instance of a pkg.UpdateUser.
-func LoadUpdateJSON(content string) (pkg.UpdateUser, error) {
-	var elem pkg.UpdateUser
+// LoadUpdateJSON returns a new instance of a pkg.User.
+func LoadUpdateJSON(content string) (pkg.User, error) {
+	var elem pkg.User
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
-		return pkg.UpdateUser{}, err
+
+		return pkg.User{}, err
+
 	}
 
 	return elem, nil

@@ -1,9 +1,9 @@
 package roledbbackendimpl
 
 import (
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // RoleDBBackendImpl defines a concrete struct which implements the methods for the

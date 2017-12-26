@@ -23,8 +23,6 @@ import (
 )
 
 var (
-	events = metrics.New(custom.StackDisplay(os.Stdout))
-
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
 		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
@@ -40,6 +38,11 @@ var (
 // TestGetActivity validates the retrieval of a Activity
 // record from a mongodb.
 func TestGetActivity(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -68,6 +71,11 @@ func TestGetActivity(t *testing.T) {
 // TestGetAllActivity validates the retrieval of all Activity
 // record from a mongodb.
 func TestGetAllActivity(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -101,6 +109,10 @@ func TestGetAllActivity(t *testing.T) {
 // TestGetAllActivityOrderBy validates the retrieval of all Activity
 // record from a mongodb.
 func TestGetAllActivityByOrder(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -134,6 +146,10 @@ func TestGetAllActivityByOrder(t *testing.T) {
 // TestActivityCreate validates the creation of a Activity
 // record with a mongodb.
 func TestActivityCreate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -156,6 +172,11 @@ func TestActivityCreate(t *testing.T) {
 // TestActivityUpdate validates the update of a Activity
 // record with a mongodb.
 func TestActivityUpdate(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
+
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -191,6 +212,10 @@ func TestActivityUpdate(t *testing.T) {
 // TestActivityDelete validates the removal of a Activity
 // record from a mongodb.
 func TestActivityDelete(t *testing.T) {
+	events := metrics.New()
+	if testing.Verbose() {
+		events = metrics.New(custom.StackDisplay(os.Stdout))
+	}
 	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

@@ -11,55 +11,44 @@ var (
 	RoleJSON = `{
 
 
-    "public_id":	"2q4jhe9tltwnqzsgcjvukgglaywwox",
+    "name":	"Evelyn Warren",
+
+    "public_id":	"4l95rsvrvmscbo51hrveu4a8tymwtg",
 
     "activities":	null,
 
-    "created_at":	"2017-12-25 16:32:46.047905 +0000 UTC",
+    "created_at":	"2017-12-26T18:57:09+01:00",
 
-    "updated_at":	"2017-12-25 16:32:46.047916 +0000 UTC",
-
-    "name":	"Bobby Young"
+    "updated_at":	"2017-12-26T18:57:09+01:00"
 
 }`
 
-	RoleCreateJSON = `{
-
-
-    "name":	"Steve Edwards",
-
-    "public_id":	"0hhd8w1lehhuf85iqs3pubp9nlc50o",
-
-    "activities":	null,
-
-    "created_at":	"2017-12-25 16:32:46.049433 +0000 UTC",
-
-    "updated_at":	"2017-12-25 16:32:46.049443 +0000 UTC"
-
-}`
+	RoleCreateJSON = `"wlfij3kv5z8oztcmryp5"`
 
 	RoleUpdateJSON = `{
 
 
-    "updated_at":	"2017-12-25 16:32:46.049961 +0000 UTC",
+    "name":	"Jacqueline Powell",
 
-    "name":	"Steve Willis",
-
-    "public_id":	"xby41dpvdoagy89wkj5i37n4ctxj87",
+    "public_id":	"7jn0kyv5b8f91sitq8owa1cjkeibih",
 
     "activities":	null,
 
-    "created_at":	"2017-12-25 16:32:46.049954 +0000 UTC"
+    "created_at":	"2017-12-26T18:57:09+01:00",
+
+    "updated_at":	"2017-12-26T18:57:09+01:00"
 
 }`
 )
 
-// LoadCreateJSON returns a new instance of a pkg.Role.
-func LoadCreateJSON(content string) (pkg.Role, error) {
-	var elem pkg.Role
+// LoadCreateJSON returns a new instance of a pkg.RoleName.
+func LoadCreateJSON(content string) (pkg.RoleName, error) {
+	var elem pkg.RoleName
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
-		return pkg.Role{}, err
+
+		return (*(*pkg.RoleName)(nil)), err
+
 	}
 
 	return elem, nil
@@ -70,7 +59,9 @@ func LoadUpdateJSON(content string) (pkg.Role, error) {
 	var elem pkg.Role
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.Role{}, err
+
 	}
 
 	return elem, nil

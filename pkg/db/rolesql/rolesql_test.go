@@ -1,49 +1,55 @@
-package rolemgo_test
+package rolesql_test
 
 import (
 	"os"
 
 	"time"
 
-	"context"
-
 	"testing"
 
-	mgo "gopkg.in/mgo.v2"
+	"context"
 
 	"github.com/influx6/faux/tests"
+
+	"github.com/influx6/faux/db/sql"
 
 	"github.com/influx6/faux/metrics"
 
 	"github.com/influx6/faux/metrics/custom"
 
-	mdb "github.com/gokit/tenancykit/pkg/db/rolemgo"
+	_ "github.com/go-sql-driver/mysql"
 
-	fixtures "github.com/gokit/tenancykit/pkg/db/rolemgo/fixtures"
+	_ "github.com/lib/pq"
+
+	_ "github.com/mattn/go-sqlite3"
+
+	sqldb "github.com/gokit/tenancykit/pkg/db/rolesql"
+
+	fixtures "github.com/gokit/tenancykit/pkg/db/rolesql/fixtures"
 )
 
 var (
-	config = mdb.Config{
-		Mode:     mgo.Monotonic,
-		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
-		Host:     os.Getenv("PKG_MONGO_TEST_HOST"),
-		User:     os.Getenv("PKG_MONGO_TEST_USER"),
-		AuthDB:   os.Getenv("PKG_MONGO_TEST_AUTHDB"),
-		Password: os.Getenv("PKG_MONGO_TEST_PASSWORD"),
+	config = sql.Config{
+		DBName:       os.Getenv("PKG_SQL_TEST_DB"),
+		User:         os.Getenv("PKG_SQL_TEST_USER"),
+		DBIP:         os.Getenv("PKG_SQL_TEST_ADDR"),
+		DBPort:       os.Getenv("PKG_SQL_TEST_PORT"),
+		DBDriver:     os.Getenv("PKG_SQL_TEST_Driver"),
+		UserPassword: os.Getenv("PKG_SQL_TEST_PASSWORD"),
 	}
 
-	testCol = "role_test_collection"
+	testCol = "role_test"
 )
 
 // TestGetRole validates the retrieval of a Role
-// record from a mongodb.
+// record from a sqldb.
 func TestGetRole(t *testing.T) {
 	events := metrics.New()
 	if testing.Verbose() {
 		events = metrics.New(custom.StackDisplay(os.Stdout))
 	}
 
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
+	api := sqldb.New(testCol, events, sql.NewDB(config, events))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -69,51 +75,13 @@ func TestGetRole(t *testing.T) {
 }
 
 // TestGetAllRole validates the retrieval of all Role
-// record from a mongodb.
+// record from a sqldb.
 func TestGetAllRole(t *testing.T) {
 	events := metrics.New()
 	if testing.Verbose() {
 		events = metrics.New(custom.StackDisplay(os.Stdout))
 	}
-
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	elem, err := fixtures.LoadRoleJSON(fixtures.RoleJSON)
-	if err != nil {
-		tests.Failed("Successfully loaded JSON for Role record: %+q.", err)
-	}
-	tests.Passed("Successfully loaded JSON for Role record")
-
-	defer api.Delete(ctx, elem.PublicID)
-
-	if err := api.Create(ctx, elem); err != nil {
-		tests.Failed("Successfully added record for Role into db: %+q.", err)
-	}
-	tests.Passed("Successfully added record for Role into db.")
-
-	records, _, err := api.GetAll(ctx, "asc", "public_id", -1, -1)
-	if err != nil {
-		tests.Failed("Successfully retrieved all records for Role from db: %+q.", err)
-	}
-	tests.Passed("Successfully retrieved all records for Role from db.")
-
-	if len(records) == 0 {
-		tests.Failed("Successfully retrieved atleast 1 record for Role from db.")
-	}
-	tests.Passed("Successfully retrieved atleast 1 record for Role from db.")
-}
-
-// TestGetAllRoleOrderBy validates the retrieval of all Role
-// record from a mongodb.
-func TestGetAllRoleByOrder(t *testing.T) {
-	events := metrics.New()
-	if testing.Verbose() {
-		events = metrics.New(custom.StackDisplay(os.Stdout))
-	}
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
+	api := sqldb.New(testCol, events, sql.NewDB(config, events))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -144,13 +112,13 @@ func TestGetAllRoleByOrder(t *testing.T) {
 }
 
 // TestRoleCreate validates the creation of a Role
-// record with a mongodb.
+// record with a sqldb.
 func TestRoleCreate(t *testing.T) {
 	events := metrics.New()
 	if testing.Verbose() {
 		events = metrics.New(custom.StackDisplay(os.Stdout))
 	}
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
+	api := sqldb.New(testCol, events, sql.NewDB(config, events))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -170,14 +138,13 @@ func TestRoleCreate(t *testing.T) {
 }
 
 // TestRoleUpdate validates the update of a Role
-// record with a mongodb.
+// record with a sqldb.
 func TestRoleUpdate(t *testing.T) {
 	events := metrics.New()
 	if testing.Verbose() {
 		events = metrics.New(custom.StackDisplay(os.Stdout))
 	}
-
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
+	api := sqldb.New(testCol, events, sql.NewDB(config, events))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -210,13 +177,13 @@ func TestRoleUpdate(t *testing.T) {
 }
 
 // TestRoleDelete validates the removal of a Role
-// record from a mongodb.
+// record from a sqldb.
 func TestRoleDelete(t *testing.T) {
 	events := metrics.New()
 	if testing.Verbose() {
 		events = metrics.New(custom.StackDisplay(os.Stdout))
 	}
-	api := mdb.New(testCol, events, mdb.NewMongoDB(config))
+	api := sqldb.New(testCol, events, sql.NewDB(config, events))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

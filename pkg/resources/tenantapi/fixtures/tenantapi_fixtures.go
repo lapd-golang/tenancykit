@@ -11,39 +11,43 @@ var (
 	TenantJSON = `{
 
 
-    "name":	"Mrs. Ms. Miss Rebecca West",
+    "name":	"Stephen Schmidt",
 
-    "email":	"9Willis@Vidoo.org",
+    "email":	"WalterPhillips@Abatz.com",
 
-    "public_id":	"mc33e328qr3jji5dplhenbzf4m9bb9",
+    "public_id":	"mqxwizbhw7eqhfjve46y5y36jy69xk",
 
-    "created_at":	"2017-12-23 12:42:41.244379 +0000 UTC",
+    "secret_id":	"twn84rgyxql1j4zw3afm",
 
-    "updated_at":	"2017-12-23 12:42:41.244386 +0000 UTC"
+    "created_at":	"2017-12-26T18:57:10+01:00",
+
+    "updated_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 
 	TenantCreateJSON = `{
 
 
-    "name":	"Stephen Mccoy",
+    "name":	"Betty Franklin",
 
-    "email":	"repellendus@Babbleblab.info"
+    "email":	"laborum@Reallinks.org"
 
 }`
 
 	TenantUpdateJSON = `{
 
 
-    "email":	"DebraRivera@Cogibox.biz",
+    "name":	"Sara Alexander I II III IV V MD DDS PhD DVM",
 
-    "public_id":	"rha1uqhlrzmvrgahp8wm3xggfty13p",
+    "email":	"mHoward@Gigashots.org",
 
-    "created_at":	"2017-12-23 12:42:41.244872 +0000 UTC",
+    "public_id":	"rez07fqktq2oxqzbw08yz1hb4fotop",
 
-    "updated_at":	"2017-12-23 12:42:41.244881 +0000 UTC",
+    "secret_id":	"jj6ag8gkgobrhjg2iefg",
 
-    "name":	"Bruce Daniels"
+    "created_at":	"2017-12-26T18:57:10+01:00",
+
+    "updated_at":	"2017-12-26T18:57:10+01:00"
 
 }`
 )
@@ -53,7 +57,9 @@ func LoadCreateJSON(content string) (pkg.CreateTenant, error) {
 	var elem pkg.CreateTenant
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.CreateTenant{}, err
+
 	}
 
 	return elem, nil
@@ -64,7 +70,9 @@ func LoadUpdateJSON(content string) (pkg.Tenant, error) {
 	var elem pkg.Tenant
 
 	if err := json.Unmarshal([]byte(content), &elem); err != nil {
+
 		return pkg.Tenant{}, err
+
 	}
 
 	return elem, nil
