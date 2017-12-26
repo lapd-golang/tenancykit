@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "max_length":	10,
-
     "user":	null,
 
-    "domain":	"Jaxbean.org"
+    "domain":	"Omba.net",
+
+    "max_length":	18
 
 }
 ```
@@ -61,21 +61,21 @@ Success: 201
 {
 
 
-    "created_at":	"2017-12-25 20:33:45.666845 +0000 UTC",
+    "code_length":	8,
 
-    "updated_at":	"2017-12-25 20:33:45.666857 +0000 UTC",
+    "created_at":	"2017-12-26 15:18:04.61767 +0000 UTC",
 
-    "key":	"vr9g1cql8pxehwzixw34",
+    "updated_at":	"2017-12-26 15:18:04.617679 +0000 UTC",
 
-    "domain":	"Photofeed.gov",
+    "key":	"2kyzvmm9wim4qd796iwe",
 
-    "user_id":	"9v7fa37o3666vovjjs7y",
+    "domain":	"Kwideo.net",
 
-    "totp":	"i3t57yn9zzdu72nth838",
+    "user_id":	"wlc3kqv1y3pzhm3xvqx1",
 
-    "tenant_id":	"7q7opt3how9d6kbrha0ept1vdk5et5",
+    "totp":	"19t454ykgpfeivpqd0s3",
 
-    "code_length":	11
+    "tenant_id":	"lkbbme2wu4xvilgqsyflutzs3ouz8t"
 
 }
 ```
@@ -133,21 +133,21 @@ Success: 200
 {
 
 
-    "code_length":	1,
+    "domain":	"Gabspot.mil",
 
-    "created_at":	"2017-12-25 20:33:45.667846 +0000 UTC",
+    "user_id":	"hh3aajeonj13cf4dxhgx",
 
-    "updated_at":	"2017-12-25 20:33:45.667862 +0000 UTC",
+    "totp":	"h8rw7hatdtew95afhr9w",
 
-    "key":	"n1yggumdx6a5iz24v7iy",
+    "tenant_id":	"51iejcf39xmka36530o0yadxmc6axg",
 
-    "domain":	"Trudoo.mil",
+    "code_length":	16,
 
-    "user_id":	"1m0kzu4pq7cq9n8qlla3",
+    "created_at":	"2017-12-26 15:18:04.618207 +0000 UTC",
 
-    "totp":	"2svdjava6a20wqbvkdjo",
+    "updated_at":	"2017-12-26 15:18:04.618212 +0000 UTC",
 
-    "tenant_id":	"0f9yvvmqazzjtbls54omhqily2vr33"
+    "key":	"fqzhg2ezm6cd740i5z1s"
 
 }
 ```
@@ -174,40 +174,40 @@ Success: 200
 [{
 
 
-    "code_length":	11,
+    "totp":	"9ua0t7cb12hri4h11j1e",
 
-    "created_at":	"2017-12-25 20:33:45.668582 +0000 UTC",
+    "tenant_id":	"abqf2fx07ed1x7cv2fbc716qsgijct",
 
-    "updated_at":	"2017-12-25 20:33:45.668592 +0000 UTC",
+    "code_length":	9,
 
-    "key":	"0psuy1hpmry3by3chfi6",
+    "created_at":	"2017-12-26 15:18:04.618637 +0000 UTC",
 
-    "domain":	"Yodoo.net",
+    "updated_at":	"2017-12-26 15:18:04.618642 +0000 UTC",
 
-    "user_id":	"f4tufe5llny5601691ye",
+    "key":	"7s9ye017yb8bpa4enamh",
 
-    "totp":	"v09r0ccacne3x648le9q",
+    "domain":	"Trupe.info",
 
-    "tenant_id":	"3r46xlidmprrn6vc3wvdk5mr9oh9am"
+    "user_id":	"bdbzysw66zww91ci0e52"
 
 },{
 
 
-    "code_length":	17,
+    "user_id":	"1ynziet7kwkp4p4h3b20",
 
-    "created_at":	"2017-12-25 20:33:45.669186 +0000 UTC",
+    "totp":	"lry4kczayi9lcoh181mg",
 
-    "updated_at":	"2017-12-25 20:33:45.669195 +0000 UTC",
+    "tenant_id":	"hb4rgqvvarm8s6t95phr0foxj93nko",
 
-    "key":	"olk3gc0zn5eif0g37p65",
+    "code_length":	4,
 
-    "domain":	"Trudeo.edu",
+    "created_at":	"2017-12-26 15:18:04.619032 +0000 UTC",
 
-    "user_id":	"syqi49cg932ghb1thwzo",
+    "updated_at":	"2017-12-26 15:18:04.619037 +0000 UTC",
 
-    "totp":	"2o2pudrmu1xant57vsgm",
+    "key":	"qnx8af06w4gw8bmquqhy",
 
-    "tenant_id":	"h3xbii1emyu4c5lvuzcnh8i5lcbd00"
+    "domain":	"Blogpad.biz"
 
 }]
 ```
@@ -234,21 +234,21 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "totp":	"ifq0jivpb4tdtenazda1",
+    "user_id":	"0bwq9w0qxu1c2pxadafl",
 
-    "tenant_id":	"gwtzthigb2obb7gyqlr3dkqipph9cx",
+    "totp":	"frfoqth7xfw2ttb9tymj",
 
-    "code_length":	0,
+    "tenant_id":	"v8subzj7hdtf734m33hsqpti4cx6nd",
 
-    "created_at":	"2017-12-25 20:33:45.670002 +0000 UTC",
+    "code_length":	7,
 
-    "updated_at":	"2017-12-25 20:33:45.67002 +0000 UTC",
+    "created_at":	"2017-12-26 15:18:04.619538 +0000 UTC",
 
-    "key":	"p9int7v9nu2uwbtu363k",
+    "updated_at":	"2017-12-26 15:18:04.619543 +0000 UTC",
 
-    "domain":	"Avavee.com",
+    "key":	"ps5vnkb8s12liy1enzl6",
 
-    "user_id":	"eszddjxytuwblsgs8fia"
+    "domain":	"Twitternation.biz"
 
 }
 ```

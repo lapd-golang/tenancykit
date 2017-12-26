@@ -25,19 +25,19 @@ var (
 	claimDataJSON = `{
 
 
+    "roles":	null,
+
     "user":	null,
 
-    "tenant":	null,
-
-    "roles":	null
+    "tenant":	null
 
 }`
 	contractDataJSON = `{
 
 
-    "email":	"saepe_est@Bubblebox.biz",
+    "email":	"DorothyHoward@Teklist.mil",
 
-    "password":	"879rp7ljtb4bb2dlhtk2",
+    "password":	"msyo5ybd4wy6t6dt458a",
 
     "expiration":	null
 

@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "expiration":	null,
+    "email":	"2Andrews@Trupe.mil",
 
-    "email":	"quis@Skalith.edu",
+    "password":	"khq4hlin5gk0jvqwmfbz",
 
-    "password":	"57tpnyjub9zmxr06j8m5"
+    "expiration":	null
 
 }
 ```
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "user_id":	"dg7pzkve0039wmansc9x",
+    "user_id":	"0vxi1ov470iqx6zax0zn",
 
-    "public_id":	"e5qe1pm6b24p6rnyy8t7uz7rqju8gn",
+    "public_id":	"uw2s3m6rnd76o5drbf0lo33kk7jztg",
 
-    "token":	"eq2lr9vqwbe7ug4d3qba",
+    "token":	"nfig5px7jp0upzsruvsy",
 
-    "expires":	"2017-12-25 20:33:45.88593 +0000 UTC"
+    "expires":	"2017-12-26 15:18:04.71729 +0000 UTC"
 
 }
 ```
@@ -125,13 +125,13 @@ Success: 200
 {
 
 
-    "user_id":	"8ddkdsuoj1h5be21jtit",
+    "expires":	"2017-12-26 15:18:04.718119 +0000 UTC",
 
-    "public_id":	"95ksw6oo0wn9zkutlp8y6ep3y2nfic",
+    "user_id":	"bgatt05q43a0jvfqajy1",
 
-    "token":	"3u810tjb1fqk4yclj8gy",
+    "public_id":	"c6rc9ua1brw8o5kbhxmnpnve7ho9s0",
 
-    "expires":	"2017-12-25 20:33:45.886558 +0000 UTC"
+    "token":	"369ocfxozvas4bl929sn"
 
 }
 ```
@@ -158,24 +158,24 @@ Success: 200
 [{
 
 
-    "user_id":	"782uctypq9o56mjjsh0w",
+    "user_id":	"bxffsk7flu7auoz4jt1i",
 
-    "public_id":	"1ywny6srjlu08srnhqwdbd0a9nwa53",
+    "public_id":	"vrsyu5mslp05pbb0hfj3bb1892b572",
 
-    "token":	"mozlafy4k1hseopwcu97",
+    "token":	"gcyded0t2wbw7zvynk0f",
 
-    "expires":	"2017-12-25 20:33:45.887084 +0000 UTC"
+    "expires":	"2017-12-26 15:18:04.718753 +0000 UTC"
 
 },{
 
 
-    "user_id":	"nfepjn49jejdveyvlslb",
+    "public_id":	"gi3lehkhw8sp35hcc8nfptojh7u7i6",
 
-    "public_id":	"mo93m9rcxhd387r2zpv6sfc5wdxvk1",
+    "token":	"7olxatn059e8v0480ok9",
 
-    "token":	"3prhkkfhihhpgt434m0e",
+    "expires":	"2017-12-26 15:18:04.719222 +0000 UTC",
 
-    "expires":	"2017-12-25 20:33:45.887564 +0000 UTC"
+    "user_id":	"3cbeq6cmvqu04ir8vd8t"
 
 }]
 ```
@@ -202,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "expires":	"2017-12-25 20:33:45.888103 +0000 UTC",
+    "user_id":	"75tz3badn8kw3tfszq3r",
 
-    "user_id":	"2aop5b9ndp800j1qoxp2",
+    "public_id":	"f1bsc5o035hhzeb57urix7ixuvycfg",
 
-    "public_id":	"l2vyx9m39qy0hqacep7tsxm2x3eu7l",
+    "token":	"z1ke3e7twaymnwjzj1on",
 
-    "token":	"knc5izwq9odhgafpcebi"
+    "expires":	"2017-12-26 15:18:04.719834 +0000 UTC"
 
 }
 ```

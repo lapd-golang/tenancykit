@@ -5,6 +5,7 @@ package twofactorsessionmgo
 
 import (
 	"errors"
+	"time"
 
 	"fmt"
 
@@ -26,6 +27,66 @@ var (
 	ErrNotFound = errors.New("record not found")
 )
 
+// Config provides configuration for connecting to a db.
+type Config struct {
+	Host     string
+	AuthDB   string
+	DB       string
+	User     string
+	Password string
+	Mode     mgo.Mode
+}
+
+// GetSession attempts to retrieve the giving session for the given config.
+func GetSession(config Config) (*mgo.Session, error) {
+	info := mgo.DialInfo{
+		Addrs:    []string{config.Host},
+		Timeout:  60 * time.Second,
+		Database: config.AuthDB,
+		Username: config.User,
+		Password: config.Password,
+	}
+
+	// Create a session which maintains a pool of socket connections
+	// to our MongoDB.
+	ses, err := mgo.DialWithInfo(&info)
+	if err != nil {
+		return nil, err
+	}
+
+	if config.Mode == 0 {
+		config.Mode = mgo.Monotonic
+	}
+
+	ses.SetMode(config.Mode, true)
+
+	return ses, nil
+}
+
+// NewMongoDB returns a new instance of a MongoServer.
+func NewMongoDB(config Config) MongoDB {
+	var mn mongoServer
+	mn.Config = config
+	return &mn
+}
+
+// mongoServer defines a mongo connection manager that builds
+// allows usage of a giving configuration to generate new mongo
+// sessions and database instances.
+type mongoServer struct {
+	Config
+}
+
+// New returns a new session and database from the giving configuration.
+func (m *mongoServer) New() (*mgo.Database, *mgo.Session, error) {
+	ses, err := GetSession(m.Config)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ses.DB(m.Config.DB), ses, nil
+}
+
 // TwoFactorSessionFields defines an interface which exposes method to return a map of all
 // attributes associated with the defined structure as decided by the structure.
 type TwoFactorSessionFields interface {
@@ -38,9 +99,9 @@ type TwoFactorSessionConsumer interface {
 	Consume(map[string]interface{}) error
 }
 
-// Mongod defines a interface which exposes a method for retrieving a
+// MongoDB defines a interface which exposes a method for retrieving a
 // mongo.Database and mongo.Session.
-type Mongod interface {
+type MongoDB interface {
 	New() (*mgo.Database, *mgo.Session, error)
 }
 
@@ -48,7 +109,7 @@ type Mongod interface {
 // using mongo as the underline db.
 type TwoFactorSessionDB struct {
 	col             string
-	db              Mongod
+	db              MongoDB
 	metrics         metrics.Metrics
 	ensuredIndex    bool
 	incompleteIndex bool
@@ -56,7 +117,7 @@ type TwoFactorSessionDB struct {
 }
 
 // New returns a new instance of TwoFactorSessionDB.
-func New(col string, m metrics.Metrics, mo Mongod, indexes ...mgo.Index) *TwoFactorSessionDB {
+func New(col string, m metrics.Metrics, mo MongoDB, indexes ...mgo.Index) *TwoFactorSessionDB {
 	return &TwoFactorSessionDB{
 		db:      mo,
 		col:     col,

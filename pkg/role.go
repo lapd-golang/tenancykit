@@ -11,6 +11,7 @@ type RoleName string
 
 // Role embodies data which describes permission based on roles able to perform giving
 // activities.
+// @sqlapi
 // @mongoapi
 // @httpapi(New => RoleName)
 type Role struct {

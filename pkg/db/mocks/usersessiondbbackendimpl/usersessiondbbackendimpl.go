@@ -1,9 +1,9 @@
 package usersessiondbbackendimpl
 
 import (
-	context "context"
-
 	pkg "github.com/gokit/tenancykit/pkg"
+
+	context "context"
 )
 
 // UserSessionDBBackendImpl defines a concrete struct which implements the methods for the
