@@ -55,6 +55,7 @@ func TestUserSessionAPI(t *testing.T) {
 	}
 	tests.Passed("Should successfully loaded create user fixture")
 
+	userCreateBody.TwoFactorAuth = false
 	userCreateBody.TenantID = tenantRecord.PublicID
 	userCreateBody.PasswordConfirm = userCreateBody.Password
 

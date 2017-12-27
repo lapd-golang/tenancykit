@@ -152,7 +152,8 @@ func (us MultiTenantUserSessionAPI) Login(ctx *httputil.Context) error {
 		currentUser.TwoFactor = &tfrecord
 	}
 
-	// set current user into context.
+	// set current user, usersession into context.
+	ctx.Set(pkg.ContextKeyUserSession, newSession)
 	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
 	ctx.Set(pkg.ContextKeyUserAuthorization, pkg.UserAuthorization{Token: newSession.UserSessionToken()})
 

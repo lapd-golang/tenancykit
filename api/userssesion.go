@@ -136,7 +136,8 @@ func (us UserSessionAPI) Login(ctx *httputil.Context) error {
 	}
 
 	// set current user into context.
-	ctx.Bag().Set(pkg.ContextKeyCurrentUser, currentUser)
+	ctx.Set(pkg.ContextKeyUserSession, newSession)
+	ctx.Set(pkg.ContextKeyCurrentUser, currentUser)
 	ctx.Set(pkg.ContextKeyUserAuthorization, pkg.UserAuthorization{Token: newSession.UserSessionToken()})
 
 	authValue := fmt.Sprintf("Bearer %s", newSession.UserSessionToken())
