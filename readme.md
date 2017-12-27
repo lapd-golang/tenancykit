@@ -2,7 +2,7 @@ TenancyKit
 -----------
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/gokit/tenancykit)](https://goreportcard.com/report/github.com/gokit/tenancykit)
-[![Travis Build](https://travis-ci.org/gokit/tenancykit#)](https://travis-ci.org/gokit/tenancykit#)
+[![Travis Build](https://travis-ci.org/gokit/tenancykit.svg?branch=master)](https://travis-ci.org/gokit/tenancykit#)
 
 TenancyKit applies [Solid Design Principles](https://dave.cheney.net/2016/08/20/solid-go-design), allowing every part of the API to be tested 
 and validated as to it's individal unit parts. It's purpose is to provided combination of different packages which provides that can be used 
