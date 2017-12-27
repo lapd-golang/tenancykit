@@ -45,7 +45,7 @@ func (eus EndUserSession) Validate() error {
 }
 
 // UserSession embodies the data which is used to identify a logged in user's session.
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 //
 // @httpapi(New => CreateUserSession)
 type UserSession struct {

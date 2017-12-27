@@ -137,8 +137,7 @@ func (mdb *UserSessionDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("UserSessionDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *UserSessionDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *UserSessionDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("UserSessionDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *UserSessionDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.UserSession struct.
 func (mdb *UserSessionDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("UserSessionDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *UserSessionDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) Create(ctx context.Context, elem pkg.UserSession) error {
-	m := metrics.NewTrace("UserSessionDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *UserSessionDB) Create(ctx context.Context, elem pkg.UserSession) erro
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.UserSession, int, error) {
-	m := metrics.NewTrace("UserSessionDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *UserSessionDB) GetAll(ctx context.Context, order string, orderBy stri
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.UserSession, error) {
-	m := metrics.NewTrace("UserSessionDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *UserSessionDB) GetAllByOrder(ctx context.Context, order, orderBy stri
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.UserSession, error) {
-	m := metrics.NewTrace("UserSessionDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *UserSessionDB) GetByField(ctx context.Context, key string, value inte
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) Get(ctx context.Context, publicID string) (pkg.UserSession, error) {
-	m := metrics.NewTrace("UserSessionDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *UserSessionDB) Get(ctx context.Context, publicID string) (pkg.UserSes
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given UserSession struct.
 func (mdb *UserSessionDB) Update(ctx context.Context, publicID string, elem pkg.UserSession) error {
-	m := metrics.NewTrace("UserSessionDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *UserSessionDB) Update(ctx context.Context, publicID string, elem pkg.
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *UserSessionDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("UserSessionDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("UserSessionDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("UserSessionDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

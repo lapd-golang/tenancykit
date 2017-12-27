@@ -35,7 +35,7 @@ type NewTF struct {
 // to the account and is used to validate users code after login if enabled.
 // TwoFactor is enabled if user has associated record in twofactor table or collection.
 //
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 //
 // @httpapi(New => NewTF)
 type TFRecord struct {

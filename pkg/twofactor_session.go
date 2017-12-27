@@ -8,7 +8,7 @@ import uuid "github.com/satori/go.uuid"
 // to satisfy twofactor authorization. It should be removed
 // from db after user logout or immediately after api requests
 // for apis.
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 // @httpapi
 type TwoFactorSession struct {
 	UserID   string `json:"user_id"`

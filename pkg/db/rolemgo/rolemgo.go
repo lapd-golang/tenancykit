@@ -137,8 +137,7 @@ func (mdb *RoleDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("RoleDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *RoleDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *RoleDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("RoleDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *RoleDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.Role struct.
 func (mdb *RoleDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("RoleDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *RoleDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) Create(ctx context.Context, elem pkg.Role) error {
-	m := metrics.NewTrace("RoleDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *RoleDB) Create(ctx context.Context, elem pkg.Role) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Role, int, error) {
-	m := metrics.NewTrace("RoleDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *RoleDB) GetAll(ctx context.Context, order string, orderBy string, pag
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.Role, error) {
-	m := metrics.NewTrace("RoleDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *RoleDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.Role, error) {
-	m := metrics.NewTrace("RoleDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *RoleDB) GetByField(ctx context.Context, key string, value interface{}
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) Get(ctx context.Context, publicID string) (pkg.Role, error) {
-	m := metrics.NewTrace("RoleDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *RoleDB) Get(ctx context.Context, publicID string) (pkg.Role, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Role struct.
 func (mdb *RoleDB) Update(ctx context.Context, publicID string, elem pkg.Role) error {
-	m := metrics.NewTrace("RoleDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *RoleDB) Update(ctx context.Context, publicID string, elem pkg.Role) e
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *RoleDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("RoleDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("RoleDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("RoleDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

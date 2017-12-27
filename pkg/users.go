@@ -78,7 +78,7 @@ func (cu CreateUser) Validate(multitenant bool) error {
 }
 
 // User is a type defining the given user related fields for a given.
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 // @httpapi(New => CreateUser)
 type User struct {
 	Username      string    `json:"username"`

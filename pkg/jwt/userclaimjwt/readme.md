@@ -39,11 +39,11 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "expiration":	null,
+    "email":	"beatae@Livepath.info",
 
-    "email":	"LauraRivera@Riffwire.name",
+    "password":	"prm8lsom9836z99llhdl",
 
-    "password":	"121cx1f7g05k95spbp7m"
+    "expiration":	null
 
 }
 ```

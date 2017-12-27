@@ -137,8 +137,7 @@ func (mdb *TwoFactorSessionDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("TwoFactorSessionDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *TwoFactorSessionDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *TwoFactorSessionDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("TwoFactorSessionDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *TwoFactorSessionDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("TwoFactorSessionDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *TwoFactorSessionDB) Delete(ctx context.Context, publicID string) erro
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) Create(ctx context.Context, elem pkg.TwoFactorSession) error {
-	m := metrics.NewTrace("TwoFactorSessionDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *TwoFactorSessionDB) Create(ctx context.Context, elem pkg.TwoFactorSes
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TwoFactorSession, int, error) {
-	m := metrics.NewTrace("TwoFactorSessionDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *TwoFactorSessionDB) GetAll(ctx context.Context, order string, orderBy
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.TwoFactorSession, error) {
-	m := metrics.NewTrace("TwoFactorSessionDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *TwoFactorSessionDB) GetAllByOrder(ctx context.Context, order, orderBy
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.TwoFactorSession, error) {
-	m := metrics.NewTrace("TwoFactorSessionDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *TwoFactorSessionDB) GetByField(ctx context.Context, key string, value
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) Get(ctx context.Context, publicID string) (pkg.TwoFactorSession, error) {
-	m := metrics.NewTrace("TwoFactorSessionDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *TwoFactorSessionDB) Get(ctx context.Context, publicID string) (pkg.Tw
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TwoFactorSession struct.
 func (mdb *TwoFactorSessionDB) Update(ctx context.Context, publicID string, elem pkg.TwoFactorSession) error {
-	m := metrics.NewTrace("TwoFactorSessionDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *TwoFactorSessionDB) Update(ctx context.Context, publicID string, elem
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *TwoFactorSessionDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("TwoFactorSessionDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("TwoFactorSessionDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TwoFactorSessionDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

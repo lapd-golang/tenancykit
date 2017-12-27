@@ -18,7 +18,7 @@ var (
 // Token defines a specific record with associated id and
 // value.
 // @sqlapi
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 // @httpapi
 type Token struct {
 	Value    string `json:"value"`

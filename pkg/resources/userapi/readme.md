@@ -35,17 +35,17 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "password":	"ccytf0i2x2lm8hda554v",
+    "username":	"ToddEllis",
 
-    "password_confirm":	"n98kkjb1upk6sjsvl29u",
+    "password":	"wg2p6pbl2r1vsousqetu",
+
+    "password_confirm":	"yc6yrirkmy2051jzyw06",
 
     "twofactor_auth":	true,
 
-    "tenant_id":	"vxaj1h4ahwppnrnpywk8",
+    "tenant_id":	"gyrh52ocb87vojssdao0",
 
-    "email":	"xHamilton@Agivu.org",
-
-    "username":	"NancyThomas"
+    "email":	"voluptas@Avamba.mil"
 
 }
 ```
@@ -67,25 +67,25 @@ Success: 201
 {
 
 
-    "tenant_id":	"crs6nclm7gmp4clwfrrr",
+    "updated_at":	"2017-12-27T17:22:59+01:00",
 
-    "private_id":	"19uuc7c2iup2yupg7qqujxe4s39lfp",
+    "username":	"cMarshall",
 
-    "hash":	"rdn7c4kijo754wfgdggq",
+    "email":	"eBarnes@Gabtune.com",
+
+    "private_id":	"ypo37w23xhyhx4imz6u6ezqd7t1lbz",
 
     "user_roles":	null,
 
     "two_factor_auth":	true,
 
-    "updated_at":	"2017-12-27T11:14:17+01:00",
+    "public_id":	"ebvellqlv3sioqhphdtzurhnmo3ol6",
 
-    "email":	"AmandaRivera@Trunyx.name",
+    "tenant_id":	"6kmqgl0unkcwdwjaddnt",
 
-    "public_id":	"b1c0g3hbwx57aqy35e2kibz72554be",
+    "hash":	"li87fk4j2rtgvsz7t8ci",
 
-    "created_at":	"2017-12-27T11:14:17+01:00",
-
-    "username":	"vHarrison"
+    "created_at":	"2017-12-27T17:22:59+01:00"
 
 }
 ```
@@ -143,25 +143,25 @@ Success: 200
 {
 
 
-    "public_id":	"5fm9vnkqbzcrxgotjtjlxfcyj7rqos",
+    "email":	"JoanHolmes@Riffwire.gov",
 
-    "user_roles":	null,
+    "public_id":	"zp4n7jgrjmcvkod0pbhihmtx993sbl",
+
+    "hash":	"u1pj4lcs31x637ijw6sg",
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-27T11:14:17+01:00",
+    "created_at":	"2017-12-27T17:22:59+01:00",
 
-    "updated_at":	"2017-12-27T11:14:17+01:00",
+    "updated_at":	"2017-12-27T17:22:59+01:00",
 
-    "email":	"laborum@Kamba.name",
+    "username":	"JasonKelley",
 
-    "tenant_id":	"5f7yc2oc404bangb1z2i",
+    "tenant_id":	"izwrugt3p5d2uh412uej",
 
-    "private_id":	"677x3dt6u39lune6g1yws3don5bjae",
+    "private_id":	"ihy93ol364h84bfpwlkvqb8c95w1hu",
 
-    "hash":	"vcxxym9miyjciobmb6fv",
-
-    "username":	"nihil_cumque_perferendis"
+    "user_roles":	null
 
 }
 ```
@@ -188,48 +188,48 @@ Success: 200
 [{
 
 
-    "email":	"RebeccaReid@Geba.org",
-
-    "public_id":	"yo8ydrpx3njfhyl0skhgxmljt8u6t6",
-
-    "private_id":	"i7i75isfkoa7qrga2mgsrpumday6yt",
-
-    "hash":	"adwq629a9qby4x6xmonb",
-
     "user_roles":	null,
-
-    "username":	"8Jenkins",
-
-    "tenant_id":	"k90752li8qknieg2gznx",
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-27T11:14:17+01:00",
+    "username":	"jCarpenter",
 
-    "updated_at":	"2017-12-27T11:14:17+01:00"
+    "public_id":	"6y9hho0eeyzlt0cij81cmyn2m3pddz",
+
+    "tenant_id":	"psza1bgw780lf35554ua",
+
+    "hash":	"d9jvfifuloil07zpbik4",
+
+    "email":	"SarahWashington@Mycat.net",
+
+    "private_id":	"anoktp4epay6xrep4qz6jn18a949j0",
+
+    "created_at":	"2017-12-27T17:22:59+01:00",
+
+    "updated_at":	"2017-12-27T17:22:59+01:00"
 
 },{
 
 
-    "tenant_id":	"pnq9vyxhixlcruyi5rq1",
+    "created_at":	"2017-12-27T17:22:59+01:00",
+
+    "public_id":	"zxof8cdgpx7mfq6bes0wq77yngr6cd",
+
+    "private_id":	"xws8njeonee9le30szqjykz8q5fnnz",
+
+    "hash":	"sf1xuwwjdv6x39f0v50d",
 
     "user_roles":	null,
 
     "two_factor_auth":	true,
 
-    "updated_at":	"2017-12-27T11:14:17+01:00",
+    "updated_at":	"2017-12-27T17:22:59+01:00",
 
-    "username":	"JoeTurner",
+    "username":	"quos_dolor",
 
-    "email":	"KevinHarvey@Digitube.info",
+    "email":	"gNelson@Jabbertype.info",
 
-    "public_id":	"ldyn69n95pmot982gx2cv203h9cb2w",
-
-    "private_id":	"ljzbrpbqcpkqyh9xvzufl6aj9lz3ff",
-
-    "hash":	"nstgu4b78uigwa2zoquu",
-
-    "created_at":	"2017-12-27T11:14:17+01:00"
+    "tenant_id":	"rabdtz7bno6euanuzh86"
 
 }]
 ```
@@ -256,25 +256,25 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "tenant_id":	"l66d4e3tjek0g4ziomir",
+    "username":	"enim_aut_sunt",
 
-    "hash":	"rctex1bmcd63r8ayuuz9",
+    "tenant_id":	"1p9x171kzq46nqw6n9cr",
+
+    "hash":	"l607fe4i0unw136kut8u",
+
+    "user_roles":	null,
 
     "two_factor_auth":	true,
 
-    "created_at":	"2017-12-27T11:14:17+01:00",
+    "updated_at":	"2017-12-27T17:22:59+01:00",
 
-    "updated_at":	"2017-12-27T11:14:17+01:00",
+    "email":	"voluptas_sapiente@Dabvine.edu",
 
-    "username":	"inventore",
+    "public_id":	"yf5vfwcxzois8dmx4p2n4nl9l08zj3",
 
-    "email":	"MarthaGomez@Quatz.com",
+    "private_id":	"tcvnuq7ckp53l69obibejbgdidhle8",
 
-    "public_id":	"pfnguibb1z189dkpoh9f8klam9c0qo",
-
-    "private_id":	"pcqwhpkat9b64h2cu4trcnr2wep5u4",
-
-    "user_roles":	null
+    "created_at":	"2017-12-27T17:22:59+01:00"
 
 }
 ```

@@ -137,8 +137,7 @@ func (mdb *IdentityDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("IdentityDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *IdentityDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *IdentityDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("IdentityDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *IdentityDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given userclaimjwt.Identity struct.
 func (mdb *IdentityDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("IdentityDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *IdentityDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) Create(ctx context.Context, elem userclaimjwt.Identity) error {
-	m := metrics.NewTrace("IdentityDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -325,8 +321,7 @@ func (mdb *IdentityDB) Create(ctx context.Context, elem userclaimjwt.Identity) e
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]userclaimjwt.Identity, int, error) {
-	m := metrics.NewTrace("IdentityDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -408,8 +403,7 @@ func (mdb *IdentityDB) GetAll(ctx context.Context, order string, orderBy string,
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]userclaimjwt.Identity, error) {
-	m := metrics.NewTrace("IdentityDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -456,8 +450,7 @@ func (mdb *IdentityDB) GetAllByOrder(ctx context.Context, order, orderBy string)
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) GetByField(ctx context.Context, key string, value interface{}) (userclaimjwt.Identity, error) {
-	m := metrics.NewTrace("IdentityDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -501,8 +494,7 @@ func (mdb *IdentityDB) GetByField(ctx context.Context, key string, value interfa
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) Get(ctx context.Context, publicID string) (userclaimjwt.Identity, error) {
-	m := metrics.NewTrace("IdentityDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -543,8 +535,7 @@ func (mdb *IdentityDB) Get(ctx context.Context, publicID string) (userclaimjwt.I
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Identity struct.
 func (mdb *IdentityDB) Update(ctx context.Context, publicID string, elem userclaimjwt.Identity) error {
-	m := metrics.NewTrace("IdentityDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -605,8 +596,7 @@ func (mdb *IdentityDB) Update(ctx context.Context, publicID string, elem usercla
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *IdentityDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("IdentityDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("IdentityDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("IdentityDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

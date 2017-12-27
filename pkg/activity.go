@@ -10,7 +10,7 @@ import (
 type ActivityName string
 
 // Activity embodies data which defines a giving activity of any sort.
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 // @httpapi(New => ActivityName)
 type Activity struct {
 	Name     string    `json:"name"`

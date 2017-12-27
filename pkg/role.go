@@ -11,7 +11,7 @@ type RoleName string
 
 // Role embodies data which describes permission based on roles able to perform giving
 // activities.
-// @mongoapi
+// @mongoapi(ENVName => TENANCYKIT)
 // @httpapi(New => RoleName)
 type Role struct {
 	Name       string    `json:"name"`

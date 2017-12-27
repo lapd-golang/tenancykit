@@ -35,9 +35,9 @@ var (
 	contractDataJSON = `{
 
 
-    "email":	"SharonMurphy@Trudoo.name",
+    "email":	"libero_a_velit@Chatterpoint.info",
 
-    "password":	"ru7lo821omnmb5fsnfzh",
+    "password":	"ssp1uf2azs2ol5pl64l0",
 
     "expiration":	null
 

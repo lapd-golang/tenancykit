@@ -137,8 +137,7 @@ func (mdb *TenantDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("TenantDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *TenantDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *TenantDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("TenantDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *TenantDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.Tenant struct.
 func (mdb *TenantDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("TenantDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *TenantDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) Create(ctx context.Context, elem pkg.Tenant) error {
-	m := metrics.NewTrace("TenantDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *TenantDB) Create(ctx context.Context, elem pkg.Tenant) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Tenant, int, error) {
-	m := metrics.NewTrace("TenantDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *TenantDB) GetAll(ctx context.Context, order string, orderBy string, p
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.Tenant, error) {
-	m := metrics.NewTrace("TenantDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *TenantDB) GetAllByOrder(ctx context.Context, order, orderBy string) (
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.Tenant, error) {
-	m := metrics.NewTrace("TenantDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *TenantDB) GetByField(ctx context.Context, key string, value interface
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) Get(ctx context.Context, publicID string) (pkg.Tenant, error) {
-	m := metrics.NewTrace("TenantDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *TenantDB) Get(ctx context.Context, publicID string) (pkg.Tenant, erro
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Tenant struct.
 func (mdb *TenantDB) Update(ctx context.Context, publicID string, elem pkg.Tenant) error {
-	m := metrics.NewTrace("TenantDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *TenantDB) Update(ctx context.Context, publicID string, elem pkg.Tenan
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *TenantDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("TenantDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("TenantDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TenantDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

@@ -35,11 +35,11 @@ JSON content to the HTTP API. This will in turn return a respective status code.
 {
 
 
-    "expiration":	null,
+    "email":	"voluptatem_in@Edgetag.mil",
 
-    "email":	"explicabo_qui_molestiae@Skivee.name",
+    "password":	"z8xndk4eickkfxziho4t",
 
-    "password":	"6lntyxquy7fbctitltbw"
+    "expiration":	null
 
 }
 ```
@@ -61,13 +61,13 @@ Success: 201
 {
 
 
-    "public_id":	"g0cfx3xwmvgivrylbczbab4okpitl3",
+    "public_id":	"xa7eo4tg5n7awbnsil414gx9naubw4",
 
-    "token":	"aqes2nqihvf73st855ss",
+    "token":	"1yg7dc8rj48iwiy3xj7l",
 
-    "expires":	"2017-12-27T11:14:17+01:00",
+    "expires":	"2017-12-27T17:22:59+01:00",
 
-    "user_id":	"p061c6o3vkk2oe4uy7t1"
+    "user_id":	"3lj5nuluhst2ahugd0oo"
 
 }
 ```
@@ -125,13 +125,13 @@ Success: 200
 {
 
 
-    "user_id":	"ap8au14ypayz1c00vn73",
+    "user_id":	"wo1eguivfp7h3dvjfo2o",
 
-    "public_id":	"cidoyhxtk1bjkpby469ryphym2elfz",
+    "public_id":	"on611nzsoznytnk3s5b72kifnw7s1q",
 
-    "token":	"b53t6pgxtfairupr2sq8",
+    "token":	"x46yimzopiotxhraodlo",
 
-    "expires":	"2017-12-27T11:14:17+01:00"
+    "expires":	"2017-12-27T17:22:59+01:00"
 
 }
 ```
@@ -158,24 +158,24 @@ Success: 200
 [{
 
 
-    "token":	"hbx0uuunkdekttyuhne1",
+    "user_id":	"sk09jnzfexidstbqj8lh",
 
-    "expires":	"2017-12-27T11:14:17+01:00",
+    "public_id":	"onj169b09rg8tlp1gqp3mgh4itbq8h",
 
-    "user_id":	"gz7vtz0833zmhrfk66sd",
+    "token":	"hy4ao6hiojmumnr73dcq",
 
-    "public_id":	"ihk3jn8e7f7xssxvng372sxf7sezc7"
+    "expires":	"2017-12-27T17:22:59+01:00"
 
 },{
 
 
-    "user_id":	"19gfp81e3ji9afabwgwa",
+    "user_id":	"0z1wow2cdlo9uirwrg7h",
 
-    "public_id":	"sh6zx2kmj54wa5lbgomae81cylucj6",
+    "public_id":	"gnu0r3tr8ycddmrmz0vdldsshg9wzm",
 
-    "token":	"e40h8mkiml89qvqrtlou",
+    "token":	"21u795rjl39jt1myrgdp",
 
-    "expires":	"2017-12-27T11:14:17+01:00"
+    "expires":	"2017-12-27T17:22:59+01:00"
 
 }]
 ```
@@ -202,13 +202,13 @@ response. It uses the provided `:public_id` parameter as the paramter to identif
 {
 
 
-    "public_id":	"bezljq5rv0il6mcfsp0ngb30kej5qo",
+    "expires":	"2017-12-27T17:22:59+01:00",
 
-    "token":	"ealt922u1tca0zrf3f6e",
+    "user_id":	"dbbc2hmwrbe9i9qrg5fb",
 
-    "expires":	"2017-12-27T11:14:17+01:00",
+    "public_id":	"ps44mt8vh0537bpzvox7zz02sfjdjf",
 
-    "user_id":	"s7p2pbvmuzywqs674g29"
+    "token":	"n1ewbsmvho19hx29dm0j"
 
 }
 ```

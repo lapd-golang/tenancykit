@@ -53,8 +53,7 @@ func New(m metrics.Metrics, backend IdentityBackend) JWTAPI {
 // Method: INFO
 // RESPONSE-BODY: JSON
 func (api JWTAPI) Info(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Info"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 
@@ -96,8 +95,7 @@ func (api JWTAPI) Info(ctx *httputil.Context) error {
 // BODY: JSON
 //
 func (api JWTAPI) Update(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Update"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 
@@ -157,8 +155,7 @@ func (api JWTAPI) Update(ctx *httputil.Context) error {
 // Method: DELETE
 //
 func (api JWTAPI) Delete(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Delete"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	api.metrics.Emit(metrics.Info("Delete request received"), metrics.WithFields(metrics.Field{
 		"url": ctx.Request().URL.String(),
@@ -203,8 +200,7 @@ func (api JWTAPI) Delete(ctx *httputil.Context) error {
 // Method: GET
 // RESPONSE-BODY: JSON
 func (api JWTAPI) Get(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Get"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 
@@ -257,8 +253,7 @@ func (api JWTAPI) Get(ctx *httputil.Context) error {
 // Method: GET
 // RESPONSE-BODY: JSON
 func (api JWTAPI) GetAll(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.GetAll"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 
@@ -349,8 +344,7 @@ func (api JWTAPI) GetAll(ctx *httputil.Context) error {
 // BODY: JSON
 //
 func (api JWTAPI) Grant(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Grant"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 
@@ -401,8 +395,7 @@ func (api JWTAPI) Grant(ctx *httputil.Context) error {
 // BODY: JSON
 //
 func (api JWTAPI) Revoke(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Revoke"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 	api.metrics.Emit(metrics.Info("Refresh request received"), metrics.WithFields(metrics.Field{
@@ -450,8 +443,7 @@ func (api JWTAPI) Revoke(ctx *httputil.Context) error {
 // BODY: JSON
 //
 func (api JWTAPI) Refresh(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Refresh"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	ctx.Header().Set("Content-Type", "application/json")
 	api.metrics.Emit(metrics.Info("Refresh request received"), metrics.WithFields(metrics.Field{
@@ -496,8 +488,7 @@ func (api JWTAPI) Refresh(ctx *httputil.Context) error {
 // Method: GET
 //
 func (api JWTAPI) Authenticate(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.Authenticate"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	var authHeader string
 	if ctx.HasHeader("Authorization", "") {
@@ -559,8 +550,7 @@ func (api JWTAPI) Authenticate(ctx *httputil.Context) error {
 // Body: JSON
 //
 func (api JWTAPI) AuthenticateJSON(ctx *httputil.Context) error {
-	m := metrics.NewTrace()
-	defer api.metrics.Emit(metrics.Info("JWTAPI.AuthenticateJSON"), metrics.WithTrace(m.End()))
+	defer api.metrics.CollectMetrics(ctx.ID())
 
 	var incoming IdentityAccess
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {

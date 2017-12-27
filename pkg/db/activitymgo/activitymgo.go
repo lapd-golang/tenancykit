@@ -137,8 +137,7 @@ func (mdb *ActivityDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("ActivityDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *ActivityDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *ActivityDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("ActivityDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *ActivityDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.Activity struct.
 func (mdb *ActivityDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("ActivityDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *ActivityDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) Create(ctx context.Context, elem pkg.Activity) error {
-	m := metrics.NewTrace("ActivityDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *ActivityDB) Create(ctx context.Context, elem pkg.Activity) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.Activity, int, error) {
-	m := metrics.NewTrace("ActivityDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *ActivityDB) GetAll(ctx context.Context, order string, orderBy string,
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.Activity, error) {
-	m := metrics.NewTrace("ActivityDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *ActivityDB) GetAllByOrder(ctx context.Context, order, orderBy string)
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.Activity, error) {
-	m := metrics.NewTrace("ActivityDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *ActivityDB) GetByField(ctx context.Context, key string, value interfa
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) Get(ctx context.Context, publicID string) (pkg.Activity, error) {
-	m := metrics.NewTrace("ActivityDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *ActivityDB) Get(ctx context.Context, publicID string) (pkg.Activity, 
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given Activity struct.
 func (mdb *ActivityDB) Update(ctx context.Context, publicID string, elem pkg.Activity) error {
-	m := metrics.NewTrace("ActivityDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *ActivityDB) Update(ctx context.Context, publicID string, elem pkg.Act
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *ActivityDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("ActivityDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("ActivityDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("ActivityDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")

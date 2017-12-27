@@ -25,11 +25,11 @@ import (
 var (
 	config = mdb.Config{
 		Mode:     mgo.Monotonic,
-		DB:       os.Getenv("PKG_MONGO_TEST_DB"),
-		Host:     os.Getenv("PKG_MONGO_TEST_HOST"),
-		User:     os.Getenv("PKG_MONGO_TEST_USER"),
-		AuthDB:   os.Getenv("PKG_MONGO_TEST_AUTHDB"),
-		Password: os.Getenv("PKG_MONGO_TEST_PASSWORD"),
+		DB:       os.Getenv("TENANCYKIT_MONGO_TEST_DB"),
+		Host:     os.Getenv("TENANCYKIT_MONGO_TEST_HOST"),
+		User:     os.Getenv("TENANCYKIT_MONGO_TEST_USER"),
+		AuthDB:   os.Getenv("TENANCYKIT_MONGO_TEST_AUTHDB"),
+		Password: os.Getenv("TENANCYKIT_MONGO_TEST_PASSWORD"),
 	}
 
 	testCol = "tenant_test_collection"

@@ -137,8 +137,7 @@ func (mdb *TFRecordDB) ensureIndex() error {
 		return nil
 	}
 
-	m := metrics.NewTrace("TFRecordDB.ensureIndex")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.ensureIndex"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.ensureIndex")
 
 	if len(mdb.indexes) == 0 {
 		return nil
@@ -179,8 +178,7 @@ func (mdb *TFRecordDB) ensureIndex() error {
 
 // Count attempts to return the total number of record from the db.
 func (mdb *TFRecordDB) Count(ctx context.Context) (int, error) {
-	m := metrics.NewTrace("TFRecordDB.Count")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Count"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Count")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -221,8 +219,7 @@ func (mdb *TFRecordDB) Count(ctx context.Context) (int, error) {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given pkg.TFRecord struct.
 func (mdb *TFRecordDB) Delete(ctx context.Context, publicID string) error {
-	m := metrics.NewTrace("TFRecordDB.Delete")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Delete"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Delete")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -265,8 +262,7 @@ func (mdb *TFRecordDB) Delete(ctx context.Context, publicID string) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) Create(ctx context.Context, elem pkg.TFRecord) error {
-	m := metrics.NewTrace("TFRecordDB.Create")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Create"), metrics.With("publicID", elem.PublicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Create")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -319,8 +315,7 @@ func (mdb *TFRecordDB) Create(ctx context.Context, elem pkg.TFRecord) error {
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) GetAll(ctx context.Context, order string, orderBy string, page int, responsePerPage int) ([]pkg.TFRecord, int, error) {
-	m := metrics.NewTrace("TFRecordDB.GetAll")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.GetAll"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.GetAll")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -411,8 +406,7 @@ func (mdb *TFRecordDB) GetAll(ctx context.Context, order string, orderBy string,
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) GetAllByOrder(ctx context.Context, order, orderBy string) ([]pkg.TFRecord, error) {
-	m := metrics.NewTrace("TFRecordDB.GetAllByOrder")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.GetAllByOrder"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.GetAllByOrder")
 
 	switch strings.ToLower(order) {
 	case "dsc", "desc":
@@ -473,8 +467,7 @@ func (mdb *TFRecordDB) GetAllByOrder(ctx context.Context, order, orderBy string)
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) GetByField(ctx context.Context, key string, value interface{}) (pkg.TFRecord, error) {
-	m := metrics.NewTrace("TFRecordDB.GetByField")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.GetByField"), metrics.With(key, value), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.GetByFiled")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -524,8 +517,7 @@ func (mdb *TFRecordDB) GetByField(ctx context.Context, key string, value interfa
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) Get(ctx context.Context, publicID string) (pkg.TFRecord, error) {
-	m := metrics.NewTrace("TFRecordDB.Get")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Get"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Get")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -572,8 +564,7 @@ func (mdb *TFRecordDB) Get(ctx context.Context, publicID string) (pkg.TFRecord, 
 // Records using this DB must have a public id value, expressed either by a bson or json tag
 // on the given TFRecord struct.
 func (mdb *TFRecordDB) Update(ctx context.Context, publicID string, elem pkg.TFRecord) error {
-	m := metrics.NewTrace("TFRecordDB.Update")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Update"), metrics.With("publicID", publicID), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Update")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
@@ -637,8 +628,7 @@ func (mdb *TFRecordDB) Update(ctx context.Context, publicID string, elem pkg.TFR
 
 // Exec provides a function which allows the execution of a custom function against the collection.
 func (mdb *TFRecordDB) Exec(ctx context.Context, fx func(col *mgo.Collection) error) error {
-	m := metrics.NewTrace("TFRecordDB.Exec")
-	defer mdb.metrics.Emit(metrics.Info("TFRecordDB.Exec"), metrics.WithTrace(m.End()))
+	defer mdb.metrics.CollectMetrics("TFRecordDB.Exec")
 
 	if isContextExpired(ctx) {
 		err := fmt.Errorf("Context has expired")
