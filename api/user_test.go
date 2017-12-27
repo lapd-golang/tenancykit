@@ -236,7 +236,7 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types
 		user := records[0]
 
 		var userUpdate pkg.UpdateUserPassword
-		userUpdate.Password = "bombabastick"
+		userUpdate.Password = "bombabastickreckwise"
 		userUpdate.PasswordConfirm = userUpdate.Password
 
 		updateBodyJSON, err := json.Marshal(userUpdate)
@@ -249,8 +249,7 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types
 		updateUserResponse := httptest.NewRecorder()
 		updateUser := httptesting.Put("/users/"+user.PublicID, bytes.NewReader(updateBodyJSON), updateUserResponse)
 		updateUser.Bag().Set("public_id", user.PublicID)
-
-		if err := users.Update(updateUser); err != nil {
+		if err := users.UpdatePassword(updateUser); err != nil {
 			tests.Info("User: %#v", updateBodyJSON)
 			tests.FailedWithError(err, "Should have successfully created user")
 		}
@@ -268,6 +267,9 @@ func testUserUpdate(t *testing.T, tenant pkg.Tenant, users api.UserAPI, db types
 		tests.Passed("Should have succesfully retrieved update record")
 
 		if err := updatedRecord.Authenticate(userUpdate.Password); err != nil {
+			tests.Info("Updated User: %#v", updatedRecord)
+			tests.Info("Former User: %#v", user)
+			tests.Info("Password Update: %+q", userUpdate.Password)
 			tests.FailedWithError(err, "Should have successfully confirmed password change")
 		}
 		tests.Passed("Should have successfully confirmed password change")

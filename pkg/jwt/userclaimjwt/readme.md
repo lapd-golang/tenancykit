@@ -39,11 +39,11 @@ JSON to the API. This will in turn return a respective status code.
 {
 
 
-    "email":	"DeniseCruz@Voonix.mil",
+    "expiration":	null,
 
-    "password":	"khkse994c9tp1qgpo8ce",
+    "email":	"LauraRivera@Riffwire.name",
 
-    "expiration":	null
+    "password":	"121cx1f7g05k95spbp7m"
 
 }
 ```

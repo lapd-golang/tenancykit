@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gokit/tenancykit/pkg"
@@ -17,6 +18,7 @@ import (
 // UserAPI implements the http api for the user request-response api.
 type UserAPI struct {
 	userapi.UserHTTP
+	multitenant         bool
 	Backend             types.UserDBBackend
 	IsNotFoundErrorFunc func(error) bool
 }
@@ -34,6 +36,7 @@ func NewUserAPI(m metrics.Metrics, users types.UserDBBackend) UserAPI {
 func NewMultiTenantUserAPI(m metrics.Metrics, users types.UserDBBackend, tenants types.TenantDBBackend) UserAPI {
 	var api UserAPI
 	api.Backend = users
+	api.multitenant = true
 	api.IsNotFoundErrorFunc = db.IsNotFoundError
 	api.UserHTTP = userapi.New(m, MultiUserBackend{UserDBBackend: users, Tenants: tenants})
 	return api
@@ -50,6 +53,7 @@ func (u UserAPI) isNotFoundError(err error) bool {
 	return u.IsNotFoundErrorFunc(err)
 }
 
+// UpdatePassword attempts to
 func (u UserAPI) UpdatePassword(ctx *httputil.Context) error {
 	if err := u.RetrieveUser(ctx); err != nil {
 		return err
@@ -63,11 +67,25 @@ func (u UserAPI) UpdatePassword(ctx *httputil.Context) error {
 		}
 	}
 
+	if err := updater.Validate(); err != nil {
+		return httputil.HTTPError{
+			Err:  err,
+			Code: http.StatusBadRequest,
+		}
+	}
+
 	user, err := pkg.GetUser(ctx)
 	if err != nil {
 		return httputil.HTTPError{
 			Err:  err,
 			Code: http.StatusInternalServerError,
+		}
+	}
+
+	if err := user.ValidateUser(u.multitenant); err != nil {
+		return httputil.HTTPError{
+			Code: http.StatusBadRequest,
+			Err:  fmt.Errorf("Invalid user record: %+q", err.Error()),
 		}
 	}
 

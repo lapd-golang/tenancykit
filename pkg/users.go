@@ -110,6 +110,37 @@ func NewUser(nw CreateUser) (User, error) {
 	return u, nil
 }
 
+// Validate returns an error if user is in a invalid state.
+func (u User) Validate() error {
+	return u.ValidateUser(false)
+}
+
+// ValidateUser returns an error if user is in a invalid state.
+func (u User) ValidateUser(multitenant bool) error {
+	if multitenant && u.TenantID == "" {
+		return errors.New("user must have tenant_id")
+	}
+	if u.Created.IsZero() {
+		return errors.New("user must have an created time")
+	}
+	if u.Updated.IsZero() {
+		return errors.New("user must have an update time")
+	}
+	if u.PrivateID == "" {
+		return errors.New("user must have an private_id")
+	}
+	if u.PublicID == "" {
+		return errors.New("user must have an public_id")
+	}
+	if u.Username == "" {
+		return errors.New("user must have an username")
+	}
+	if u.Email == "" {
+		return errors.New("user must have an email")
+	}
+	return nil
+}
+
 // HasAllRole returns true/false if giving user has all provided roles.
 func (u User) HasAllRole(roles ...Role) bool {
 	for _, role := range roles {

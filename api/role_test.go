@@ -49,13 +49,13 @@ func TestRoleAPI(t *testing.T) {
 }
 
 func testRoleUserRoles(t *testing.T, user pkg.User, roles api.RoleAPI, db types.RoleDBBackend) {
-	tests.Header("When we create roles for a user with RoleAPI")
+	tests.Header("When we get user roles for a user with RoleAPI")
 	{
 		recs, total, err := db.GetAll(context.Background(), "", "", 0, 0)
 		if err != nil {
 			tests.FailedWithError(err, "Should have retrieved all roles in db")
 		}
-		tests.FailedWithError(err, "Should have retrieved all roles in db")
+		tests.Passed("Should have retrieved all roles in db")
 
 		if total == 0 {
 			tests.Failed("Should have existing records in db")

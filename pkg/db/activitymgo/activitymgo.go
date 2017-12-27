@@ -99,6 +99,11 @@ type ActivityConsumer interface {
 	Consume(map[string]interface{}) error
 }
 
+// Validation defines an interface which expose a method to validate a giving type.
+type Validation interface {
+	Validate() error
+}
+
 // MongoDB defines a interface which exposes a method for retrieving a
 // mongo.Database and mongo.Session.
 type MongoDB interface {
@@ -267,6 +272,13 @@ func (mdb *ActivityDB) Create(ctx context.Context, elem pkg.Activity) error {
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to create record"), metrics.With("publicID", elem.PublicID), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
 		return err
+	}
+
+	if validator, ok := interface{}(elem).(Validation); ok {
+		if err := validator.Validate(); err != nil {
+			mdb.metrics.Emit(metrics.Errorf("Failed to apply index"), metrics.With("collection", mdb.col), metrics.With("error", err.Error()))
+			return err
+		}
 	}
 
 	if err := mdb.ensureIndex(); err != nil {
@@ -567,6 +579,13 @@ func (mdb *ActivityDB) Update(ctx context.Context, publicID string, elem pkg.Act
 		err := fmt.Errorf("Context has expired")
 		mdb.metrics.Emit(metrics.Errorf("Failed to finish, context has expired"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
 		return err
+	}
+
+	if validator, ok := interface{}(elem).(Validation); ok {
+		if err := validator.Validate(); err != nil {
+			mdb.metrics.Emit(metrics.Errorf("Failed to apply index"), metrics.With("collection", mdb.col), metrics.With("public_id", publicID), metrics.With("error", err.Error()))
+			return err
+		}
 	}
 
 	if err := mdb.ensureIndex(); err != nil {

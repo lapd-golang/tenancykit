@@ -35,9 +35,9 @@ var (
 	contractDataJSON = `{
 
 
-    "email":	"deserunt@Flipbug.com",
+    "email":	"SharonMurphy@Trudoo.name",
 
-    "password":	"6vbggkq3lug26olzhwhx",
+    "password":	"ru7lo821omnmb5fsnfzh",
 
     "expiration":	null
 

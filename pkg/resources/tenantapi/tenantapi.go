@@ -33,6 +33,11 @@ type TenantBackend interface {
 	Create(context.Context, pkg.CreateTenant) (pkg.Tenant, error)
 }
 
+// Validation defines an interface which expose a method to validate a giving type.
+type Validation interface {
+	Validate() error
+}
+
 // TenantHTTP defines an interface which expose the methods provided by the http backend.
 type TenantHTTP interface {
 	Get(*httputil.Context) error
@@ -100,6 +105,7 @@ func (api *HTTPAPI) Info(ctx *httputil.Context) error {
 	}
 
 	if err := ctx.JSON(http.StatusOK, TenantInfo{Total: total}); err != nil {
+		ctx.Status(http.StatusInternalServerError)
 		api.metrics.Emit(metrics.Errorf("Failed to get serialized pkg.Tenant record to response writer"), metrics.WithFields(metrics.Field{
 			"error": err,
 			"url":   ctx.Request().URL.String(),
@@ -135,6 +141,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 	var incoming pkg.CreateTenant
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
+		ctx.Status(http.StatusBadRequest)
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{
 			"error": err,
 			"url":   ctx.Request().URL.String(),
@@ -147,6 +154,18 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 		"data": incoming,
 		"url":  ctx.Request().URL.String(),
 	}))
+
+	if validator, ok := interface{}(incoming).(Validation); ok {
+		if err := validator.Validate(); err != nil {
+			ctx.Status(http.StatusBadRequest)
+			api.metrics.Emit(metrics.Errorf("Record failed validation"), metrics.WithFields(metrics.Field{
+				"error": err,
+				"url":   ctx.Request().URL.String(),
+			}))
+
+			return err
+		}
+	}
 
 	response, err := api.operator.Create(ctx.Context(), incoming)
 	if err != nil {
@@ -164,6 +183,7 @@ func (api *HTTPAPI) Create(ctx *httputil.Context) error {
 	}))
 
 	if err := ctx.JSON(http.StatusCreated, response); err != nil {
+		ctx.Status(http.StatusInternalServerError)
 		api.metrics.Emit(metrics.Errorf("Failed to deliver response"), metrics.WithFields(metrics.Field{
 			"error": err,
 			"url":   ctx.Request().URL.String(),
@@ -192,6 +212,7 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 
 	publicID, ok := ctx.Bag().GetString("public_id")
 	if !ok {
+		ctx.Status(http.StatusBadRequest)
 		api.metrics.Emit(metrics.Errorf("No public_id provided in params"), metrics.WithFields(metrics.Field{
 			"url": ctx.Request().URL.String(),
 		}))
@@ -202,6 +223,7 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 	var incoming pkg.Tenant
 
 	if err := json.NewDecoder(ctx.Body()).Decode(&incoming); err != nil {
+		ctx.Status(http.StatusBadRequest)
 		api.metrics.Emit(metrics.Errorf("Failed to decode request body"), metrics.WithFields(metrics.Field{
 			"error":     err.Error(),
 			"public_id": publicID,
@@ -216,6 +238,18 @@ func (api *HTTPAPI) Update(ctx *httputil.Context) error {
 		"url":       ctx.Request().URL.String(),
 		"public_id": publicID,
 	}))
+
+	if validator, ok := interface{}(incoming).(Validation); ok {
+		if err := validator.Validate(); err != nil {
+			ctx.Status(http.StatusBadRequest)
+			api.metrics.Emit(metrics.Errorf("Record failed validation"), metrics.WithFields(metrics.Field{
+				"error": err,
+				"url":   ctx.Request().URL.String(),
+			}))
+
+			return err
+		}
+	}
 
 	if err := api.operator.Update(ctx.Context(), publicID, incoming); err != nil {
 		api.metrics.Emit(metrics.Errorf("Failed to parse params and url.Values"), metrics.WithFields(metrics.Field{
@@ -251,6 +285,7 @@ func (api *HTTPAPI) Delete(ctx *httputil.Context) error {
 
 	publicID, ok := ctx.Bag().GetString("public_id")
 	if !ok {
+		ctx.Status(http.StatusBadRequest)
 		api.metrics.Emit(metrics.Errorf("No public_id provided in params"), metrics.WithFields(metrics.Field{
 			"url": ctx.Request().URL.String(),
 		}))
@@ -299,6 +334,7 @@ func (api *HTTPAPI) Get(ctx *httputil.Context) error {
 
 	publicID, ok := ctx.Bag().GetString("public_id")
 	if !ok {
+		ctx.Status(http.StatusBadRequest)
 		api.metrics.Emit(metrics.Errorf("No public_id provided in params"), metrics.WithFields(metrics.Field{
 			"url": ctx.Request().URL.String(),
 		}))
@@ -318,6 +354,7 @@ func (api *HTTPAPI) Get(ctx *httputil.Context) error {
 	}
 
 	if err := ctx.JSON(http.StatusOK, requested); err != nil {
+		ctx.Status(http.StatusInternalServerError)
 		api.metrics.Emit(metrics.Errorf("Failed to get serialized pkg.Tenant record to response writer"), metrics.WithFields(metrics.Field{
 			"error":     err,
 			"public_id": publicID,
@@ -412,6 +449,7 @@ func (api *HTTPAPI) GetAll(ctx *httputil.Context) error {
 		TotalRecords:    total,
 		ResponsePerPage: responsePerPage,
 	}); err != nil {
+		ctx.Status(http.StatusInternalServerError)
 		api.metrics.Emit(metrics.Errorf("Failed to get serialized pkg.Tenant record to response writer"), metrics.WithFields(metrics.Field{
 			"error": err,
 			"url":   ctx.Request().URL.String(),
