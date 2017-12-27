@@ -1,4 +1,6 @@
 .DS_Store
 ./keys
 ./api/keys
-./api/keys/*
+api/keys
+keys
+api/keys/*
