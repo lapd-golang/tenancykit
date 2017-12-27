@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"context"
@@ -52,8 +51,6 @@ func TestUserAPI(t *testing.T) {
 	testUserGet(t, tenantRecord, users, userdb)
 	testUserUpdate(t, tenantRecord, users, userdb)
 	testUserDelete(t, tenantRecord, users, userdb)
-
-	os.RemoveAll("./keys")
 }
 
 func testUserCount(t *testing.T, users api.UserAPI, db types.UserDBBackend) {
